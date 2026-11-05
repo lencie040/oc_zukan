@@ -148,7 +148,7 @@ const rk=c=>{const v=c['最大ランク(並び替え用)'];return v==='10+'?10.5
 const SORTS={'シート順':null,'読み(あいうえお順)':c=>c['キャラ名読み'],'合計種族値':c=>num(c['合計種族値'])||null,'HP(H)':c=>num(c.H),'攻撃(A)':c=>num(c.A),'防御(B)':c=>num(c.B),'特攻(C)':c=>num(c.C),'特防(D)':c=>num(c.D),'素早さ(S)':c=>num(c.S),'戦闘力':c=>num(c['戦闘力(並び替え用)']),'CP':c=>num(c['CP']),'コスト':c=>num(c['コスト']),'最大ランク':rk};
 function prep(){const nm=new Map();DATA.forEach((c,i)=>{c._i=i;c._cc=c._base=null;c._isCC=c['キャラ名'].endsWith('[CC]');c._s=[c['キャラ名'],c['キャラ名読み'],c['漢字'],c['通常特性1'],c['通常特性2'],c['夢特性'],c['専用技1'],c['専用技2'],c['専用技3'],c['全界番号'],c['モチーフ曲'],c['勢力'],c['世界線1'],c['世界線2'],c['世界線3']].join('\n').toLowerCase();if(!c._isCC)nm.set(c['キャラ名'],c)});
  DATA.forEach(c=>{if(c._isCC){const b=nm.get(c['キャラ名'].slice(0,-4));if(b){c._base=b;b._cc=c;b._s+='\n'+c._s}}})}
-const FIL=[['タイプ','タイプ',c=>tys(c)],['世界団','世界団',c=>[c['世界団']]],['族','族',c=>[c['族']]],['初登場','初登場',c=>[c['初登場']]],['勢力','勢力',c=>[c['勢力']]],['世界線','世界線',c=>[c['世界線1'],c['世界線2'],c['世界線3']].filter(Boolean)]];
+const FIL=[['シーズン','シーズン',c=>[c['データ']==='S2'?'S2':'S1']],['タイプ','タイプ',c=>tys(c)],['世界団','世界団',c=>[c['世界団']]],['族','族',c=>[c['族']]],['初登場','初登場',c=>[c['初登場']]],['勢力','勢力',c=>[c['勢力']]],['世界線','世界線',c=>[c['世界線1'],c['世界線2'],c['世界線3']].filter(Boolean)]];
 const st={q:'',f:{},sort:'シート順',desc:false,cc:false,nost:false,il:false,tab:'grid'};
 const $=s=>document.querySelector(s);
 function buildCtl(){let h='';
@@ -160,8 +160,12 @@ function buildCtl(){let h='';
 const IDIR='illust/',EXTS=['png','webp','jpg','jpeg'];
 const IL=new Map(),IP=new Map();let pref=0;
 const ilUrl=(no,e)=>IDIR+encodeURIComponent(no)+'.'+e;
-function probe(no){if(IP.has(no))return IP.get(no);const order=EXTS.slice(pref).concat(EXTS.slice(0,pref));
- const p=new Promise(res=>{let k=0;const next=()=>{if(k>=order.length){IL.set(no,false);res(false);return}const e=order[k++],u=ilUrl(no,e),im=new Image();im.onload=()=>{pref=EXTS.indexOf(e);IL.set(no,u);res(u)};im.onerror=next;im.src=u};next()});IP.set(no,p);return p}
+const ILC=()=>{try{return JSON.parse(LS.g('oc_il')||'{}')}catch(e){return{}}};
+function saveIL(no,ext){try{const m=ILC();m[no]=[ext,Date.now()];const k=Object.keys(m);if(k.length>3000)k.slice(0,k.length-3000).forEach(x=>delete m[x]);LS.s('oc_il',JSON.stringify(m))}catch(e){}}
+function probe(no){if(IP.has(no))return IP.get(no);const cc=ILC()[no];
+ if(cc&&(cc[0]||Date.now()-cc[1]<864e5)){const u=cc[0]?ilUrl(no,cc[0]):false;IL.set(no,u);const p=Promise.resolve(u);IP.set(no,p);return p}
+ const order=EXTS.slice(pref).concat(EXTS.slice(0,pref));
+ const p=new Promise(res=>{let k=0;const next=()=>{if(k>=order.length){IL.set(no,false);saveIL(no,'');res(false);return}const e=order[k++],u=ilUrl(no,e),im=new Image();im.onload=()=>{pref=EXTS.indexOf(e);IL.set(no,u);saveIL(no,e);res(u)};im.onerror=next;im.src=u};next()});IP.set(no,p);return p}
 async function illust(c){let u=await probe(c['全界番号']);if(!u&&c._base)u=await probe(c._base['全界番号']);return u}
 const hasIl=c=>IL.get(c['全界番号'])||(c._base&&IL.get(c._base['全界番号']))||false;
 function setImg(el,u){if(el.querySelector('img'))return;el.classList.add('has');el.insertAdjacentHTML('beforeend',`<img src="${u}" alt="" decoding="async">`)}
@@ -320,7 +324,7 @@ const cch=LS.g('oc_chart');if(cch&&(+LS.g('oc_ctime')||0)>BUILT)TCH=parseChart(c
 S2DATA=parseS2(LS.g('oc_s2')||S2CSV);
 apply(cache&&ct>BUILT?cache:CSV);
 if(cache&&ct>BUILT)$('#sst').textContent='保存データ '+hm(new Date(ct));else $('#sst').textContent='埋め込みデータ '+hm(new Date(BUILT));
-sync(LS.g('oc_url')||SHEET,false);fetchS2(LS.g('oc_url3')||S2SHEET,false);
+if(Date.now()-(+LS.g('oc_auto')||0)>216e5){LS.s('oc_auto',Date.now());sync(LS.g('oc_url')||SHEET,false);fetchS2(LS.g('oc_url3')||S2SHEET,false)}
 const pm=location.hash.match(/^#p=(.*)$/);if(pm){PTID=decodeURIComponent(pm[1]).split('~').filter(Boolean).slice(0,6);savePt();tab('party')}
 const m=location.hash.match(/^#c(\d+)$/);if(m&&DATA[+m[1]])detail(+m[1]);
 </script>
