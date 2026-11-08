@@ -162,6 +162,7 @@ main{padding-top:12px}
 @media(max-width:700px){.pg-no b{font-size:min(30px,calc(120px / var(--nl,4)))!important;margin-top:2px!important}.pg-no small{font-size:11px!important}.pg-no em{font-size:12px}}
 #pbar{position:fixed;left:0;right:0;bottom:0;z-index:7;display:flex;align-items:center;justify-content:space-between;gap:8px;padding:8px 14px calc(8px + env(safe-area-inset-bottom,0px));background:var(--bg);border-top:1px solid var(--ln)}
 #pbar button{position:relative;min-height:46px;border-radius:99px;padding:0 18px;font-weight:700;font-size:15px;white-space:nowrap}
+#pbar .pbar-actions{display:flex;gap:6px}
 #pbar .nv{display:flex;align-items:center;gap:8px}
 #pbar .nv button{width:46px;padding:0}
 #pbar .pc{min-width:5.2em;text-align:center;font-variant-numeric:tabular-nums;color:var(--sub);font-size:14px}
@@ -194,10 +195,13 @@ body[data-tab=grid] main{padding-bottom:92px}
  .pg-kv{font-size:15px;margin-top:6px;gap:4px 8px}.pg-kv.k1{font-size:15px}.pg-kv.k1 span{max-width:220px}
  .ab2{margin-top:6px}.ab2 b{font-size:15px}.ab2 p{font-size:12.5px}.ab2 i{font-size:11px;padding:0 5px;margin-right:5px}
  .pg-dl{font-size:12px;gap:3px 10px;margin-top:6px}.pg-dl dt{font-size:11px}
+}
+@media(max-width:850px){
  #pbar .lg{display:none}#pbar .sm2{display:inline}
  #pbar button{padding:0 12px;font-size:14px}
  #pbar .pc{min-width:4.6em;font-size:13px}
- #pbar{display:grid;grid-template-columns:1fr 1fr;padding-inline:8px;gap:4px}
+ #pbar{display:grid;grid-template-columns:1fr auto;padding-inline:8px;gap:4px}
+ #pbar .pbar-actions{gap:4px}
  #pbar .nv{grid-column:1/-1;grid-row:1;justify-content:center;gap:3px}
  #pbar .nv button{width:clamp(31px,11vw,46px);font-size:13px}
  body[data-tab=grid] #tray{bottom:calc(112px + env(safe-area-inset-bottom,0px))}
@@ -223,35 +227,10 @@ dialog::backdrop{backdrop-filter:blur(3px)}
 @media(hover:hover){.card:hover{box-shadow:0 5px 16px rgb(9 28 39 / .15)}}
 @media(max-width:520px){nav button{font-size:12px}#grid{gap:10px}}
 
-/* Two distinct, static emblems for the highest tiers */
-.rkv.rk-SSS,.rkv.rk-ZZZ{
-  width:max-content;
-  margin-inline:auto;
-  padding:.15em .38em .19em;
-  border:1px solid var(--rank-edge);
-  border-radius:.32em;
-  color:var(--rank-ink)!important;
-  background:var(--rank-bg);
-  filter:none;
-  font-variant-numeric:tabular-nums;
-  letter-spacing:.06em;
-  line-height:1;
-}
-.rk-SSS{
-  --rank-ink:#4c290e;
-  --rank-edge:#9d6629;
-  --rank-bg:linear-gradient(160deg,#fff4ce,#e0a953);
-  box-shadow:inset 0 0 0 1px #fff2c6,0 2px 4px #462b2230;
-}
-.rk-ZZZ{
-  --rank-ink:#e8faff;
-  --rank-edge:#758cb7;
-  --rank-bg:linear-gradient(150deg,#334f76,#14182f 72%);
-  box-shadow:inset 0 0 0 1px #c2e5ff35,0 2px 5px #101b4b45;
-}
+.rk-SSS{--rg:linear-gradient(#fff8d9,#ffd273 48%,#e87b2b);--gr:1.2cqw;--gc:#ffba54}
+.rk-ZZZ{--rg:linear-gradient(#f5fcff,#a8d5ff 48%,#a38ce8);--gr:1.6cqw;--gc:#a6a9ff}
 @media(forced-colors:active){
   .rkv{color:CanvasText!important;background:none;filter:none}
-  .rkv.rk-SSS,.rkv.rk-ZZZ{border-color:CanvasText;color:CanvasText!important;background:Canvas}
 }
 @font-face{font-family:'JigmoSub';src:url(data:font/ttf;base64,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) format('truetype');unicode-range:U+47D6,U+495A,U+58DE;font-display:swap}
 @font-face{font-family:'JigmoSub';src:url(data:font/ttf;base64,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) format('truetype');unicode-range:U+200CC,U+200CD,U+21EE6,U+22724,U+29E49,U+2EBF0;font-display:swap}
@@ -401,7 +380,7 @@ nav button[data-t="world-map"]{white-space:normal;line-height:1.2}
 <body>
 <header>
  <div class="row"><h1>オリキャラ図鑑<small id="cnt"></small></h1>
- <button id="num-nav" aria-pressed="false">全界番号順</button><button id="syb">データ更新</button><span class="sy" id="sst"></span></div>
+ <button id="syb">データ更新</button><span class="sy" id="sst"></span></div>
  <nav><button data-t="grid" aria-selected="true">図鑑</button><button data-t="rank" aria-selected="false">ランキング</button><button data-t="party" aria-selected="false">パーティ</button><button data-t="bday" aria-selected="false">誕生日</button><button data-t="world-map" aria-selected="false">世界線マップ</button></nav><div id="bn"></div>
 </header>
 <main><div id="grid"></div><aside id="wm-side" hidden></aside><div id="rank" hidden></div><div id="party" hidden></div><div id="bday" hidden></div><section id="wm-root" class="wrap" hidden>
@@ -437,7 +416,7 @@ nav button[data-t="world-map"]{white-space:normal;line-height:1.2}
   <button data-step="1" aria-label="1ページ次へ">▶</button>
   <button data-step="10" aria-label="10ページ次へ">+10</button>
   <button data-step="100" aria-label="100ページ次へ">+100</button>
-</div><button id="fbtn" aria-label="並び替え・絞り込みを開く">⚙ <span class="lg">並び替え・絞り込み</span><span class="sm2">絞り込み</span><i class="bdg" id="fbn" hidden></i></button></div>
+</div><div class="pbar-actions"><button id="num-nav" aria-pressed="false">全界番号順</button><button id="fbtn" aria-label="並び替え・絞り込みを開く">⚙ <span class="lg">並び替え・絞り込み</span><span class="sm2">絞り込み</span><i class="bdg" id="fbn" hidden></i></button></div></div>
 <dialog id="sd"><div class="sec" style="padding-top:16px"><div class="row" style="margin-bottom:8px"><input id="q" type="search" placeholder="例: Rank:SS,H:70,B:55-90" aria-label="検索" style="flex:1 1 200px"><button id="sdx">閉じる</button></div><p class="sy" style="margin:0 0 8px;line-height:1.7">使い方：<b>Rank:SS</b> <b>H:70</b> <b>B:55-90</b> <b>H:&gt;80</b> <b>タイプ:水</b> <b>世界線:零</b> <b>世界団:䥚</b> <b>族:クマノミ</b> <b>シーズン:S2</b><br>区切りはスペースかカンマ。ランクは E〜ZZZ（S2は星の数）。範囲は 55-90、以上・以下は &gt;80 &lt;80。キーなしの語は名前・読み・特性などの部分一致です。</p><div id="ql"></div></div></dialog>
 <dialog id="fd"><div class="sec" style="padding-top:16px"><h3>並び替え・絞り込み</h3><div class="row" id="ctl"></div><div class="bt"><button id="fdx">閉じる</button><span class="sy" id="fdn"></span></div></div></dialog>
 <dialog id="pk"><div class="sec" style="padding-top:16px"><div class="row" style="margin-bottom:8px"><input id="pks" type="search" placeholder="名前・タイプ・族で検索" style="flex:1 1 200px"><button id="pkx">閉じる</button></div><div id="pkl"></div></div></dialog>
