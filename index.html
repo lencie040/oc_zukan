@@ -235,6 +235,63 @@ dialog::backdrop{backdrop-filter:blur(3px)}
 @media(hover:hover){.card:hover{box-shadow:0 5px 16px rgb(9 28 39 / .15)}}
 @media(max-width:520px){nav button{font-size:12px}#grid{gap:10px}}
 
+/* Character page */
+.pg{
+  border-radius:12px;
+  box-shadow:0 4px 18px rgb(14 32 48 / .15),0 0 0 1px rgb(32 53 78 / .12);
+}
+.pg-bar{background:linear-gradient(155deg,#7895e4,#5975c7);box-shadow:0 1px 0 #405da32e}
+.pg-nm{font-weight:700;text-shadow:0 1px 3px #263b7866}
+.pg-box{
+  border:1px solid #a8b8cf;
+  border-radius:10px;
+  background:#fdfdff;
+  padding:1.35cqw;
+  scrollbar-color:#aab8cd transparent;
+}
+.pg-box h4{
+  padding-bottom:.65cqw;
+  border-bottom:1px solid #dce4ef;
+  color:#233650;
+  font-weight:700;
+}
+.pg-box h4 small,.pg-dl dt{color:#4c5d73}
+.pg-kv{grid-template-columns:repeat(3,minmax(0,1fr));gap:.5cqw}
+.pg-kv span{
+  padding:.42cqw .55cqw;
+  border-radius:4px;
+  background:#edf2fa;
+  font-variant-numeric:tabular-nums;
+}
+.pg-kv.k1 span{max-width:none}
+.pg-dl{grid-template-columns:auto minmax(0,1fr);row-gap:.65cqw;line-height:1.5}
+.ab2 p{line-height:1.5}
+.pg-img{bottom:8.5cqw}
+.pg-img .pg-placeholder{
+  color:#4c5d73;
+  border:1px dashed #a8b8cf;
+  border-radius:10px;
+  padding:.65em 1em;
+  font-size:clamp(13px,2cqw,19px);
+  background:#f4f7fc;
+}
+.pg-acts button{border-color:#a8b8cf;min-height:30px}
+.pg-acts button:hover{border-color:#4d71bf}
+#pbar{
+  background:var(--sf);
+  box-shadow:0 -3px 16px rgb(14 32 48 / .08);
+}
+#pbar .pc{font-weight:700}
+@media(max-width:700px){
+ .pg-bar{grid-template-columns:auto minmax(0,1fr) auto}
+ .pg-box{padding:12px}
+ .pg-box h4{padding-bottom:6px}
+ .pg-kv{gap:5px}
+ .pg-kv span{padding:4px 6px}
+ .pg-dl{row-gap:5px}
+ .pg-img{min-height:clamp(180px,65vw,260px)}
+ .pg-acts button{min-height:38px}
+}
 .rk-SSS{--rg:linear-gradient(110deg,#fff8d9,#ffd273 28%,#e87b2b 52%,#fff8d9 78%,#ffd273);--bs:200%;--gr:1.2cqw;--gc:#ffba54;animation:rkh 4s ease-in-out infinite alternate}
 .rk-ZZZ{--rg:linear-gradient(110deg,#f5fcff,#a8d5ff 28%,#a38ce8 52%,#f5fcff 78%,#a8d5ff);--bs:200%;--gr:1.6cqw;--gc:#a6a9ff;animation:rkh 3.4s ease-in-out infinite alternate}
 @media(forced-colors:active){
@@ -593,7 +650,7 @@ function pageHtml(c){
  <div class="pg-bar"><div class="pg-rk"><small>ランク</small>${rankHtml(c)}</div><div class="pg-nm" style="--len:${len}">${esc(nm)}</div><div class="pg-no">${noHtml(c)}</div></div>
  ${ty.length?`<div class="pg-tp"><div class="pg-tl">タイプ</div>${typeIcon(c)}</div>`:'<div class="pg-tp"></div>'}
  <div class="pg-wl" style="--n:${Math.max(2,wl.length)}">${wl.map(w=>{const l=wlLabel(w),n=Array.from(l).length;return `<div class="wl" style="--wc:${wlColor(w)};font-size:min(3.3cqw,${(13/Math.max(n,1)).toFixed(2)}cqw)">${esc(l)}</div>`}).join('')}</div>
- <div class="pg-img">No<br>Image</div>
+ <div class="pg-img"><span class="pg-placeholder">イラスト未登録</span></div>
  <div class="pg-acts">${s2?'':`<button class="cmp" data-c="${c._i}" aria-pressed="${CMP.includes(c._i)}">比較に追加</button>`}<button class="ptd" data-c="${c._i}">パーティに追加</button><button class="mre" data-i="${c._i}">グラフ・詳細</button></div>
  <div class="pg-box pg-l"><h4>${s2?'ステータス':'種族値'} <small${s2?' class="bl"':''}>${has?(s2?'5ステ合計 '+f5:'合計'+b):'未設定'}</small></h4>${kv}${abl?`<h4 class="h2">特性</h4>${abl}`:''}</div>
  <div class="pg-box pg-r"><h4>詳細情報</h4><dl class="pg-dl">${dl||'<dt></dt><dd>—</dd>'}</dl></div></div>`}
