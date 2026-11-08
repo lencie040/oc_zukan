@@ -198,7 +198,7 @@ body[data-tab=grid] main{padding-bottom:92px}
  .ab2{margin-top:6px}.ab2 b{font-size:15px}.ab2 p{font-size:12.5px}.ab2 i{font-size:11px;padding:0 5px;margin-right:5px}
  .pg-dl{font-size:12px;gap:3px 10px;margin-top:6px}.pg-dl dt{font-size:11px}
 }
-@media(max-width:850px){
+@media(max-width:960px){
  #pbar .lg{display:none}#pbar .sm2{display:inline}
  #pbar button{padding:0 12px;font-size:14px}
  #pbar .pc{min-width:4.6em;font-size:13px}
@@ -208,6 +208,12 @@ body[data-tab=grid] main{padding-bottom:92px}
  #pbar .nv button{width:clamp(31px,11vw,46px);font-size:13px}
  body[data-tab=grid] #tray{bottom:calc(112px + env(safe-area-inset-bottom,0px))}
  body[data-tab=grid] main{padding-bottom:calc(142px + env(safe-area-inset-bottom,0px))}
+}
+
+@media(max-width:450px){
+ #pbar .nv:has([data-number-jump]:not([hidden])){gap:2px}
+ #pbar .nv:has([data-number-jump]:not([hidden])) button{flex:1 1 0;width:auto;min-width:0;font-size:11px}
+ #pbar .nv:has([data-number-jump]:not([hidden])) .pc{min-width:0;padding-inline:3px;font-size:11px}
 }
 
 /* Catalogue surfaces and controls */
@@ -229,8 +235,8 @@ dialog::backdrop{backdrop-filter:blur(3px)}
 @media(hover:hover){.card:hover{box-shadow:0 5px 16px rgb(9 28 39 / .15)}}
 @media(max-width:520px){nav button{font-size:12px}#grid{gap:10px}}
 
-.rk-SSS{--rg:linear-gradient(#fff8d9,#ffd273 48%,#e87b2b);--gr:1.2cqw;--gc:#ffba54}
-.rk-ZZZ{--rg:linear-gradient(#f5fcff,#a8d5ff 48%,#a38ce8);--gr:1.6cqw;--gc:#a6a9ff}
+.rk-SSS{--rg:linear-gradient(110deg,#fff8d9,#ffd273 28%,#e87b2b 52%,#fff8d9 78%,#ffd273);--bs:200%;--gr:1.2cqw;--gc:#ffba54;animation:rkh 4s ease-in-out infinite alternate}
+.rk-ZZZ{--rg:linear-gradient(110deg,#f5fcff,#a8d5ff 28%,#a38ce8 52%,#f5fcff 78%,#a8d5ff);--bs:200%;--gr:1.6cqw;--gc:#a6a9ff;animation:rkh 3.4s ease-in-out infinite alternate}
 @media(forced-colors:active){
   .rkv{color:CanvasText!important;background:none;filter:none}
 }
@@ -411,6 +417,7 @@ nav button[data-t="world-map"]{white-space:normal;line-height:1.2}
   <dialog id="wm-panel" class="panel" aria-labelledby="wm-p-title"></dialog>
 </section></main>
 <div id="pbar"><button id="sbtn" aria-label="検索を開く">🔍 検索<i class="bdg" id="sbn" hidden>●</i></button><div class="nv" role="group" aria-label="ページ移動">
+  <button data-step="-1000" data-number-jump hidden aria-label="1000番号分戻る">−1000</button>
   <button data-step="-100" aria-label="100ページ前へ">−100</button>
   <button data-step="-10" aria-label="10ページ前へ">−10</button>
   <button data-step="-1" aria-label="1ページ前へ">◀</button>
@@ -418,6 +425,7 @@ nav button[data-t="world-map"]{white-space:normal;line-height:1.2}
   <button data-step="1" aria-label="1ページ次へ">▶</button>
   <button data-step="10" aria-label="10ページ次へ">+10</button>
   <button data-step="100" aria-label="100ページ次へ">+100</button>
+  <button data-step="1000" data-number-jump hidden aria-label="1000番号分進む">+1000</button>
 </div><div class="pbar-actions"><button id="num-nav" aria-pressed="false">全界番号順</button><button id="fbtn" aria-label="並び替え・絞り込みを開く">⚙ <span class="lg">並び替え・絞り込み</span><span class="sm2">絞り込み</span><i class="bdg" id="fbn" hidden></i></button></div></div>
 <dialog id="sd"><div class="sec" style="padding-top:16px"><div class="row" style="margin-bottom:8px"><input id="q" type="search" placeholder="例: Rank:SS,H:70,B:55-90" aria-label="検索" style="flex:1 1 200px"><button id="sdx">閉じる</button></div><p class="sy" style="margin:0 0 8px;line-height:1.7">使い方：<b>Rank:SS</b> <b>H:70</b> <b>B:55-90</b> <b>H:&gt;80</b> <b>タイプ:水</b> <b>世界線:零</b> <b>世界団:䥚</b> <b>族:クマノミ</b> <b>シーズン:S2</b><br>区切りはスペースかカンマ。ランクは E〜ZZZ（S2は星の数）。範囲は 55-90、以上・以下は &gt;80 &lt;80。キーなしの語は名前・読み・特性などの部分一致です。</p><div id="ql"></div></div></dialog>
 <dialog id="fd"><div class="sec" style="padding-top:16px"><h3>並び替え・絞り込み</h3><div class="row" id="ctl"></div><div class="bt"><button id="fdx">閉じる</button><span class="sy" id="fdn"></span></div></div></dialog>
@@ -546,6 +554,7 @@ function updateNumberPages(chars){
  button.title=available?'欠番も含めて全界番号を順に表示':'検索・絞り込み・並び替えを解除すると利用できます';
  button.setAttribute('aria-pressed',String(numberNav));
  numberPages=available&&numberNav?buildNumberPages(chars):null;
+ document.querySelectorAll("#pbar [data-number-jump]").forEach(b=>b.hidden=!numberPages);
 }
 function pagePosition(i){return numberPages?numberPages.positions.get(i)??-1:LIST.indexOf(i)}
 function pageCount(){return numberPages?.length??LIST.length}
