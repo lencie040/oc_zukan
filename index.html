@@ -143,10 +143,8 @@ main{padding-top:12px}
 .rk-A{--rg:linear-gradient(#ffd08a,#ff7418)}
 .rk-S{--rg:linear-gradient(#fff9bd,#f7c600 52%,#b88000);--gr:.9cqw;--gc:#ffd54a}
 .rk-SS{--rg:linear-gradient(#fff3ad,#ffb000 45%,#ff4a18);--gr:1.3cqw;--gc:#ff8a2a}
-.rk-SSS{--rg:linear-gradient(90deg,#ff4d4d,#ffc933,#4dd96a,#33c2ff,#a35cff,#ff4d9a,#ff4d4d);--bs:200%;--gr:1.5cqw;--gc:#ffe27a;animation:rkh 3.2s linear infinite}
 .rk-Z{--rg:linear-gradient(110deg,#eafcff,#6fe0ff 28%,#c78bff 58%,#fff 78%,#eafcff);--bs:250%;--gr:1.7cqw;--gc:#7fe6ff;animation:rkh 2.8s linear infinite}
 .rk-ZZ{--rg:linear-gradient(110deg,#fff,#ff9bf0 25%,#7fd8ff 50%,#fff3a0 75%,#fff);--bs:250%;--gr:2.1cqw;--gc:#ff7be8;animation:rkh 2.2s linear infinite}
-.rk-ZZZ{--rg:linear-gradient(100deg,#ff3b3b,#ffd23b,#3bff7a,#3bd0ff,#7a5cff,#ff3bd0,#ff3b3b);--bs:300%;--gr:2.6cqw;--gc:#fff;animation:rkh 1.5s linear infinite}
 @keyframes rkh{to{background-position:var(--bs) 0}}
 @media(prefers-reduced-motion:reduce){.rkv{animation:none!important}}
 .pg-no{text-align:right}
@@ -192,6 +190,53 @@ body[data-tab=grid] main{padding-bottom:92px}
  #pbar button{padding:0 12px;font-size:14px}
  #pbar .pc{min-width:4.6em;font-size:13px}
  #pbar .nv{gap:4px}
+}
+
+/* Catalogue surfaces and controls */
+header{background:var(--sf);box-shadow:0 3px 14px rgb(9 28 39 / .06)}
+header h1{font-family:"Shippori Mincho B1",serif;font-weight:800}
+nav{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:4px;padding:4px;background:var(--bg);border:1px solid var(--ln);border-radius:12px}
+nav button{padding-inline:4px;border-color:transparent;background:transparent;font-weight:700;white-space:nowrap}
+nav button[aria-selected=true]{background:var(--ac2);color:var(--ink);border-color:var(--ln);box-shadow:inset 0 -2px var(--ac)}
+button,input[type=search],select{border-radius:8px}
+#grid{gap:16px}
+.card{border-radius:14px;box-shadow:0 2px 6px rgb(9 28 39 / .08)}
+.card .tile{border-bottom:1px solid rgb(9 28 39 / .12)}
+.rr{border-radius:8px}
+dialog:not(#lb){border:1px solid var(--ln);border-radius:16px;box-shadow:0 16px 60px rgb(9 28 39 / .28)}
+dialog::backdrop{backdrop-filter:blur(3px)}
+@media(hover:hover){.card:hover{box-shadow:0 5px 16px rgb(9 28 39 / .15)}}
+@media(max-width:520px){nav button{font-size:12px}#grid{gap:10px}}
+
+/* Two distinct, static emblems for the highest tiers */
+.rkv.rk-SSS,.rkv.rk-ZZZ{
+  width:max-content;
+  margin-inline:auto;
+  padding:.15em .38em .19em;
+  border:1px solid var(--rank-edge);
+  border-radius:.32em;
+  color:var(--rank-ink)!important;
+  background:var(--rank-bg);
+  filter:none;
+  font-variant-numeric:tabular-nums;
+  letter-spacing:.06em;
+  line-height:1;
+}
+.rk-SSS{
+  --rank-ink:#4c290e;
+  --rank-edge:#9d6629;
+  --rank-bg:linear-gradient(160deg,#fff4ce,#e0a953);
+  box-shadow:inset 0 0 0 1px #fff2c6,0 2px 4px #462b2230;
+}
+.rk-ZZZ{
+  --rank-ink:#e8faff;
+  --rank-edge:#758cb7;
+  --rank-bg:linear-gradient(150deg,#334f76,#14182f 72%);
+  box-shadow:inset 0 0 0 1px #c2e5ff35,0 2px 5px #101b4b45;
+}
+@media(forced-colors:active){
+  .rkv{color:CanvasText!important;background:none;filter:none}
+  .rkv.rk-SSS,.rkv.rk-ZZZ{border-color:CanvasText;color:CanvasText!important;background:Canvas}
 }
 </style>
 </head>
