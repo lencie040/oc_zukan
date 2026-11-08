@@ -611,8 +611,8 @@ function renderPage(dir){const g=$('#grid');
  const count=pageCount();
  if(!count){worldMap.showCharacter();g.innerHTML='<div class="empty">該当するキャラがいません</div>';$('#pc').textContent='0 / 0';return}
  const c=DATA[pageIndex(POS)];
- worldMap.showCharacter(st.tab==='grid'?c:null);
  CURNO=c?c['全界番号']:String(numberPages.first+POS).padStart(numberPages.width,'0');
+ if(st.tab==='grid')worldMap.showCharacter(c,CURNO);
  g.innerHTML=c?pageHtml(c):`<div class="pg pg-missing"><div class="pg-bar"><div class="pg-rk"></div><div class="pg-nm">欠番</div><div class="pg-no">${noHtml({'全界番号':CURNO})}</div></div></div>`;
  if(dir&&!matchMedia('(prefers-reduced-motion:reduce)').matches)g.firstElementChild.classList.add(dir>0?'inr':'inl');
  $('#pc').textContent=`${POS+1} / ${count}`;
@@ -632,7 +632,7 @@ function gotoChar(i){if(st.tab!=='grid')tab('grid');const c=DATA[i];if(!c)return
  if(k>=0){POS=k;renderPage();return}
  st.q='';st.f={};st.nost=false;st.il=false;if(c._isCC)st.cc=true;$('#q').value='';buildCtl();ctlSync();view()}
 function qList(){const el=$('#ql'),n=LIST.length;if(!el)return;
- el.innerHTML=(n?LIST.slice(0,300).map((i,k)=>{const c=DATA[i];return `<button class="qi" data-pos="${k}"><b>${esc(c['キャラ名'])}</b><span class="no">No.${esc(c['全界番号'])}${c['族']&&c['族']!=='-'?' ・ '+esc(c['族']):''}</span></button>`}).join(''):'<div class="empty">該当するキャラがいません</div>')+(n>300?`<p class="no">先頭300件を表示中（全${n}件）</p>`:'');
+ el.innerHTML=(n?LIST.slice(0,300).map((i,k)=>{const c=DATA[i];return `<button class="qi" data-pos="${k}"><b>${esc(c['キャラ名'])}</b><span class="no">No.${esc(displayNumber(c['全界番号']))}${c['族']&&c['族']!=='-'?' ・ '+esc(c['族']):''}</span></button>`}).join(''):'<div class="empty">該当するキャラがいません</div>')+(n>300?`<p class="no">先頭300件を表示中（全${n}件）</p>`:'');
  const fd=$('#fdn');if(fd)fd.textContent=`${n}体が該当`}
 function pbadge(){const n=Object.values(st.f).filter(Boolean).length+(st.sort!=='シート順'?1:0)+(st.desc?1:0)+(st.cc?1:0)+(st.nost?1:0)+(st.il?1:0);
  $('#fbn').textContent=n;$('#fbn').hidden=!n;$('#sbn').hidden=!st.q.trim()}
@@ -687,7 +687,8 @@ function matchQ(c,P){
  }
  return true}
 /* 全界番号: 本体の数字を大きく、[覚醒]などの括弧は下段に */
-function noHtml(c){const no=String(c['全界番号']),m=no.match(/^([^\[]*)(?:\[(.+?)\])?/),main=m?m[1]:no,sub=m&&m[2]?m[2]:'';
+function displayNumber(id){return String(id).replace(/^0+(?=\d)/,'')}
+function noHtml(c){const no=displayNumber(c['全界番号']),m=no.match(/^([^\[]*)(?:\[(.+?)\])?/),main=m?m[1]:no,sub=m&&m[2]?m[2]:'';
  return `<small>全界番号</small><b style="--nl:${Math.max(4,Array.from(main).length)}">${esc(main)}</b>${sub?`<em>[${esc(sub)}]</em>`:''}`}
 function row(k,v){return v==null||v===''||v==='-'?'':`<dt>${k}</dt><dd>${esc(v)}</dd>`}
 const SK=['H','A','B','C','D','S'];
@@ -712,7 +713,7 @@ function detailFull(i){const c=DATA[i],b=num(c['合計種族値']),f5=num(c['5�
  const sw=cols(c).map(x=>`<span class="sw" style="background:${x==='虹'?RB:CM[x]||'#ccc'}"></span>${esc(x)}`).join('　');
  const ab=[['通常特性1',c['通常特性1']],['通常特性2',c['通常特性2']],['夢特性',c['夢特性']]].filter(x=>x[1]).map(x=>`<p class="ab"><b>${x[0]}</b><br>${esc(x[1])}</p>`).join('')+(c['夢特性解禁方法']?`<p class="ab"><b>夢特性解禁</b><br>${esc(c['夢特性解禁方法'])}</p>`:'');
  const mv=[c['専用技1'],c['専用技2'],c['専用技3']].filter(Boolean).map(esc).join(' / ');
- $('#dlg').innerHTML=`<button class="x" id="cl">閉じる</button><div class="dh">${tile(c)}<div><h2>${esc(c['キャラ名'])}</h2><div class="no">No.${esc(c['全界番号'])} ・ ${esc(c['キャラ名読み'])}${c['受賞']?' ・ '+esc(c['受賞']):''}</div><div class="ty">${chips(c)}</div>${c['データ']==='S2'?'':`<button class="cmpd" data-c="${c._i}">${CMP.includes(c._i)?'比較から外す':'比較に追加'}</button>`}<button class="ptd" data-c="${c._i}">パーティに追加</button></div></div>
+ $('#dlg').innerHTML=`<button class="x" id="cl">閉じる</button><div class="dh">${tile(c)}<div><h2>${esc(c['キャラ名'])}</h2><div class="no">No.${esc(displayNumber(c['全界番号']))} ・ ${esc(c['キャラ名読み'])}${c['受賞']?' ・ '+esc(c['受賞']):''}</div><div class="ty">${chips(c)}</div>${c['データ']==='S2'?'':`<button class="cmpd" data-c="${c._i}">${CMP.includes(c._i)?'比較から外す':'比較に追加'}</button>`}<button class="ptd" data-c="${c._i}">パーティに追加</button></div></div>
  ${c._cc?ccBlock(c):''}${c._base?`<div class="sec"><div class="cc">これは <b>${esc(c._base['キャラ名'])}</b> の色違い[CC]です。特性・コスト・戦闘力が本家と異なります。<br><button class="ln" data-open="${c._base._i}">本家を開く</button></div></div>`:''}<div class="sec"><h3>${b?`種族値 合計 ${b}`:f5?`5ステ合計 ${f5}（IQ除く）`:'種族値'}</h3>${b||f5?stats:'<div class="no">未設定</div>'}</div>
  ${b?`<div class="sec"><h3>指数・戦力</h3><dl>${row('防御指数(物理)',c['防御指数(物理)'])}${row('防御指数(魔法)',c['防御指数(魔法)'])}${row('火力指数(物理)',c['火力指数(物理)'])}${row('火力指数(魔法)',c['火力指数(魔法)'])}${row('戦闘力',c['戦闘力'])}${row('CP',c['CP'])}${row('コスト',c['コスト'])}${row('最大ランク',c['最大ランク(並び替え用)'])}</dl></div>`:''}
  ${ab?`<div class="sec"><h3>特性</h3>${ab}</div>`:''}
@@ -771,7 +772,7 @@ function renderBday(){const{L,t0}=bdays(),by=L.slice().sort((a,b)=>a.days-b.days
  $('#bday').innerHTML=`<div class="pn"><h3>${t0.getMonth()+1}月${t0.getDate()}日（今日）</h3>${td.length?rows(td,x=>`${x.mo}月${x.d}日`):`<p class="no" style="margin:0 0 6px">今日が誕生日のキャラはいません。</p>${nextL.length?`<p class="no" style="margin:0">次は${nextL[0].mo}月${nextL[0].d}日（あと${nextD}日）：</p>${rows(nextL,x=>`${x.mo}月${x.d}日`)}`:''}`}</div>
  <div class="pn"><h3>もうすぐ（30日以内）</h3>${near.length?rows(near,x=>`${x.mo}月${x.d}日<br><span class="no">あと${x.days}日</span>`):'<p class="no" style="margin:0">30日以内の誕生日はありません。</p>'}</div>
  <div class="pn"><h3>誕生日カレンダー</h3><div class="mo">${cal}</div><p class="nt">誕生日が分かっているのは ${L.length} / ${total}体です。</p></div>`;hydrate()}
-function tab(t){st.tab=t;['grid','rank','party','bday'].forEach(k=>$('#'+k).hidden=k!==t);$('#wm-root').hidden=t!=='world-map';$('#wm-side').hidden=t!=='grid'||!DATA[pageIndex(POS)];if(t==='world-map')worldMap.render();$('#pbar').hidden=t!=='grid';document.body.dataset.tab=t;document.querySelectorAll('nav button').forEach(b=>b.setAttribute('aria-selected',b.dataset.t===t));if(t==='rank')renderRank();if(t==='bday')renderBday();if(t==='party')renderParty();if(t==='grid'){worldMap.showCharacter(DATA[pageIndex(POS)]);hydrate()}scrollTo(0,0)}
+function tab(t){st.tab=t;['grid','rank','party','bday'].forEach(k=>$('#'+k).hidden=k!==t);$('#wm-root').hidden=t!=='world-map';if(t!=='grid')$('#wm-side').hidden=true;if(t==='world-map')worldMap.render();$('#pbar').hidden=t!=='grid';document.body.dataset.tab=t;document.querySelectorAll('nav button').forEach(b=>b.setAttribute('aria-selected',b.dataset.t===t));if(t==='rank')renderRank();if(t==='bday')renderBday();if(t==='party')renderParty();if(t==='grid'){worldMap.showCharacter(DATA[pageIndex(POS)],pageCount()?CURNO:null);hydrate()}scrollTo(0,0)}
 document.querySelector('nav').addEventListener('click',e=>{const b=e.target.closest('button');if(b)tab(b.dataset.t)});
 $('#bn').addEventListener('click',()=>tab('bday'));$('#bn').style.cursor='pointer';
 $('#tray').addEventListener('click',e=>{const r=e.target.closest('[data-rm]');if(r){tog(+r.dataset.rm);return}if(e.target.id==='cgo')cmpShow();if(e.target.id==='ccl'){CMP.length=0;tray()}});
@@ -911,7 +912,7 @@ const usedIn=(lo,hi)=>{let u=0;for(let n=lo;n<=hi;n++)if(byNum.has(n))u++;return
 function undefRuns(g){const [lo,hi]=SPAN(g);const cov=new Set();WL.filter(w=>w.gid===g).forEach(w=>w.ids.forEach(n=>cov.add(n)));const out=[];let s=null;
   for(let n=lo;n<=hi+1;n++){const free=n<=hi&&!cov.has(n);if(free&&s===null)s=n;if(!free&&s!==null){const ids=[];for(let k=s;k<n;k++)ids.push(k);out.push({undef:true,lo:s,hi:n-1,ids});s=null}}return out}
 function gaps(w){const out=[];let s=null,prev=null,cnt=0;w.ids.forEach(n=>{const empty=!byNum.has(n);if(empty&&s!==null&&n===prev+1){prev=n;cnt++;return}if(s!==null){out.push([s,prev,cnt]);s=null}if(empty){s=n;prev=n;cnt=1}});if(s!==null)out.push([s,prev,cnt]);return out}
-const pad=n=>String(n).padStart(4,"0");
+const pad=displayNumber;
 const state={f:"all",q:""};
 
 function matches(w){
@@ -924,7 +925,7 @@ function slotsHTML(w,q){
   const hitC=c=>!q||hitW||[c.n,c.y].some(v=>String(v??"").toLowerCase().includes(q));
   let s="";for(const n of w.ids){const c=byNum.get(n);const ccs=ccOf.get(n)||[];
     s+=`<span class="wm-slot${c?" on":""}${ccs.length?" wm-cc":""}${c&&!hitC(c)?" dim":""}" title="${pad(n)}${c?"："+esc(c.n):"：空き"}${ccs.map(x=>"／CC："+esc(x.n)).join("")}"></span>`}
-  [["evs","ev","EV"],["aws","aw","覚醒"],["mgs","mg","メガ"]].forEach(([k,cls,lb])=>{if(w[k].length){if(s)s+=`<span class="wm-slot-sep"></span>`;w[k].forEach(c=>s+=`<span class="wm-slot ${cls}${hitC(c)?"":" dim"}" title="${esc(c.no)}：${esc(c.n)}（${lb}）"></span>`)}});
+  [["evs","ev","EV"],["aws","aw","覚醒"],["mgs","mg","メガ"]].forEach(([k,cls,lb])=>{if(w[k].length){if(s)s+=`<span class="wm-slot-sep"></span>`;w[k].forEach(c=>s+=`<span class="wm-slot ${cls}${hitC(c)?"":" dim"}" title="${esc(displayNumber(c.no))}：${esc(c.n)}（${lb}）"></span>`)}});
   return s;
 }
 const rangeOf=w=>{const contiguous=w.ids.length===w.hi-w.lo+1;return w.lo===null?"番号枠なし":w.lo===w.hi?pad(w.lo):contiguous?`${pad(w.lo)}–${pad(w.hi)}`:w.ids.join("・")};
@@ -934,12 +935,12 @@ function row(w){
   return `<button class="wm-tile ${w.st}${w.t>=40?" wide":""}" type="button" data-i="${w.i}" aria-haspopup="dialog"><span class="tile-top"><b>${esc(w.n)}</b><span class="pill ${w.st==="extra"?"extra":w.st}">${LABEL[w.st]}</span></span><small class="num">${rangeOf(w)}</small><span class="wm-slots" aria-label="${w.t}枠中${w.u}体">${slotsHTML(w,q)}</span><span class="tile-foot"><span class="num">${w.members?`${w.members.length}体 · 番号枠未設定`:w.extra?"集計外":`${w.u}/${w.t}`}</span>${extrasOf(w)}</span></button>`;
 }
 function openPanel(w){
-  const items=(w.members||[]).map(c=>`<div class="c"><span class="no num">${esc(c.no)}</span><span class="nm">${esc(c.n)}</span><span class="ty">${esc(c.ty||"")}</span></div>`);
+  const items=(w.members||[]).map(c=>`<div class="c"><span class="no num">${esc(displayNumber(c.no))}</span><span class="nm">${esc(c.n)}</span><span class="ty">${esc(c.ty||"")}</span></div>`);
   const gi=gaps(w);
   for(const n of w.ids){const c=byNum.get(n);
     if(c){items.push(`<div class="c"><span class="no num">${pad(n)}</span><span class="nm">${esc(c.n)}</span><span class="ty">${esc(c.ty||"")}</span></div>`);(ccOf.get(n)||[]).forEach(x=>items.push(`<div class="c wm-cc"><span class="no num">CC</span><span class="nm">${esc(x.n)}</span><span class="ty">${esc(x.ty||"")}</span></div>`))}
     else{const g=gi.find(g=>g[0]===n);if(g)items.push(`<div class="c gap"><span class="no num">${pad(g[0])}</span><span class="nm">${g[1]>g[0]?`〜${pad(g[1])} 空き${g[2]}枠`:"空き"}</span><span></span></div>`)}}
-  [["evs","ev"],["aws","aw"],["mgs","mg"]].forEach(([k,cls])=>w[k].forEach(c=>items.push(`<div class="c ${cls}"><span class="no num">${esc(c.no)}</span><span class="nm">${esc(c.n)}</span><span class="ty">${esc(c.ty||"")}</span></div>`)));
+  [["evs","ev"],["aws","aw"],["mgs","mg"]].forEach(([k,cls])=>w[k].forEach(c=>items.push(`<div class="c ${cls}"><span class="no num">${esc(displayNumber(c.no))}</span><span class="nm">${esc(c.n)}</span><span class="ty">${esc(c.ty||"")}</span></div>`)));
   $("panel").innerHTML=`<div class="panel-head"><div><h3 id="wm-p-title">${esc(w.n)}</h3><div class="sub">${esc(w.g)}世界団・${rangeOf(w)}</div><span class="pill ${w.st==="extra"?"extra":w.st}">${LABEL[w.st]}${w.extra?"":`　${w.u}/${w.t}`}</span></div><button class="close" type="button" id="wm-close" aria-label="閉じる">×</button></div>
   <div class="panel-body"><div class="meta"><span>読み <b>${esc(w.y)}</b></span><span>世界線ID <b>${esc(w.id)}</b></span><span>汎異記号 <b>${esc(w.sym)}</b></span><span>逸脱度 <b>${esc(w.dev)}</b></span><span>Lv上限 <b>${esc(w.lv)}</b></span></div><div class="wm-slots">${slotsHTML(w,"")}</div><div class="clist">${items.join("")||'<p class="none" style="padding:12px">キャラはまだいません。</p>'}</div></div>`;
   if(!$("panel").open)$("panel").showModal();
@@ -982,13 +983,14 @@ function worldsForCode(code,team){
  const local=candidates.filter(w=>w.g===team);
  return local.length?local:candidates.length===1?candidates:[];
 }
-function showCharacter(c){
+function showCharacter(c,id=c?.["全界番号"]){
  const side=$("side");
- side.hidden=!c;
- if(!c)return;
- const team=Array.from(c["世界団"]||"")[0],n=plainNumber(c["全界番号"]);
+ const n=plainNumber(id);
  const assigned=WL.filter(w=>w.ids.includes(n));
- const codes=[...new Set([c["世界線1"],c["世界線2"],c["世界線3"]].filter(Boolean).flatMap(code=>code.split("×")))];
+ side.hidden=!c&&!assigned.length;
+ if(side.hidden)return;
+ const team=Array.from(c?.["世界団"]||"")[0];
+ const codes=[...new Set([c?.["世界線1"],c?.["世界線2"],c?.["世界線3"]].filter(Boolean).flatMap(code=>code.split("×")))];
  const lines=[];
  const seen=new Set();
  for(const code of codes){
@@ -997,7 +999,7 @@ function showCharacter(c){
   for(const w of worlds)if(!seen.has(w)){seen.add(w);lines.push(sideLine(w))}
  }
  for(const w of assigned)if(!seen.has(w))lines.push(sideLine(w));
- side.innerHTML=`<h2>このキャラの世界線</h2>${lines.join("")||"<p>世界線未設定</p>"}`;
+ side.innerHTML=`<h2>${c?"このキャラの世界線":"この番号の世界線"}</h2>${lines.join("")||"<p>世界線未設定</p>"}`;
 }
 function sideLine(w){
  return `<button type="button" data-world="${w.i}"><b>${esc(w.n)}</b><small>${w.t?`${w.u} / ${w.t} 枠 · ${Math.round(w.u/w.t*100)}%`:"番号枠なし"}</small>${w.t?`<progress value="${w.u}" max="${w.t}" aria-label="${esc(w.n)}の充足率"></progress>`:""}</button>`;
@@ -1019,7 +1021,7 @@ function syncWorlds(){
    LS.s('oc_world_csv',csv);
    LS.s('oc_world_time',Date.now());
    worldMap.refresh(DATA);
-   worldMap.showCharacter(st.tab==='grid'?DATA[pageIndex(POS)]:null);
+   if(st.tab==='grid')worldMap.showCharacter(DATA[pageIndex(POS)],pageCount()?CURNO:null);
   }catch(e){status.textContent='世界線シート取得失敗（保存済みの一覧を表示中）'}
   finally{worldSync=null}
  })();
