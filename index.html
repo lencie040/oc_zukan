@@ -130,10 +130,19 @@ main{padding-top:12px}
 .pg-acts button{font-size:max(11px,1.55cqw);min-height:0;padding:.35cqw 1.2cqw;background:rgba(255,255,255,.92);color:#14232e;border:1px solid #777;border-radius:99px;position:static;margin:0}
 .pg-acts .cmp[aria-pressed=true]{background:#2f6fd6;color:#fff;border-color:#2f6fd6}
 .pg-acts .cmp[aria-pressed=true]::before{content:'✓ '}
-.pt.three .t2{clip-path:polygon(100% 0,100% 100%,50% 50%)}
-.pt.three .t3{background:linear-gradient(135deg,color-mix(in srgb,var(--c) 30%,#fff),var(--c));clip-path:polygon(100% 100%,0 100%,50% 50%)}
-.pt i.l2{z-index:1;clip-path:polygon(100% 0,100% 100%,0 100%);background:linear-gradient(to top right,transparent calc(50% - .18cqw),#000 calc(50% - .18cqw) calc(50% + .18cqw),transparent calc(50% + .18cqw))}
-.pt.three b{font-size:3.3cqw}.pt.three .ta{left:28%;top:27%}.pt.three .tb{left:80%;top:50%}.pt.three .tc{left:50%;top:80%}.pt.three.long b{font-size:2.1cqw}
+.pt.three{
+  border-radius:50%;
+  background:conic-gradient(var(--a) 0deg 120deg,var(--b) 120deg 240deg,var(--c) 240deg 360deg);
+}
+.pt.three::after{
+  border-radius:inherit;
+  background:conic-gradient(#000 0deg 1deg,transparent 1deg 119deg,#000 119deg 121deg,transparent 121deg 239deg,#000 239deg 241deg,transparent 241deg 359deg,#000 359deg);
+}
+.pt.three b{font-size:3.3cqw}
+.pt.three .ta{left:76%;top:35%}
+.pt.three .tb{left:50%;top:80%}
+.pt.three .tc{left:24%;top:35%}
+.pt.three.long b{font-size:2.1cqw}
 .rkv{color:transparent!important;text-shadow:none!important;-webkit-background-clip:text;background-clip:text;background-image:var(--rg);background-size:var(--bs,100%) 100%;filter:drop-shadow(var(--sh,.3cqw) var(--sh,.3cqw) 0 #000) drop-shadow(0 0 var(--gr,0cqw) var(--gc,transparent))}
 .pg-rk b.l2{font-size:6.6cqw}.pg-rk b.l3{font-size:5.2cqw}
 .rk-E{--rg:linear-gradient(#c3c9d0,#8c949d)}
@@ -356,7 +365,7 @@ const RKL=['','E','D','C','B','A','S','SS','SSS','Z','ZZ','ZZZ'];
 function rankHtml(c){if(c['データ']==='S2')return `<b>${esc(rankOf(c))}</b>`;const v=String(c['最大ランク(並び替え用)']||''),m=v.match(/^(\d+)(\+?)$/);if(!m)return `<b>${esc(v||'-')}</b>`;const n=+m[1],l=(RKL[n]||m[1])+m[2];return `<b class="rkv rk-${RKL[n]||'x'} l${Math.min(3,Array.from(l).length)}">${l}</b>`}
 const rankOf=c=>{const v=c['データ']==='S2'?(c['ランク']||'').replace('★',''):c['最大ランク(並び替え用)'];return v||'-'};
 function typeIcon(c){const t=tys(c);if(!t.length)return '';const a=t[0],b=t[1],lg=Array.from(a).length>1||(b&&Array.from(b).length>1)?' long':'';
- const d=t[2];if(d)return `<div class="pt three${lg||(Array.from(d).length>1?' long':'')}" style="--a:${tc(a)};--b:${tc(b)};--c:${tc(d)}"><i class="t1"></i><i class="t2"></i><i class="t3"></i><i class="l2"></i><b class="ta">${esc(a)}</b><b class="tb">${esc(b)}</b><b class="tc">${esc(d)}</b></div>`;
+ const d=t[2];if(d)return `<div class="pt three${lg||(Array.from(d).length>1?' long':'')}" style="--a:${tc(a)};--b:${tc(b)};--c:${tc(d)}"><b class="ta">${esc(a)}</b><b class="tb">${esc(b)}</b><b class="tc">${esc(d)}</b></div>`;
  return b?`<div class="pt${lg}" style="--a:${tc(a)};--b:${tc(b)}"><i class="t1"></i><i class="t2"></i><b class="ta">${esc(a)}</b><b class="tb">${esc(b)}</b></div>`
   :`<div class="pt one${lg}" style="--a:${tc(a)}"><i class="t1"></i><b>${esc(a)}</b></div>`}
 function pageHtml(c){
