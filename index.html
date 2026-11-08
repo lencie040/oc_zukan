@@ -253,15 +253,182 @@ dialog::backdrop{backdrop-filter:blur(3px)}
   .rkv{color:CanvasText!important;background:none;filter:none}
   .rkv.rk-SSS,.rkv.rk-ZZZ{border-color:CanvasText;color:CanvasText!important;background:Canvas}
 }
+@font-face{font-family:'JigmoSub';src:url(data:font/ttf;base64,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) format('truetype');unicode-range:U+47D6,U+495A,U+58DE;font-display:swap}
+@font-face{font-family:'JigmoSub';src:url(data:font/ttf;base64,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) format('truetype');unicode-range:U+200CC,U+200CD,U+21EE6,U+22724,U+29E49,U+2EBF0;font-display:swap}
+#wm-root{
+ --surface:var(--sf);--sunk:var(--bg);--muted:var(--sub);--line:var(--ln);
+ --accent:var(--ac);--accent-soft:var(--ac2);--warm:#b85d24;--warm-soft:var(--bg);
+ --done:#23875d;--done-soft:var(--bg);--slot-empty:var(--ln);--ev:#bd8b00;
+ --mg:#8b55d9;--mg-soft:var(--bg);--f-display:"JigmoSub","Shippori Mincho B1",serif;
+ --f-body:"JigmoSub","Zen Kaku Gothic New",sans-serif;--f-mono:ui-monospace,monospace;
+ font-family:var(--f-body);
+}
+#wm-root{max-width:none;margin:0 auto;padding-inline:20px;padding-block:28px 64px;display:grid;gap:28px}
+#wm-root h1,#wm-root h2,#wm-root h3{margin:0;font-weight:400;text-wrap:balance}
+#wm-root .num{font-family:var(--f-mono);font-variant-numeric:tabular-nums}
+#wm-root .eyebrow{font-size:.72rem;letter-spacing:.14em;color:var(--muted);font-weight:700}
+#wm-root .cover{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:20px 28px;align-items:end;border-bottom:3px solid var(--ink);padding-bottom:18px}
+@media (max-width:760px){#wm-root .cover{grid-template-columns:1fr}
+}
+#wm-root .cover h2{font-family:var(--f-display);font-size:clamp(2rem,5.5vw,3.2rem);line-height:1.1}
+#wm-root .cover h2 span{color:var(--accent)}
+#wm-root .cover p{margin:8px 0 0;color:var(--muted);max-width:38em;font-size:.92rem}
+#wm-root .kpis{display:flex;gap:24px;flex-wrap:wrap}
+#wm-root .kpi b{display:block;font-family:var(--f-mono);font-size:1.8rem;line-height:1.1}
+#wm-root .kpi span{font-size:.76rem;color:var(--muted);letter-spacing:.05em}
+#wm-root .kpi.done b{color:var(--done)}
+#wm-root .kpi.part b{color:var(--warm)}
+#wm-root .kpi.empty b{color:var(--muted)}
+#wm-root .bar-tools{display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center;background:var(--bg);padding-block:10px;border-bottom:1px solid var(--line)}
+#wm-root .seg{display:flex;border:1px solid var(--line);border-radius:999px;overflow:hidden;background:var(--surface)}
+#wm-root .seg button{font:inherit;font-size:.84rem;border:0;background:none;color:var(--ink);padding:6px 14px;cursor:pointer;white-space:nowrap}
+#wm-root .seg button+button{border-left:1px solid var(--line)}
+#wm-root .seg button[aria-pressed="true"]{background:var(--ink);color:var(--bg)}
+#wm-root .seg button:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
+#wm-root #wm-q{font:inherit;font-size:.86rem;padding:6px 12px;border:1px solid var(--line);border-radius:999px;background:var(--surface);color:var(--ink);flex:1 1 160px;min-width:0;max-width:260px}
+#wm-root #wm-q:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+#wm-root .legend{display:flex;flex-wrap:wrap;gap:12px;font-size:.76rem;color:var(--muted);margin-left:auto}
+#wm-root .legend span{display:inline-flex;align-items:center;gap:5px}
+#wm-root .legend i{width:11px;height:11px;border-radius:3px;display:inline-block}
+#wm-root .group{display:grid;gap:10px}
+#wm-root .group-head{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:14px;align-items:center}
+#wm-root .group-head h2{font-family:var(--f-display);font-size:1.5rem;line-height:1}
+#wm-root .group-head .gname{font-size:.8rem;color:var(--muted);display:block;margin-top:4px;font-family:var(--f-body)}
+#wm-root .gbar{height:8px;background:var(--sunk);border-radius:4px;overflow:hidden}
+#wm-root .gbar i{display:block;height:100%;background:var(--accent)}
+#wm-root .group-head .gstat{font-size:.82rem;color:var(--muted);text-align:right;white-space:nowrap}
+#wm-root .season{font-size:.7rem;font-weight:700;letter-spacing:.1em;padding:2px 8px;border-radius:999px;background:var(--accent-soft);color:var(--ink);margin-left:8px;vertical-align:4px;font-family:var(--f-body)}
+#wm-root .slots{display:flex;flex-wrap:wrap;gap:3px;min-width:0}
+#wm-root .slot{width:13px;height:13px;border-radius:3px;background:var(--slot-empty)}
+#wm-root .slot.on{background:var(--accent);box-shadow:inset 0 0 0 1px rgba(0,0,0,.15)}
+#wm-root .slot.dim{opacity:.35}
+#wm-root .slot.ev{background:var(--ev);box-shadow:inset 0 0 0 1px rgba(0,0,0,.15)}
+#wm-root .slot-sep{width:6px}
+#wm-root .slot.cc{background:radial-gradient(circle,#fff 0 2.2px,transparent 2.8px),var(--accent)}
+#wm-root .slot.aw{background:linear-gradient(135deg,#A9DDF5,#C8B2F0);box-shadow:inset 0 0 0 1px rgba(0,0,0,.15)}
+#wm-root .c.aw{box-shadow:inset 3px 0 0 #B9C7F2}
+#wm-root .c.aw .no{font-weight:700}
+#wm-root .c.cc{margin-left:14px;font-size:.8rem}
+#wm-root .c.cc .no{font-size:.66rem}
+#wm-root .slot.mg{background:var(--mg);box-shadow:inset 0 0 0 1px rgba(0,0,0,.15)}
+#wm-root .c.mg{box-shadow:inset 3px 0 0 var(--mg)}
+#wm-root .c.mg .no{color:var(--mg);font-weight:700}
+#wm-root .pill.extra{background:var(--mg-soft);color:var(--mg)}
+#wm-root .c.ev{box-shadow:inset 3px 0 0 var(--ev)}
+#wm-root .c.ev .no{color:var(--ev);font-weight:700}
+#wm-root .pill{font-size:.72rem;font-weight:700;padding:2px 9px;border-radius:999px;white-space:nowrap}
+#wm-root .pill.done{background:var(--done-soft);color:var(--done)}
+#wm-root .pill.part{background:var(--warm-soft);color:var(--warm)}
+#wm-root .pill.empty{background:var(--sunk);color:var(--muted)}
+#wm-root .meta{display:flex;flex-wrap:wrap;gap:6px 20px;font-size:.8rem;color:var(--muted)}
+#wm-root .meta b{color:var(--ink);font-weight:500}
+#wm-root .clist{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:6px}
+#wm-root .c{display:grid;grid-template-columns:3.6em minmax(0,1fr) auto;gap:8px;align-items:center;background:var(--surface);border-radius:8px;padding:6px 10px;font-size:.84rem}
+#wm-root .c .no{font-size:.72rem;color:var(--muted)}
+#wm-root .c .nm{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#wm-root .c .ty{font-size:.7rem;color:var(--muted);white-space:nowrap}
+#wm-root .c.gap{background:transparent;border:1.5px dashed var(--line);color:var(--muted)}
+#wm-root .c.gap .nm{font-size:.8rem}
+#wm-root .none{padding:28px;text-align:center;color:var(--muted)}
+#wm-root .tiles{--tw:178px;--sz:9px;display:grid;grid-template-columns:repeat(auto-fill,minmax(min(var(--tw),100%),1fr));gap:8px;align-items:start}
+@media (min-width:620px){#wm-root .wm-tile.wide{grid-column:span 2}
+}
+#wm-root .wm-tile{font:inherit;color:inherit;text-align:left;cursor:pointer;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:10px 11px 9px;display:grid;gap:7px;min-width:0;position:relative}
+#wm-root .wm-tile:hover{border-color:var(--accent)}
+#wm-root .wm-tile:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+#wm-root .wm-tile.done{border-color:color-mix(in srgb,var(--done) 45%,var(--line))}
+#wm-root .wm-tile.empty{background:transparent;border-style:dashed}
+#wm-root .wm-tile.undef{background:transparent;border:1px dashed var(--line);cursor:default;opacity:.75}
+#wm-root .wm-tile.undef:hover{border-color:var(--line)}
+#wm-root .wm-tile.undef .tile-top b{color:var(--muted);font-weight:500}
+#wm-root .pill.undef{background:transparent;color:var(--muted);border:1px solid var(--line)}
+#wm-root .wm-tile .more{font-size:.66rem;color:var(--muted);align-self:center;margin-left:4px}
+#wm-root .wm-tile.extra{border-color:var(--mg)}
+#wm-root .tile-top{display:flex;justify-content:space-between;align-items:flex-start;gap:6px;min-width:0}
+#wm-root .tile-top b{font-size:.95rem;font-weight:700;line-height:1.25;min-width:0;overflow-wrap:anywhere}
+#wm-root .wm-tile.empty .tile-top b{color:var(--muted)}
+#wm-root .wm-tile .pill{font-size:.66rem;padding:1px 7px;flex:none}
+#wm-root .wm-tile small{font-size:.68rem;color:var(--muted);line-height:1.3;overflow-wrap:anywhere}
+#wm-root .wm-tile .slots{gap:2px}
+#wm-root .wm-tile .slot{width:var(--sz);height:var(--sz);border-radius:2px}
+#wm-root[data-d="s"] .tiles{--tw:132px;--sz:7px}
+#wm-root[data-d="s"] .wm-tile{padding:7px 8px;gap:5px}
+#wm-root[data-d="s"] .tile-top b{font-size:.84rem}
+#wm-root[data-d="s"] .wm-tile small,#wm-root[data-d="s"] .tile-foot{font-size:.62rem}
+#wm-root[data-d="s"] .wm-tile .pill{font-size:.58rem;padding:0 5px}
+#wm-root[data-d="l"] .tiles{--tw:240px;--sz:12px}
+#wm-root .wm-tile .slot.cc{background:radial-gradient(circle,#fff 0 1.4px,transparent 1.9px),var(--accent)}
+#wm-root .wm-tile .slot-sep{width:4px}
+#wm-root .tile-foot{font-size:.7rem;color:var(--muted);display:flex;flex-wrap:wrap;gap:2px 8px}
+#wm-root .tile-foot .ex{font-weight:700}
+#wm-root .panel{position:fixed;inset:0 0 0 auto;margin:0;width:min(440px,100%);height:100dvh;max-height:100dvh;background:var(--surface);display:none;grid-template-rows:auto minmax(0,1fr)}
+#wm-root .panel[open]{display:grid}
+#wm-root .panel-head{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;align-items:start;padding:18px 18px 12px;border-bottom:1px solid var(--line)}
+#wm-root .panel-head h3{font-family:var(--f-display);font-size:1.6rem;line-height:1.15;overflow-wrap:anywhere}
+#wm-root .panel-head .sub{font-size:.78rem;color:var(--muted);margin-top:4px}
+#wm-root .panel-head .pill{display:inline-block;margin-top:8px}
+#wm-root .close{font:inherit;font-size:1.3rem;line-height:1;border:1px solid var(--line);background:var(--bg);color:var(--ink);width:36px;height:36px;border-radius:50%;cursor:pointer}
+#wm-root .close:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+#wm-root .panel-body{overflow-y:auto;padding:14px 18px calc(24px + env(safe-area-inset-bottom,0px));display:grid;gap:14px;align-content:start}
+#wm-root .panel-body .clist{grid-template-columns:1fr}
+#wm-root .panel-body .c{background:var(--sunk)}
+#wm-root .panel-body .c.gap{background:transparent}
+@media (max-width:560px){#wm-root .panel{top:auto;height:82%;width:100%;border-left:0;border-top:1px solid var(--line);border-radius:16px 16px 0 0;box-shadow:0 -12px 32px rgba(0,0,0,.15)}
+}
+
+nav{grid-template-columns:repeat(5,minmax(0,1fr))}
+nav button[data-t="world-map"]{white-space:normal;line-height:1.2}
+@media(max-width:620px){
+ #wm-root .group-head{grid-template-columns:minmax(0,1fr) auto;gap:8px}
+ #wm-root .gbar{grid-column:1/-1;grid-row:2}
+ #wm-root .group-head .gstat{white-space:normal}
+}
+#wm-root{padding-inline:0}
+#wm-root .clist .ty{margin:0}
+#wm-side{display:none}
+@media(min-width:1100px){
+ body[data-tab=grid] main{display:grid;grid-template-columns:200px minmax(0,960px);gap:20px;align-items:start;justify-content:center}
+ body[data-tab=grid] #grid{width:100%;grid-column:2;grid-row:1}
+ #wm-side:not([hidden]){grid-column:1;grid-row:1;display:grid;gap:8px;padding:12px;border:1px solid var(--ln);border-radius:12px;background:var(--sf)}
+ #wm-side h2{font-size:15px;margin:0}
+ #wm-side p,#wm-side button{margin:0;text-align:left;padding:8px;overflow-wrap:anywhere}
+ #wm-side small,#wm-side progress{display:block;width:100%;color:var(--sub)}
+ #wm-side progress{accent-color:var(--ac)}
+ body[data-tab=grid] #grid:has(+ #wm-side[hidden]){grid-column:1/-1}
+}
 </style>
 </head>
 <body>
 <header>
  <div class="row"><h1>オリキャラ図鑑<small id="cnt"></small></h1>
  <button id="num-nav" aria-pressed="false">全界番号順</button><button id="syb">データ更新</button><span class="sy" id="sst"></span></div>
- <nav><button data-t="grid" aria-selected="true">図鑑</button><button data-t="rank" aria-selected="false">ランキング</button><button data-t="party" aria-selected="false">パーティ</button><button data-t="bday" aria-selected="false">誕生日</button></nav><div id="bn"></div>
+ <nav><button data-t="grid" aria-selected="true">図鑑</button><button data-t="rank" aria-selected="false">ランキング</button><button data-t="party" aria-selected="false">パーティ</button><button data-t="bday" aria-selected="false">誕生日</button><button data-t="world-map" aria-selected="false">世界線マップ</button></nav><div id="bn"></div>
 </header>
-<main><div id="grid"></div><div id="rank" hidden></div><div id="party" hidden></div><div id="bday" hidden></div></main>
+<main><div id="grid"></div><aside id="wm-side" hidden></aside><div id="rank" hidden></div><div id="party" hidden></div><div id="bday" hidden></div><section id="wm-root" class="wrap" hidden>
+  <div class="cover">
+    <div>
+      <div class="eyebrow">ALL-REALM WORLD-LINE MAP</div>
+      <h2>全界<span>世界線</span>マップ</h2>
+      <p>1マスが全界番号1つ分。塗られたマスにはキャラがいて、灰色のマスは空き枠です。タイルを押すと、そこにいるキャラと空き番号が出ます。</p>
+    </div>
+    <div class="kpis" id="wm-kpis"></div>
+  </div>
+
+  <div class="bar-tools">
+    <div class="seg" role="group" aria-label="状態で絞り込み" id="wm-seg">
+      <button type="button" data-f="all" aria-pressed="true">すべて</button>
+      <button type="button" data-f="part" aria-pressed="false">途中</button>
+      <button type="button" data-f="empty" aria-pressed="false">未着手</button>
+      <button type="button" data-f="done" aria-pressed="false">完成</button>
+    </div>
+    <div class="seg" role="group" aria-label="タイルの大きさ" id="wm-dens"><button type="button" data-d="s" aria-pressed="false">小</button><button type="button" data-d="m" aria-pressed="true">中</button><button type="button" data-d="l" aria-pressed="false">大</button></div>
+    <input id="wm-q" type="search" placeholder="世界線・キャラ名で検索" aria-label="世界線・キャラ名で検索">
+    <div class="legend"><span><i style="background:var(--accent)"></i>キャラあり</span><span><i style="background:var(--slot-empty)"></i>空き枠</span><span><i style="background:var(--ev)"></i>EVキャラ</span><span><i style="background:var(--mg)"></i>メガ</span><span><i style="background:linear-gradient(135deg,#A9DDF5,#C8B2F0)"></i>覚醒</span><span><i class="slot cc" style="display:inline-block"></i>CCあり</span><span>（EV・メガ・覚醒・CCは枠数に数えない）</span><span>番号枠の割り当ては元マップに基づきます。</span></div>
+  </div>
+
+  <div id="wm-map"></div>
+  <dialog id="wm-panel" class="panel" aria-labelledby="wm-p-title"></dialog>
+</section></main>
 <div id="pbar"><button id="sbtn" aria-label="検索を開く">🔍 検索<i class="bdg" id="sbn" hidden>●</i></button><div class="nv" role="group" aria-label="ページ移動">
   <button data-step="-100" aria-label="100ページ前へ">−100</button>
   <button data-step="-10" aria-label="10ページ前へ">−10</button>
@@ -442,8 +609,9 @@ function pageHtml(c){
  <div class="pg-box pg-r"><h4>詳細情報</h4><dl class="pg-dl">${dl||'<dt></dt><dd>—</dd>'}</dl></div></div>`}
 function renderPage(dir){const g=$('#grid');
  const count=pageCount();
- if(!count){g.innerHTML='<div class="empty">該当するキャラがいません</div>';$('#pc').textContent='0 / 0';return}
+ if(!count){worldMap.showCharacter();g.innerHTML='<div class="empty">該当するキャラがいません</div>';$('#pc').textContent='0 / 0';return}
  const c=DATA[pageIndex(POS)];
+ worldMap.showCharacter(st.tab==='grid'?c:null);
  CURNO=c?c['全界番号']:String(numberPages.first+POS).padStart(numberPages.width,'0');
  g.innerHTML=c?pageHtml(c):`<div class="pg pg-missing"><div class="pg-bar"><div class="pg-rk"></div><div class="pg-nm">欠番</div><div class="pg-no">${noHtml({'全界番号':CURNO})}</div></div></div>`;
  if(dir&&!matchMedia('(prefers-reduced-motion:reduce)').matches)g.firstElementChild.classList.add(dir>0?'inr':'inl');
@@ -603,7 +771,7 @@ function renderBday(){const{L,t0}=bdays(),by=L.slice().sort((a,b)=>a.days-b.days
  $('#bday').innerHTML=`<div class="pn"><h3>${t0.getMonth()+1}月${t0.getDate()}日（今日）</h3>${td.length?rows(td,x=>`${x.mo}月${x.d}日`):`<p class="no" style="margin:0 0 6px">今日が誕生日のキャラはいません。</p>${nextL.length?`<p class="no" style="margin:0">次は${nextL[0].mo}月${nextL[0].d}日（あと${nextD}日）：</p>${rows(nextL,x=>`${x.mo}月${x.d}日`)}`:''}`}</div>
  <div class="pn"><h3>もうすぐ（30日以内）</h3>${near.length?rows(near,x=>`${x.mo}月${x.d}日<br><span class="no">あと${x.days}日</span>`):'<p class="no" style="margin:0">30日以内の誕生日はありません。</p>'}</div>
  <div class="pn"><h3>誕生日カレンダー</h3><div class="mo">${cal}</div><p class="nt">誕生日が分かっているのは ${L.length} / ${total}体です。</p></div>`;hydrate()}
-function tab(t){st.tab=t;['grid','rank','party','bday'].forEach(k=>$('#'+k).hidden=k!==t);$('#pbar').hidden=t!=='grid';document.body.dataset.tab=t;document.querySelectorAll('nav button').forEach(b=>b.setAttribute('aria-selected',b.dataset.t===t));if(t==='rank')renderRank();if(t==='bday')renderBday();if(t==='party')renderParty();if(t==='grid')hydrate();scrollTo(0,0)}
+function tab(t){st.tab=t;['grid','rank','party','bday'].forEach(k=>$('#'+k).hidden=k!==t);$('#wm-root').hidden=t!=='world-map';$('#wm-side').hidden=t!=='grid'||!DATA[pageIndex(POS)];if(t==='world-map')worldMap.render();$('#pbar').hidden=t!=='grid';document.body.dataset.tab=t;document.querySelectorAll('nav button').forEach(b=>b.setAttribute('aria-selected',b.dataset.t===t));if(t==='rank')renderRank();if(t==='bday')renderBday();if(t==='party')renderParty();if(t==='grid'){worldMap.showCharacter(DATA[pageIndex(POS)]);hydrate()}scrollTo(0,0)}
 document.querySelector('nav').addEventListener('click',e=>{const b=e.target.closest('button');if(b)tab(b.dataset.t)});
 $('#bn').addEventListener('click',()=>tab('bday'));$('#bn').style.cursor='pointer';
 $('#tray').addEventListener('click',e=>{const r=e.target.closest('[data-rm]');if(r){tog(+r.dataset.rm);return}if(e.target.id==='cgo')cmpShow();if(e.target.id==='ccl'){CMP.length=0;tray()}});
@@ -645,7 +813,7 @@ $('#party').addEventListener('click',e=>{const t=e.target.closest('button');if(!
  if(t.dataset.pl){PTID=(svd()[t.dataset.pl]||[]).slice(0,6);savePt();renderParty();return}
  if(t.dataset.pd){const s=svd();delete s[t.dataset.pd];LS.s('oc_parties',JSON.stringify(s));renderParty()}});
 $('#party').addEventListener('change',e=>{if(e.target.id==='plim'){LS.s('oc_plim',e.target.value);renderParty()}});
-function apply(csv){if(csv)MAIN=csv;DATA=parseCSV(MAIN).concat(S2DATA);prep();buildCtl();Object.entries(st.f).forEach(([k,v])=>{const s=document.querySelector(`select[data-f="${k}"]`);if(s)s.value=v});$('#sort').value=st.sort;$('#cc').checked=st.cc;$('#nost').checked=st.nost;$('#il').checked=st.il;$('#dir').textContent=st.desc?'降順':'昇順';CMP.length=0;bdInit();view();if(st.tab==='rank')renderRank();if(st.tab==='bday')renderBday();if(st.tab==='party')renderParty()}
+function apply(csv){if(csv)MAIN=csv;DATA=parseCSV(MAIN).concat(S2DATA);prep();worldMap.refresh(DATA);buildCtl();Object.entries(st.f).forEach(([k,v])=>{const s=document.querySelector(`select[data-f="${k}"]`);if(s)s.value=v});$('#sort').value=st.sort;$('#cc').checked=st.cc;$('#nost').checked=st.nost;$('#il').checked=st.il;$('#dir').textContent=st.desc?'降順':'昇順';CMP.length=0;bdInit();view();if(st.tab==='rank')renderRank();if(st.tab==='bday')renderBday();if(st.tab==='party')renderParty()}
 const LS={g:k=>{try{return localStorage.getItem(k)}catch(e){return null}},s:(k,v)=>{try{localStorage.setItem(k,v)}catch(e){}}};
 const hm=d=>d.toLocaleString('ja-JP',{month:'numeric',day:'numeric',hour:'2-digit',minute:'2-digit'});
 async function fetchSheet(url,key='キャラ名'){const m=url.match(/\/d\/([\w-]+)/);if(!m)throw new Error('URLの形式が違います');const g=(url.match(/[#&?]gid=(\d+)/)||[,'0'])[1],b='https://docs.google.com/spreadsheets/d/'+m[1];
@@ -661,6 +829,164 @@ $('#xc').onclick=()=>$('#sync').close();
 $('#go').onclick=()=>{LS.s('oc_url2',$('#url2').value.trim());fetchS2($('#url3').value.trim(),true).then(()=>sync($('#url').value.trim(),true))};
 $('#fb').onclick=()=>$('#fi').click();
 $('#fi').onchange=async e=>{const f=e.target.files[0];if(!f)return;const t=await f.text();if(t.includes('キャラクター名')){setS2(t,'S2をCSVから読込');$('#sm').textContent='S2を反映しました（'+S2DATA.length+'件）';$('#sync').close();return}if(!t.includes('キャラ名')){if(t.includes('攻撃')){TCH=parseChart(t);LS.s('oc_chart',t);LS.s('oc_ctime',Date.now());$('#sm').textContent='タイプ相性を読み込みました';if(st.tab==='party')renderParty();return}$('#sm').textContent='キャラ名の列が見つかりません';return}got(t,'CSVを読み込み');$('#sm').textContent='反映しました（'+DATA.length+'件）';$('#sync').close()};
+const worldMap=(()=>{
+
+// Number allocations from the supplied world-line map. Occupancy is rebuilt from DATA.
+const allocations=[{"g":"䥚","gid":1,"id":"1","n":"現代","y":"げんだい","lo":1,"hi":149,"sym":"A0","dev":0,"lv":"50"},{"g":"䥚","gid":1,"id":"2","n":"古代","y":"こだい","lo":150,"hi":174,"sym":"A1","dev":1,"lv":"70"},{"g":"䥚","gid":1,"id":"3","n":"零界","y":"れいかい","lo":175,"hi":200,"sym":"A5","dev":5,"lv":"85"},{"g":"䥚","gid":1,"id":"4","n":"未来","y":"みらい","lo":201,"hi":210,"sym":"A3","dev":3,"lv":"100"},{"g":"䥚","gid":1,"id":"5","n":"魔界","y":"まかい","lo":211,"hi":220,"sym":"D5","dev":5,"lv":"112"},{"g":"䥚","gid":1,"id":"6","n":"異界","y":"いかい","lo":221,"hi":225,"sym":"S7","dev":7,"lv":"122"},{"g":"䥚","gid":1,"id":"7","n":"冥界","y":"めいかい","lo":226,"hi":230,"sym":"S5","dev":5,"lv":"130"},{"g":"䥚","gid":1,"id":"8","n":"天界","y":"てんかい","lo":231,"hi":240,"sym":"C12","dev":12,"lv":"137"},{"g":"䥚","gid":1,"id":"9","n":"賢界","y":"けんかい","lo":241,"hi":245,"sym":"B5","dev":5,"lv":"143"},{"g":"䥚","gid":1,"id":"10","n":"妖星","y":"ようせい","lo":246,"hi":255,"sym":"C3","dev":3,"lv":"148"},{"g":"䥚","gid":1,"id":"11","n":"然界","y":"ぜんかい","lo":256,"hi":260,"sym":"W3","dev":3,"lv":"152"},{"g":"䥚","gid":1,"id":"12","n":"憶界","y":"おくかい","lo":261,"hi":265,"sym":"A80","dev":80,"lv":"155"},{"g":"䥚","gid":1,"id":"13","n":"飴界","y":"あめかい","lo":266,"hi":270,"sym":"C5","dev":5,"lv":"158"},{"g":"䥚","gid":1,"id":"14","n":"幼界","y":"おさなかい","lo":271,"hi":275,"sym":"C8","dev":8,"lv":"161"},{"g":"䥚","gid":1,"id":"15","n":"海界","y":"うみかい","lo":276,"hi":285,"sym":"E3","dev":3,"lv":"164"},{"g":"䥚","gid":1,"id":"16","n":"炎界","y":"えんかい","lo":286,"hi":290,"sym":"F5","dev":5,"lv":"167"},{"g":"䥚","gid":1,"id":"17","n":"旧界","y":"きゅうかい","lo":291,"hi":295,"sym":"A2","dev":2,"lv":"170"},{"g":"䥚","gid":1,"id":"18","n":"初界","y":"ういかい","lo":296,"hi":300,"sym":"C7","dev":7,"lv":"172"},{"g":"䥚","gid":1,"id":"19","n":"幽界","y":"ゆうかい","lo":301,"hi":305,"sym":"S3","dev":3,"lv":"174"},{"g":"䥚","gid":1,"id":"20","n":"回界","y":"かいかい","lo":306,"hi":310,"sym":"R3","dev":3,"lv":"176"},{"g":"䥚","gid":1,"id":"21","n":"還界","y":"かんかい","lo":311,"hi":315,"sym":"R5","dev":5,"lv":"178"},{"g":"䥚","gid":1,"id":"22","n":"数界","y":"かずかい","lo":316,"hi":320,"sym":"B1","dev":1,"lv":"180"},{"g":"䥚","gid":1,"id":"23","n":"脱界","y":"だつかい","lo":321,"hi":329,"sym":"P3","dev":3,"lv":"182","ids":[321,322,324,326,327,328,329]},{"g":"䥚","gid":1,"id":"24","n":"黒界","y":"こくかい","lo":330,"hi":332,"sym":"D7","dev":7,"lv":"184"},{"g":"䥚","gid":1,"id":"25","n":"闇界","y":"やみかい","lo":333,"hi":333,"sym":"D7;9","dev":9,"lv":"185"},{"g":"䥚","gid":1,"id":"26","n":"孕界","y":"ようかい","lo":334,"hi":340,"sym":"C9","dev":9,"lv":"186"},{"g":"䥚","gid":1,"id":"27","n":"菓界","y":"かかい","lo":341,"hi":345,"sym":"C6","dev":6,"lv":"187"},{"g":"䥚","gid":1,"id":"28","n":"風界","y":"ふうかい","lo":346,"hi":350,"sym":"W5","dev":5,"lv":"188"},{"g":"䥚","gid":1,"id":"29","n":"紀界","y":"きかい","lo":351,"hi":355,"sym":"W7","dev":7,"lv":"189"},{"g":"䥚","gid":1,"id":"30","n":"団界","y":"だんかい","lo":356,"hi":365,"sym":"T1","dev":1,"lv":"190"},{"g":"䥚","gid":1,"id":"31","n":"書界","y":"しょかい","lo":366,"hi":370,"sym":"K1","dev":1,"lv":"192"},{"g":"䥚","gid":1,"id":"32","n":"音界","y":"おんかい","lo":371,"hi":380,"sym":"O1","dev":1,"lv":"194"},{"g":"䥚","gid":1,"id":"33","n":"写界","y":"しゃかい","lo":381,"hi":385,"sym":"R7","dev":7,"lv":"196"},{"g":"䥚","gid":1,"id":"34","n":"耗界","y":"こうかい","lo":386,"hi":390,"sym":"E0n","dev":0,"lv":"198"},{"g":"䥚","gid":1,"id":"35","n":"虚界","y":"とみてかい","lo":391,"hi":400,"sym":"S0g","dev":0,"lv":"200"},{"g":"䥚","gid":1,"id":"36","n":"夢界","y":"ゆめかい","lo":401,"hi":405,"sym":"D8","dev":8,"lv":"202"},{"g":"䥚","gid":1,"id":"37","n":"姫界","y":"ひめかい","lo":406,"hi":410,"sym":"C10","dev":10,"lv":"204"},{"g":"䥚","gid":1,"id":"38","n":"枢界","y":"すうかい","lo":411,"hi":415,"sym":"T0","dev":0,"lv":"206"},{"g":"䥚","gid":1,"id":"39","n":"護界","y":"ごかい","lo":416,"hi":420,"sym":"P5","dev":5,"lv":"208"},{"g":"䥚","gid":1,"id":"40","n":"箱界","y":"はこかい","lo":421,"hi":425,"sym":"B2","dev":2,"lv":"210"},{"g":"䥚","gid":1,"id":"41","n":"轟界","y":"ごうかい","lo":426,"hi":430,"sym":"O5","dev":5,"lv":"212"},{"g":"䥚","gid":1,"id":"42","n":"銅界","y":"どうかい","lo":431,"hi":435,"sym":"I5","dev":5,"lv":"214"},{"g":"䥚","gid":1,"id":"43","n":"鉄界","y":"てつかい","lo":436,"hi":440,"sym":"I3","dev":3,"lv":"216"},{"g":"䥚","gid":1,"id":"44","n":"埃界","y":"ほこりかい","lo":441,"hi":445,"sym":"ε2","dev":2,"lv":"218"},{"g":"䥚","gid":1,"id":"45","n":"桃界","y":"ももかい","lo":446,"hi":460,"sym":"γ8","dev":8,"lv":"220"},{"g":"䥚","gid":1,"id":"46","n":"式界","y":"しきかい","lo":461,"hi":470,"sym":"B9","dev":9,"lv":"222"},{"g":"䥚","gid":1,"id":"47","n":"恋界","y":"れんかい","lo":471,"hi":480,"sym":"C11","dev":11,"lv":"224"},{"g":"䥚","gid":1,"id":"48","n":"金界","y":"きんかい","lo":481,"hi":490,"sym":"I8","dev":8,"lv":"226"},{"g":"䥚","gid":1,"id":"49","n":"塔界","y":"とうかい","lo":491,"hi":499,"sym":"T5","dev":5,"lv":"228"},{"g":"䥚","gid":1,"id":"50","n":"曖界","y":"あいかい","lo":500,"hi":500,"sym":"D13;17","dev":17,"lv":"230"},{"g":"䥚","gid":1,"id":"51","n":"南界","y":"なんかい","lo":501,"hi":505,"sym":"H3","dev":3,"lv":"232"},{"g":"䥚","gid":1,"id":"52","n":"種界","y":"しゅかい","lo":506,"hi":530,"sym":"C1","dev":1,"lv":"234"},{"g":"䥚","gid":1,"id":"53","n":"脳界","y":"のうかい","lo":531,"hi":535,"sym":"B10","dev":10,"lv":"236"},{"g":"䥚","gid":1,"id":"54","n":"片界","y":"かたかい","lo":536,"hi":550,"sym":"A80.-5","dev":80,"lv":"238"},{"g":"䥚","gid":1,"id":"55","n":"球界","y":"たまかい","lo":551,"hi":600,"sym":"P12","dev":12,"lv":"240"},{"g":"䥚","gid":1,"id":"56","n":"心界","y":"しんかい","lo":601,"hi":605,"sym":"C4","dev":4,"lv":"242"},{"g":"䥚","gid":1,"id":"57","n":"銀界","y":"ぎんかい","lo":606,"hi":610,"sym":"I7","dev":7,"lv":"244"},{"g":"䥚","gid":1,"id":"58","n":"鴢界","y":"おうかい","lo":611,"hi":620,"sym":"C15","dev":15,"lv":"246"},{"g":"䥚","gid":1,"id":"59","n":"線界","y":"せんかい","lo":621,"hi":625,"sym":"B12","dev":12,"lv":"248"},{"g":"䥚","gid":1,"id":"60","n":"乖界","y":"そむかい","lo":626,"hi":635,"sym":"B15","dev":15,"lv":"250"},{"g":"䥚","gid":1,"id":"61","n":"脈界","y":"みゃくかい","lo":636,"hi":640,"sym":"C13","dev":13,"lv":"252"},{"g":"䥚","gid":1,"id":"62","n":"滴界","y":"てきかい","lo":641,"hi":650,"sym":"λ5","dev":5,"lv":"254"},{"g":"䥚","gid":1,"id":"63","n":"紙界","y":"かみかい","lo":651,"hi":655,"sym":"K3","dev":3,"lv":"256"},{"g":"䥚","gid":1,"id":"64","n":"鏡界","y":"かがみかい","lo":656,"hi":660,"sym":"R9","dev":9,"lv":"258"},{"g":"䥚","gid":1,"id":"65","n":"骨界","y":"ほねかい","lo":661,"hi":665,"sym":"C2","dev":2,"lv":"259"},{"g":"䥚","gid":1,"id":"66","n":"灼界","y":"しゃくかい","lo":666,"hi":666,"sym":"F24","dev":24,"lv":"260"},{"g":"䥚","gid":1,"id":"67","n":"毒界","y":"どくかい","lo":667,"hi":670,"sym":"C4.-5","dev":4,"lv":"261"},{"g":"䥚","gid":1,"id":"68","n":"翠界","y":"みどりかい","lo":671,"hi":675,"sym":"B11","dev":11,"lv":"262"},{"g":"䥚","gid":1,"id":"69","n":"蜜界","y":"みつかい","lo":676,"hi":680,"sym":"C5.-2","dev":5,"lv":"263"},{"g":"䥚","gid":1,"id":"70","n":"画界","y":"がかい","lo":681,"hi":685,"sym":"K5","dev":5,"lv":"264"},{"g":"䥚","gid":1,"id":"71","n":"戯界","y":"ぎかい","lo":686,"hi":699,"sym":"D14c","dev":14,"lv":"265"},{"g":"䥚","gid":1,"id":"72","n":"劇界","y":"げきかい","lo":700,"hi":700,"sym":"D14c.-6","dev":14,"lv":"266"},{"g":"䥚","gid":1,"id":"73","n":"橙界","y":"だいだいかい","lo":701,"hi":710,"sym":"D15","dev":15,"lv":"267"},{"g":"䥚","gid":1,"id":"74","n":"夏界","y":"なつかい","lo":711,"hi":715,"sym":"H5","dev":5,"lv":"268"},{"g":"䥚","gid":1,"id":"75","n":"夜界","y":"よるかい","lo":716,"hi":720,"sym":"D16","dev":16,"lv":"269"},{"g":"䥚","gid":1,"id":"76","n":"宵界","y":"よいかい","lo":721,"hi":725,"sym":"D6","dev":6,"lv":"270"},{"g":"䥚","gid":1,"id":"77","n":"綿界","y":"わたかい","lo":726,"hi":730,"sym":"C14","dev":14,"lv":"271"},{"g":"䥚","gid":1,"id":"78","n":"鳥界","y":"とりかい","lo":731,"hi":740,"sym":"C15b","dev":15,"lv":"272"},{"g":"䥚","gid":1,"id":"79","n":"飛界","y":"とべかい","lo":741,"hi":749,"sym":"C15b.-5","dev":15,"lv":"273"},{"g":"䥚","gid":1,"id":"80","n":"愴界","y":"かなしかい","lo":750,"hi":750,"sym":"D9","dev":9,"lv":"274"},{"g":"䥚","gid":1,"id":"81","n":"七界","y":"しちかい","lo":751,"hi":755,"sym":"C16","dev":16,"lv":"275"},{"g":"䥚","gid":1,"id":"82","n":"䟖界","y":"ねもかい","lo":756,"hi":760,"sym":"D18","dev":18,"lv":"276"},{"g":"䥚","gid":1,"id":"83","n":"機界","y":"からくりかい","lo":761,"hi":770,"sym":"D17","dev":17,"lv":"277"},{"g":"䥚","gid":1,"id":"84","n":"隔界","y":"かくかい","lo":771,"hi":776,"sym":"D19","dev":19,"lv":"278"},{"g":"䥚","gid":1,"id":"85","n":"聖界","y":"せいかい","lo":777,"hi":777,"sym":"C22","dev":22,"lv":"279"},{"g":"䥚","gid":1,"id":"86","n":"鍵界","y":"かぎかい","lo":778,"hi":780,"sym":"B7","dev":7,"lv":"280"},{"g":"䥚","gid":1,"id":"87","n":"晶界","y":"しょうかい","lo":781,"hi":785,"sym":"I9","dev":9,"lv":"281"},{"g":"䥚","gid":1,"id":"88","n":"字界","y":"じかい","lo":786,"hi":799,"sym":"B30","dev":30,"lv":"282"},{"g":"䥚","gid":1,"id":"89","n":"儡界","y":"らいかい","lo":800,"hi":800,"sym":"D39","dev":39,"lv":"283"},{"g":"䥚","gid":1,"id":"90","n":"月界","y":"げっかい","lo":801,"hi":810,"sym":"D20a","dev":20,"lv":"284"},{"g":"䥚","gid":1,"id":"91","n":"彩界","y":"あやかい","lo":811,"hi":815,"sym":"C17","dev":17,"lv":"285"},{"g":"䥚","gid":1,"id":"92","n":"布界","y":"ぬのかい","lo":816,"hi":820,"sym":"T3","dev":3,"lv":"286"},{"g":"䥚","gid":1,"id":"93","n":"虎界","y":"とらかい","lo":821,"hi":825,"sym":"C29","dev":29,"lv":"287"},{"g":"䥚","gid":1,"id":"A","n":"暗界","y":"あんかい","lo":333,"hi":333,"sym":"D13","dev":13,"lv":"185"},{"g":"䥚","gid":1,"id":"B","n":"火界","y":"ひかい","lo":323,"hi":325,"sym":"J1","dev":1,"lv":"181","ids":[323,325]},{"g":"䥚","gid":1,"id":"未定","n":"暴界","y":"ぼうかい","lo":909,"hi":909,"sym":"J79","dev":79,"lv":"未定"},{"g":"䥚","gid":1,"id":"未定","n":"菓界×夢界(汽界)","y":"きかい","lo":888,"hi":888,"sym":"C48","dev":48,"lv":"未定"},{"g":"䥚","gid":1,"id":"未定","n":"天界×月界(薥界)","y":"しょくかい","lo":999,"hi":999,"sym":"C99","dev":99,"lv":"未定"},{"g":"䥚","gid":1,"id":"未定","n":"反界×幼界(使界)","y":"しかい","lo":1000,"hi":1000,"sym":"C99n","dev":99,"lv":"未定"},{"g":"壞","gid":2,"id":"未定","n":"現代EX","y":"げんだいEX","lo":1001,"hi":1149,"sym":"A0ex","dev":0,"lv":"未定"},{"g":"壞","gid":2,"id":"未定","n":"妖星EX","y":"ようせいEX","lo":1150,"hi":1160,"sym":"C3ex","dev":3,"lv":"未定"},{"g":"壞","gid":2,"id":"未定","n":"古代EX","y":"こだいEX","lo":1161,"hi":1200,"sym":"A1ex","dev":1,"lv":"未定"},{"g":"壞","gid":2,"id":"未定","n":"宇宙A","y":"うちゅうA","lo":1201,"hi":1205,"sym":"D1a","dev":1,"lv":"未定"},{"g":"壞","gid":2,"id":"未定","n":"零界EX","y":"れいかいEX","lo":1206,"hi":1240,"sym":"A5ex","dev":5,"lv":"未定"},{"g":"壞","gid":2,"id":"未定","n":"未来EX","y":"みらいEX","lo":1241,"hi":1245,"sym":"A3ex","dev":3,"lv":"未定"},{"g":"壞","gid":2,"id":"未定","n":"球界EX","y":"たまかいEX","lo":1246,"hi":1255,"sym":"P12ex","dev":12,"lv":"未定"},{"g":"壞","gid":2,"id":"未定","n":"賢界EX","y":"けんかいEX","lo":1256,"hi":1275,"sym":"B5ex","dev":5,"lv":"未定"},{"g":"壞","gid":2,"id":"未定","n":"脱界EX","y":"だつかいEX","lo":1276,"hi":1285,"sym":"P3ex","dev":3,"lv":"未定"},{"g":"壞","gid":2,"id":"未定","n":"対界","y":"ついかい","lo":1286,"hi":1287,"sym":"D22","dev":22,"lv":"未定"},{"g":"壞","gid":2,"id":"未定","n":"古代×炎界(呪界)","y":"じゅかい","lo":1288,"hi":1299,"sym":"F6","dev":6,"lv":"未定"},{"g":"壞","gid":2,"id":"未定","n":"轟界×音界(筋界)","y":"きんかい","lo":1300,"hi":1300,"sym":"O6","dev":6,"lv":"未定"},{"g":"𢜤","gid":3,"id":"未定","n":"妖星SP","y":"ようせいSP","lo":2001,"hi":2010,"sym":"C3sp","dev":3,"lv":"未定"},{"g":"𢜤","gid":3,"id":"未定","n":"菓界SP","y":"かかいSP","lo":2011,"hi":2149,"sym":"C6sp","dev":6,"lv":"未定"},{"g":"𡻦","gid":4,"id":"未定","n":"現代IF","y":"げんだいIF","lo":3001,"hi":3149,"sym":"A0if","dev":0,"lv":"未定"},{"g":"𡻦","gid":4,"id":"未定","n":"幼界IF","y":"おさなかいIF","lo":3150,"hi":3250,"sym":"C8if","dev":8,"lv":"未定"},{"g":"𡻦","gid":4,"id":"未定","n":"孕界IF","y":"ようかいIF","lo":3251,"hi":3255,"sym":"C9if","dev":9,"lv":"未定"},{"g":"𡻦","gid":4,"id":"未定","n":"飾界IF","y":"かざりかいIF","lo":3256,"hi":3265,"sym":"C24if","dev":24,"lv":"未定"},{"g":"𡻦","gid":4,"id":"未定","n":"菓界IF","y":"かかいIF","lo":3266,"hi":3275,"sym":"C6if","dev":6,"lv":"未定"},{"g":"𡻦","gid":4,"id":"未定","n":"勉界","y":"べんかい","lo":3276,"hi":3280,"sym":"B32","dev":32,"lv":"未定"},{"g":"𡻦","gid":4,"id":"未定","n":"氷界","y":"ひょうかい","lo":3333,"hi":3333,"sym":"C33","dev":33,"lv":"未定"}];
+const $=id=>document.getElementById("wm-"+id);
+const esc=s=>String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+let byNum,WL,REAL,REALG;
+const GROUPS={6:{yomi:"追加",season:""},1:{yomi:"しょ",season:"S1"},2:{yomi:"かい",season:"S2"},3:{yomi:"あい",season:"S2"},4:{yomi:"もし",season:"S2"},5:{yomi:"きゅう",season:""}};
+function refresh(chars){
+const D=chars.map(c=>({n:c['キャラ名'],no:c['全界番号'],y:c['キャラ名読み'],team:c['世界団'],w1:c['世界線1'],w2:c['世界線2'],w3:c['世界線3'],ty:c['タイプ']}));
+byNum=new Map();
+D.forEach(r=>{const n=plainNumber(r.no);if(Number.isFinite(n)&&!byNum.has(n))byNum.set(n,r)});
+WL=allocations.map(w=>({...w}));
+WL.push({g:"𮯰",gid:5,id:"―",n:"無界",y:"むかい",lo:null,hi:null,ids:[],sym:"α0.-0",dev:"―",lv:"―",extra:true});
+const unallocated=new Map();
+for(const r of D){
+ const team=Array.from(r.team||"")[0]||"";
+ for(const code of new Set([r.w1,r.w2,r.w3].filter(Boolean).flatMap(v=>v.split("×")).filter(Boolean))){
+  if(worldsForCode(code,team).length)continue;
+  const key=JSON.stringify([team,code]);
+  if(!unallocated.has(key))unallocated.set(key,{g:team,gid:6,id:"―",n:wlLabel(code),y:"",sym:"―",dev:"―",lv:"―",lo:null,hi:null,ids:[],extra:true,members:[]});
+  unallocated.get(key).members.push(r);
+ }
+}
+WL.push(...unallocated.values());
+WL.forEach((w,i)=>{w.i=i;if(!w.ids){w.ids=[];for(let n=w.lo;n<=w.hi;n++)w.ids.push(n)}w.t=w.ids.length;w.chars=w.members||[];w.ids.forEach(n=>{const c=byNum.get(n);if(c)w.chars.push(c)});w.u=w.chars.length;w.st=w.u>=w.t?"done":w.u===0?"empty":"part"});
+WL.forEach(w=>{w.evs=[];w.mgs=[];w.aws=[]});
+ccOf.clear();
+D.forEach(r=>{const m=/^(\d+)\[CC\]$/.exec(r.no);if(m){const n=+m[1];if(!ccOf.has(n))ccOf.set(n,[]);ccOf.get(n).push(r)}});
+/* 派生キャラは原種の番号が入っている世界線にだけ置く */
+const numByName=new Map();D.forEach(r=>{if(/^\d+$/.test(r.no)&&!numByName.has(r.n))numByName.set(r.n,+r.no)});
+function baseNum(r){
+  let m=/^MG-(\d+)$/.exec(r.no)||/^(\d+)\[/.exec(r.no);if(m)return +m[1];
+  const b=r.n.replace(/（.*?）/g,"").replace(/^メガ/,"").replace(/^覚醒/,"");return numByName.get(b)??null;
+}
+function place(r,key){
+  const homeTeam=Array.from(r.team||"")[0];
+  const n=baseNum(r);
+  const hit=n===null?[]:WL.filter(w=>!w.extra&&w.ids.includes(n)&&w.g===homeTeam);
+  const targets=hit.length?hit:[r.w1,r.w2,r.w3].filter(Boolean).slice(0,1).flatMap(c=>worldsForCode(c,homeTeam));
+  targets.forEach(w=>{if(!w[key].includes(r))w[key].push(r)});
+}
+D.filter(r=>/^EV-/.test(r.no)).forEach(r=>place(r,"evs"));
+D.filter(r=>/^MG-|\[MG\]$/.test(r.no)).forEach(r=>place(r,"mgs"));
+D.filter(r=>/\[覚醒\]$/.test(r.no)).forEach(r=>place(r,"aws"));
+WL.forEach(w=>{if(w.extra)w.st="extra"});
+REAL=WL.filter(w=>!w.extra);
+REALG=[...new Set(REAL.map(w=>w.gid))];
+if(st.tab==="world-map")render();
+}
+const ccOf=new Map();
+const LABEL={done:"完成",part:"途中",empty:"未着手",extra:"枠外"};
+const cnt=s=>REAL.filter(w=>w.st===s).length;
+/* 世界団ごとの番号枠は1000ずつ（䥚=1〜1000, 壞=1001〜2000, 𢜤=2001〜3000, 𡻦=3001〜4000） */
+const SPAN=g=>[(g-1)*1000+1,g*1000];
+const usedIn=(lo,hi)=>{let u=0;for(let n=lo;n<=hi;n++)if(byNum.has(n))u++;return u};
+function undefRuns(g){const [lo,hi]=SPAN(g);const cov=new Set();WL.filter(w=>w.gid===g).forEach(w=>w.ids.forEach(n=>cov.add(n)));const out=[];let s=null;
+  for(let n=lo;n<=hi+1;n++){const free=n<=hi&&!cov.has(n);if(free&&s===null)s=n;if(!free&&s!==null){const ids=[];for(let k=s;k<n;k++)ids.push(k);out.push({undef:true,lo:s,hi:n-1,ids});s=null}}return out}
+function gaps(w){const out=[];let s=null,prev=null,cnt=0;w.ids.forEach(n=>{const empty=!byNum.has(n);if(empty&&s!==null&&n===prev+1){prev=n;cnt++;return}if(s!==null){out.push([s,prev,cnt]);s=null}if(empty){s=n;prev=n;cnt=1}});if(s!==null)out.push([s,prev,cnt]);return out}
+const pad=n=>String(n).padStart(4,"0");
+const state={f:"all",q:""};
+
+function matches(w){
+  if(state.f!=="all"&&w.st!==state.f)return false;
+  const q=state.q.trim().toLowerCase();if(!q)return true;
+  return [w.n,w.y,w.sym].some(v=>String(v).toLowerCase().includes(q))||w.aws.some(c=>[c.n,c.y].some(v=>String(v??"").toLowerCase().includes(q)))||w.ids.some(n=>(ccOf.get(n)||[]).some(c=>String(c.n).toLowerCase().includes(q)))||w.mgs.some(c=>[c.n,c.y].some(v=>String(v??"").toLowerCase().includes(q)))||w.evs.some(c=>[c.n,c.y].some(v=>String(v??"").toLowerCase().includes(q)))||w.chars.some(c=>[c.n,c.y].some(v=>String(v??"").toLowerCase().includes(q)));
+}
+function slotsHTML(w,q){
+  const hitW=[w.n,w.y].some(v=>String(v).toLowerCase().includes(q));
+  const hitC=c=>!q||hitW||[c.n,c.y].some(v=>String(v??"").toLowerCase().includes(q));
+  let s="";for(const n of w.ids){const c=byNum.get(n);const ccs=ccOf.get(n)||[];
+    s+=`<span class="slot${c?" on":""}${ccs.length?" cc":""}${c&&!hitC(c)?" dim":""}" title="${pad(n)}${c?"："+esc(c.n):"：空き"}${ccs.map(x=>"／CC："+esc(x.n)).join("")}"></span>`}
+  [["evs","ev","EV"],["aws","aw","覚醒"],["mgs","mg","メガ"]].forEach(([k,cls,lb])=>{if(w[k].length){if(s)s+=`<span class="slot-sep"></span>`;w[k].forEach(c=>s+=`<span class="slot ${cls}${hitC(c)?"":" dim"}" title="${esc(c.no)}：${esc(c.n)}（${lb}）"></span>`)}});
+  return s;
+}
+const rangeOf=w=>{const contiguous=w.ids.length===w.hi-w.lo+1;return w.lo===null?"番号枠なし":w.lo===w.hi?pad(w.lo):contiguous?`${pad(w.lo)}–${pad(w.hi)}`:w.ids.join("・")};
+const extrasOf=w=>[w.evs.length?`<span class="ex" style="color:var(--ev)">EV${w.evs.length}</span>`:"",w.aws.length?`<span class="ex" style="color:#8FA3E6">覚醒${w.aws.length}</span>`:"",w.mgs.length?`<span class="ex" style="color:var(--mg)">メガ${w.mgs.length}</span>`:""].join("");
+function row(w){
+  const q=state.q.trim().toLowerCase();
+  return `<button class="wm-tile ${w.st}${w.t>=40?" wide":""}" type="button" data-i="${w.i}" aria-haspopup="dialog"><span class="tile-top"><b>${esc(w.n)}</b><span class="pill ${w.st==="extra"?"extra":w.st}">${LABEL[w.st]}</span></span><small class="num">${rangeOf(w)}</small><span class="slots" aria-label="${w.t}枠中${w.u}体">${slotsHTML(w,q)}</span><span class="tile-foot"><span class="num">${w.members?`${w.members.length}体 · 番号枠未設定`:w.extra?"集計外":`${w.u}/${w.t}`}</span>${extrasOf(w)}</span></button>`;
+}
+function openPanel(w){
+  const items=(w.members||[]).map(c=>`<div class="c"><span class="no num">${esc(c.no)}</span><span class="nm">${esc(c.n)}</span><span class="ty">${esc(c.ty||"")}</span></div>`);
+  const gi=gaps(w);
+  for(const n of w.ids){const c=byNum.get(n);
+    if(c){items.push(`<div class="c"><span class="no num">${pad(n)}</span><span class="nm">${esc(c.n)}</span><span class="ty">${esc(c.ty||"")}</span></div>`);(ccOf.get(n)||[]).forEach(x=>items.push(`<div class="c cc"><span class="no num">CC</span><span class="nm">${esc(x.n)}</span><span class="ty">${esc(x.ty||"")}</span></div>`))}
+    else{const g=gi.find(g=>g[0]===n);if(g)items.push(`<div class="c gap"><span class="no num">${pad(g[0])}</span><span class="nm">${g[1]>g[0]?`〜${pad(g[1])} 空き${g[2]}枠`:"空き"}</span><span></span></div>`)}}
+  [["evs","ev"],["aws","aw"],["mgs","mg"]].forEach(([k,cls])=>w[k].forEach(c=>items.push(`<div class="c ${cls}"><span class="no num">${esc(c.no)}</span><span class="nm">${esc(c.n)}</span><span class="ty">${esc(c.ty||"")}</span></div>`)));
+  $("panel").innerHTML=`<div class="panel-head"><div><h3 id="wm-p-title">${esc(w.n)}</h3><div class="sub">${esc(w.g)}世界団・${rangeOf(w)}</div><span class="pill ${w.st==="extra"?"extra":w.st}">${LABEL[w.st]}${w.extra?"":`　${w.u}/${w.t}`}</span></div><button class="close" type="button" id="wm-close" aria-label="閉じる">×</button></div>
+  <div class="panel-body"><div class="meta"><span>読み <b>${esc(w.y)}</b></span><span>世界線ID <b>${esc(w.id)}</b></span><span>汎異記号 <b>${esc(w.sym)}</b></span><span>逸脱度 <b>${esc(w.dev)}</b></span><span>Lv上限 <b>${esc(w.lv)}</b></span></div><div class="slots">${slotsHTML(w,"")}</div><div class="clist">${items.join("")||'<p class="none" style="padding:12px">キャラはまだいません。</p>'}</div></div>`;
+  if(!$("panel").open)$("panel").showModal();
+  $("close").focus();
+}
+function undefTile(x){
+  let s="";const many=x.ids.length>120;const shown=many?x.ids.slice(0,120):x.ids;shown.forEach(n=>s+=`<span class="slot${byNum.has(n)?" on":""}" title="${pad(n)}：${esc(byNum.get(n)?.n||"未定")}"></span>`);
+  const range=x.lo===x.hi?pad(x.lo):`${pad(x.lo)}–${pad(x.hi)}`;
+  return `<div class="wm-tile undef${x.ids.length>=40?" wide":""}"><span class="tile-top"><b>未定</b><span class="pill undef">世界線未設定</span></span><small class="num">${range}</small><span class="slots">${s}${many?`<span class="more">…ほか${x.ids.length-120}枠</span>`:""}</span><span class="tile-foot"><span class="num">${x.ids.length}枠</span></span></div>`;
+}
+function render(){
+const slotsAll=REALG.length*1000,usedAll=REALG.reduce((s,g)=>s+usedIn(...SPAN(g)),0);
+$("kpis").innerHTML=[["",REAL.length,"世界線"],["done",cnt("done"),"完成"],["part",cnt("part"),"途中"],["empty",cnt("empty"),"未着手"],["",`${usedAll}/${slotsAll}`,"埋まった枠"]]
+  .map(([c,v,l])=>`<div class="kpi ${c}"><b>${v}</b><span>${l}</span></div>`).join("");
+
+
+  const gids=[...new Set(WL.map(w=>w.gid))];let any=false;
+  $("map").innerHTML=gids.map(g=>{
+    const first=w=>w.ids.length?Math.min(...w.ids):Infinity;const all=WL.filter(w=>w.gid===g),ws=all.filter(matches).sort((a,b)=>first(a)-first(b));if(!ws.length)return"";any=true;
+    const real=!all[0].extra;const [lo,hi]=real?SPAN(g):[0,0];const t=real?1000:0,u=real?usedIn(lo,hi):0;
+    const showUndef=real&&state.f==="all"&&!state.q.trim();const items=showUndef?[...ws,...undefRuns(g)].sort((a,b)=>first(a)-first(b)):ws;
+    return `<section class="group" style="margin-bottom:28px"><div class="group-head"><h2>${g===6?"追加の世界線":esc(all[0].g)}${GROUPS[g].season?`<span class="season">${GROUPS[g].season}</span>`:""}<span class="gname">${g===6?"":GROUPS[g].yomi+"世界団・"}${t?`${pad(lo)}〜${pad(hi)}`:"番号枠なし"}</span></h2><span class="gbar"><i style="width:${t?u/t*100:0}%"></i></span><span class="gstat">${t?`<span class="num">${u}/${t}</span>枠・${all.filter(w=>w.st==="done").length}/${all.length}世界線完成`:"集計外"}</span></div><div class="wm-tiles">${items.map(x=>x.undef?undefTile(x):row(x)).join("")}</div></section>`;
+  }).join("")||"";
+  if(!any)$("map").innerHTML=`<p class="none">条件に合う世界線がありません。「すべて」に戻すか検索語を消してください。</p>`;
+}
+$("map").addEventListener("click",e=>{const b=e.target.closest("button.wm-tile[data-i]");if(b)openPanel(WL[+b.dataset.i])});
+$("panel").addEventListener("click",e=>{if(e.target.closest("#wm-close"))$("panel").close()});
+$("seg").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;state.f=b.dataset.f;$("seg").querySelectorAll("button").forEach(x=>x.setAttribute("aria-pressed",x===b));render()});
+$("dens").addEventListener("click",e=>{const b=e.target.closest("button");if(b)setDensity(b.dataset.d)});
+function setDensity(d){
+ $("root").dataset.d=d;
+ $("dens").querySelectorAll("button").forEach(b=>b.setAttribute("aria-pressed",b.dataset.d===d));
+ LS.s("oc_map_density",d);
+}
+$("q").addEventListener("input",e=>{state.q=e.target.value;render()});
+function worldsForCode(code,team){
+ const label=wlLabel(code);
+ const matches=WL.filter(w=>w.n===code||w.n===label||w.n.replace(/\(.*\)/,"").replace(/[代界星宙]/g,"")===code);
+ const candidates=matches.filter(w=>!w.members||w.g===team);
+ const local=candidates.filter(w=>w.g===team);
+ return local.length?local:candidates.length===1?candidates:[];
+}
+function showCharacter(c){
+ const side=$("side");
+ side.hidden=!c;
+ if(!c)return;
+ const team=Array.from(c["世界団"]||"")[0],n=plainNumber(c["全界番号"]);
+ const assigned=WL.filter(w=>w.ids.includes(n));
+ const codes=[...new Set([c["世界線1"],c["世界線2"],c["世界線3"]].filter(Boolean).flatMap(code=>code.split("×")))];
+ const lines=[];
+ const seen=new Set();
+ for(const code of codes){
+  const worlds=worldsForCode(code,team);
+  if(!worlds.length)lines.push(`<p><b>${esc(wlLabel(code))}</b><small>番号枠未設定</small></p>`);
+  for(const w of worlds)if(!seen.has(w)){seen.add(w);lines.push(sideLine(w))}
+ }
+ for(const w of assigned)if(!seen.has(w))lines.push(sideLine(w));
+ side.innerHTML=`<h2>このキャラの世界線</h2>${lines.join("")||"<p>世界線未設定</p>"}`;
+}
+function sideLine(w){
+ return `<button type="button" data-world="${w.i}"><b>${esc(w.n)}</b><small>${w.t?`${w.u} / ${w.t} 枠 · ${Math.round(w.u/w.t*100)}%`:"番号枠なし"}</small>${w.t?`<progress value="${w.u}" max="${w.t}" aria-label="${esc(w.n)}の充足率"></progress>`:""}</button>`;
+}
+$("side").addEventListener("click",e=>{
+ const b=e.target.closest("button[data-world]");
+ if(b){tab("world-map");openPanel(WL[Number(b.dataset.world)])}
+});
+return {refresh,render,showCharacter,setDensity};
+})();
+
+worldMap.setDensity(LS.g('oc_map_density')||'m');
 numberNav=LS.g('oc_num_nav')==='1';
 const cache=LS.g('oc_csv'),ct=+LS.g('oc_time')||0;
 const cch=LS.g('oc_chart');if(cch&&(+LS.g('oc_ctime')||0)>BUILT)TCH=parseChart(cch);
