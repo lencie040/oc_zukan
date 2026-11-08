@@ -79,16 +79,108 @@ dt{color:var(--sub)}dd{margin:0;overflow-wrap:anywhere}
 .sw{display:inline-block;width:14px;height:14px;border-radius:50%;border:1px solid var(--ln);vertical-align:-2px;margin-right:4px}
 .sy{font-size:12px;color:var(--sub)}#sync label{display:block;font-size:13px;color:var(--sub);margin:12px 0 4px}#sync input[type=text]{width:100%;font:inherit;font-size:14px;color:var(--ink);background:var(--bg);border:1px solid var(--ln);border-radius:6px;padding:8px 10px}.bt{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}.cc{background:var(--ac2);border-radius:8px;padding:10px 12px}.ln{all:unset;color:var(--ac);text-decoration:underline;cursor:pointer}
 @media(max-width:520px){.dh{padding:16px}.dh .tile{width:84px;height:84px;font-size:48px}dl{grid-template-columns:6.5em 1fr}}
+
+/* ===== 図鑑ページUI ===== */
+#grid{display:block;max-width:960px;margin:0 auto}
+main{padding-top:12px}
+.pg{container-type:inline-size;position:relative;width:100%;aspect-ratio:960/700;background:var(--pgbg,#fff);color:#000;overflow:hidden;border-radius:6px;box-shadow:0 2px 14px rgba(0,0,0,.2);font-weight:500;line-height:1.25}
+.pg *{box-sizing:border-box}
+.pg.inr{animation:pgr .28s ease-out}.pg.inl{animation:pgl .28s ease-out}
+@keyframes pgr{from{opacity:0;transform:translateX(24px)}to{opacity:1;transform:none}}
+@keyframes pgl{from{opacity:0;transform:translateX(-24px)}to{opacity:1;transform:none}}
+.pg-bar{position:absolute;left:0;top:0;width:100%;height:19.6%;background:#6f8be0}
+.pg-rk,.pg-no{position:absolute;top:1.1cqw;text-align:center;line-height:1}
+.pg-rk{left:1.7cqw}.pg-no{right:1.7cqw}
+.pg-rk small,.pg-no small{display:block;font-size:4.2cqw;font-weight:700;color:#000;line-height:1.1}
+.pg-rk b,.pg-no b{display:block;margin-top:.8cqw;font-size:7.6cqw;font-weight:800;color:#bdd21c;text-shadow:.35cqw .35cqw 0 #000;white-space:nowrap}
+.pg-no b{font-size:5.6cqw;margin-top:1.8cqw}
+.pg-nm{position:absolute;left:19cqw;right:21cqw;top:0;height:100%;display:flex;align-items:center;justify-content:center;text-align:center;color:#fff;font-size:min(5.6cqw,calc(52cqw / var(--len,6)));font-weight:500;line-height:1.15;overflow-wrap:anywhere}
+.pg-tp{position:absolute;left:1.6cqw;top:15.2cqw}
+.pg-tl{font-size:4.2cqw;font-weight:700;line-height:1}
+.pt{position:relative;width:10.6cqw;aspect-ratio:1;margin:.9cqw 0 0 .6cqw;border:max(2px,.36cqw) solid #000;background:#fff}
+.pt i{position:absolute;inset:0}
+.pt .t1{background:linear-gradient(135deg,var(--a),color-mix(in srgb,var(--a) 30%,#fff));clip-path:polygon(0 0,100% 0,0 100%)}
+.pt .t2{background:linear-gradient(135deg,color-mix(in srgb,var(--b) 30%,#fff),var(--b));clip-path:polygon(100% 0,100% 100%,0 100%)}
+.pt.one .t1{clip-path:none;background:linear-gradient(135deg,var(--a),color-mix(in srgb,var(--a) 35%,#fff))}
+.pt::after{content:'';position:absolute;inset:0;z-index:1;background:linear-gradient(to top right,transparent calc(50% - .18cqw),#000 calc(50% - .18cqw) calc(50% + .18cqw),transparent calc(50% + .18cqw))}
+.pt.one::after{display:none}
+.pt b{position:absolute;z-index:2;font-size:5.2cqw;font-weight:500;line-height:1;color:#000}
+.pt .ta{left:7%;top:5%}.pt .tb{right:7%;bottom:5%}
+.pt.one b{left:50%;top:50%;transform:translate(-50%,-50%);font-size:6.4cqw}
+.pt.long b{font-size:3cqw}
+.pg-wl{position:absolute;right:1.2cqw;top:15.8cqw;width:21.5cqw;display:flex;flex-direction:column;gap:.7cqw}
+.wl{height:5.8cqw;display:flex;align-items:center;justify-content:center;white-space:nowrap;font-weight:800;line-height:1;
+ background:linear-gradient(90deg,transparent,color-mix(in srgb,var(--wc) 38%,#fff) 24%,color-mix(in srgb,var(--wc) 38%,#fff) 76%,transparent);
+ color:var(--wc);-webkit-text-stroke:.16cqw color-mix(in srgb,var(--wc) 30%,#000);paint-order:stroke fill}
+.pg-img{position:absolute;left:25.5%;right:25.5%;top:21%;bottom:1.5%;display:flex;align-items:center;justify-content:center;text-align:center;font-size:6.3cqw;line-height:1.5;font-weight:500}
+.pg-img img{max-width:100%;max-height:100%;object-fit:contain;cursor:zoom-in}
+.pg-box{position:absolute;top:47.1%;bottom:.45%;width:23.2%;border:max(2px,.42cqw) solid #000;background:rgba(255,255,255,.9);padding:1.1cqw 1.3cqw;overflow:auto;scrollbar-width:thin}
+.pg-l{left:2.1%}.pg-r{right:2.1%}
+.pg-box h4{margin:0;font-size:3.7cqw;font-weight:500;line-height:1.15}
+.pg-box h4 small{font-size:1.5cqw;font-weight:500;margin-left:.5cqw;white-space:nowrap}
+.pg-box h4 small.bl{display:block;margin:.4cqw 0 0;font-size:1.7cqw}
+.pg-box h4.h2{margin-top:1.4cqw}
+.pg-kv{display:grid;grid-template-columns:repeat(3,auto);justify-content:space-between;gap:.5cqw 1cqw;font-size:2.5cqw;font-weight:700;margin:1cqw 0 0}
+.pg-kv.k1{grid-template-columns:1fr;justify-content:start;font-size:2.4cqw;gap:.35cqw}
+.pg-kv.k1 span{display:flex;justify-content:space-between;gap:1cqw;max-width:15cqw}
+.ab2{margin:.8cqw 0 0}.ab2 b{display:block;font-size:2.5cqw;font-weight:500;line-height:1.2}.ab2 p{margin:.1cqw 0 0;font-size:1.55cqw;line-height:1.35;font-weight:400}.ab2 i{font-style:normal;font-size:1.5cqw;background:#000;color:#fff;border-radius:.4cqw;padding:0 .6cqw;margin-right:.6cqw;vertical-align:.1cqw}
+.pg-dl{display:grid;grid-template-columns:auto 1fr;gap:.45cqw 1cqw;font-size:1.75cqw;margin:1cqw 0 0;line-height:1.3}
+.pg-dl dt{color:#555;white-space:nowrap;font-size:1.6cqw}.pg-dl dd{margin:0;overflow-wrap:anywhere;font-weight:500}
+.pg-acts{position:absolute;left:25.5%;right:25.5%;bottom:1.2cqw;display:flex;gap:.8cqw;justify-content:center;flex-wrap:wrap}
+.pg-acts button{font-size:max(11px,1.55cqw);min-height:0;padding:.35cqw 1.2cqw;background:rgba(255,255,255,.92);color:#14232e;border:1px solid #777;border-radius:99px;position:static;margin:0}
+.pg-acts .cmp[aria-pressed=true]{background:#2f6fd6;color:#fff;border-color:#2f6fd6}
+.pg-acts .cmp[aria-pressed=true]::before{content:'✓ '}
+#pbar{position:fixed;left:0;right:0;bottom:0;z-index:7;display:flex;align-items:center;justify-content:space-between;gap:8px;padding:8px 14px calc(8px + env(safe-area-inset-bottom,0px));background:var(--bg);border-top:1px solid var(--ln)}
+#pbar button{position:relative;min-height:46px;border-radius:99px;padding:0 18px;font-weight:700;font-size:15px;white-space:nowrap}
+#pbar .nv{display:flex;align-items:center;gap:8px}
+#pbar .nv button{width:46px;padding:0}
+#pbar .pc{min-width:5.2em;text-align:center;font-variant-numeric:tabular-nums;color:var(--sub);font-size:14px}
+#pbar .sm2{display:none}
+.bdg{position:absolute;top:-4px;right:-2px;min-width:18px;height:18px;border-radius:9px;background:#e5484d;color:#fff;font:700 11px/18px sans-serif;text-align:center;font-style:normal;padding:0 4px}
+body[data-tab=grid] #tray{bottom:calc(62px + env(safe-area-inset-bottom,0px))}
+body[data-tab=grid] main{padding-bottom:92px}
+.qi{all:unset;box-sizing:border-box;display:flex;justify-content:space-between;gap:10px;align-items:baseline;width:100%;padding:9px 6px;border-bottom:1px solid var(--ln);cursor:pointer}
+.qi:hover,.qi:focus-visible{background:var(--ac2)}
+#sd,#fd{width:min(640px,100vw)}
+@media(max-width:700px){
+ main{padding:10px}
+ .pg{aspect-ratio:auto;display:grid;grid-template-columns:1fr 1fr;grid-template-areas:"bar bar" "tp wl" "img img" "ac ac" "sb sb" "ib ib";gap:10px;padding-bottom:12px}
+ .pg-bar{grid-area:bar;position:relative;height:auto;min-height:78px;display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:6px;padding:8px 12px}
+ .pg-rk,.pg-no,.pg-nm{position:static}
+ .pg-rk small,.pg-no small{font-size:13px}
+ .pg-rk b{font-size:34px;margin-top:2px}.pg-no b{font-size:20px;margin-top:6px}
+ .pg-nm{font-size:min(24px,calc(78vw / var(--len,6)));height:auto}
+ .pg-tp{grid-area:tp;position:static;padding:0 0 0 12px}
+ .pg-tl{font-size:15px}
+ .pt{width:76px;margin:6px 0 0 2px}.pt b{font-size:28px}.pt.one b{font-size:34px}.pt.long b{font-size:15px}
+ .pg-wl{grid-area:wl;position:static;width:auto;gap:6px;padding-top:2px}
+ .wl{height:32px;font-size:min(19px,calc(120px / var(--n,2)))!important;-webkit-text-stroke-width:.8px}
+ .pg-img{grid-area:img;position:static;min-height:260px;font-size:32px;padding:0 12px}
+ .pg-img img{max-height:340px}
+ .pg-acts{grid-area:ac;position:static;padding:0 12px}.pg-acts button{font-size:13px;padding:6px 14px}
+ .pg-box{position:static;width:auto;margin:0 12px;padding:10px 12px;border-width:2px;overflow:visible}
+ .pg-l{grid-area:sb}.pg-r{grid-area:ib}
+ .pg-box h4{font-size:19px}.pg-box h4 small{font-size:12px;margin-left:6px}.pg-box h4 small.bl{font-size:13px;margin:2px 0 0}.pg-box h4.h2{margin-top:10px}
+ .pg-kv{font-size:15px;margin-top:6px;gap:4px 8px}.pg-kv.k1{font-size:15px}.pg-kv.k1 span{max-width:220px}
+ .ab2{margin-top:6px}.ab2 b{font-size:15px}.ab2 p{font-size:12.5px}.ab2 i{font-size:11px;padding:0 5px;margin-right:5px}
+ .pg-dl{font-size:13px;gap:4px 10px;margin-top:6px}.pg-dl dt{font-size:12px}
+ #pbar .lg{display:none}#pbar .sm2{display:inline}
+ #pbar button{padding:0 12px;font-size:14px}
+ #pbar .pc{min-width:4.6em;font-size:13px}
+ #pbar .nv{gap:4px}
+}
 </style>
 </head>
 <body>
 <header>
  <div class="row"><h1>オリキャラ図鑑<small id="cnt"></small></h1>
- <input id="q" type="search" placeholder="名前・読み・漢字・特性・技で検索" aria-label="検索"><button id="syb">データ更新</button><span class="sy" id="sst"></span></div>
+ <button id="syb">データ更新</button><span class="sy" id="sst"></span></div>
  <nav><button data-t="grid" aria-selected="true">図鑑</button><button data-t="rank" aria-selected="false">ランキング</button><button data-t="party" aria-selected="false">パーティ</button><button data-t="bday" aria-selected="false">誕生日</button></nav><div id="bn"></div>
 </header>
-<div class="row" id="ctl" style="padding:12px 16px 0"></div>
 <main><div id="grid"></div><div id="rank" hidden></div><div id="party" hidden></div><div id="bday" hidden></div></main>
+<div id="pbar"><button id="sbtn" aria-label="検索を開く">🔍 検索<i class="bdg" id="sbn" hidden>●</i></button><div class="nv"><button id="pv" aria-label="前のキャラ">◀</button><span class="pc" id="pc"></span><button id="nx" aria-label="次のキャラ">▶</button></div><button id="fbtn" aria-label="並び替え・絞り込みを開く">⚙ <span class="lg">並び替え・絞り込み</span><span class="sm2">絞り込み</span><i class="bdg" id="fbn" hidden></i></button></div>
+<dialog id="sd"><div class="sec" style="padding-top:16px"><div class="row" style="margin-bottom:8px"><input id="q" type="search" placeholder="名前・読み・漢字・特性・技で検索" aria-label="検索" style="flex:1 1 200px"><button id="sdx">閉じる</button></div><div id="ql"></div></div></dialog>
+<dialog id="fd"><div class="sec" style="padding-top:16px"><h3>並び替え・絞り込み</h3><div class="row" id="ctl"></div><div class="bt"><button id="fdx">閉じる</button><span class="sy" id="fdn"></span></div></div></dialog>
 <dialog id="pk"><div class="sec" style="padding-top:16px"><div class="row" style="margin-bottom:8px"><input id="pks" type="search" placeholder="名前・タイプ・族で検索" style="flex:1 1 200px"><button id="pkx">閉じる</button></div><div id="pkl"></div></div></dialog>
 <div id="tray"></div><dialog id="cd"></dialog>
 <dialog id="dlg"></dialog>
@@ -178,7 +270,68 @@ function view(){const q=st.q.trim().toLowerCase();
  if(kf){a=a.slice().sort((x,y)=>{const p=kf(x),r=kf(y);if(p==null&&r==null)return 0;if(p==null)return 1;if(r==null)return -1;const d=typeof p=='string'?p.localeCompare(r,'ja'):p-r;return st.desc?-d:d})}
  else if(st.desc)a=a.slice().reverse();
  $('#cnt').textContent=`${a.length} / ${st.cc?DATA.length:DATA.filter(c=>!c._isCC||!c._base).length}体`;
- $('#grid').innerHTML=a.length?a.map(c=>{const b=num(c['合計種族値']);return `<div class="cw"><button class="card" data-i="${c._i}">${tile(c)}<div class="cb"><div class="nm">${esc(c['キャラ名'])}${BT.has(c._i)?' 🎂':''}${c._cc?' <span class="no">+色違い</span>':''}${c['データ']==='S2'?' <span class="no">S2</span>':''}</div><div class="no">No.${esc(c['全界番号'])}${c['族']&&c['族']!=='-'?' ・ '+esc(c['族']):''}</div><div class="ty">${chips(c)}</div><div class="bst">${b?`種族値 <b>${b}</b>`:num(c['5ステ合計'])?`5ステ <b>${num(c['5ステ合計'])}</b>`:'ステ未設定'}</div></div></button>${c['データ']==='S2'?'':`<button class="cmp" data-c="${c._i}" aria-pressed="false">比較</button>`}</div>`}).join(''):'<div class="empty">該当するキャラがいません</div>';hydrate();tray()}
+ LIST=a.map(c=>c._i);{const k=LIST.findIndex(i=>DATA[i]['全界番号']===CURNO);POS=k>=0?k:0}renderPage();qList();pbadge();hydrate();tray()}
+
+/* ===== 図鑑ページUI ===== */
+let LIST=[],POS=0,CURNO='';
+const WLM={'現':'現代','古':'古代','零':'零界','未':'未来','妖':'妖星'};
+const WLP={'現':'#f2a34a','零':'#4f8de8','古':'#4fb467','未':'#6fd0e8','妖':'#ee86b2','魔':'#9468cf','天':'#f2dc6a','海':'#6fc0ee','冥':'#b49ade','炎':'#ee8a80','異':'#e0584f','然':'#a6d03c','賢':'#86c6e8','憶':'#5aaae8','聖':'#f2dc6a','彩':'#f2dc6a','幼':'#9edbef','飴':'#9edbef','数':'#9edbef','初':'#9edbef','冬':'#a9def2','恋':'#f4a0c0','桃':'#f4a0c0','孕':'#f0b4cc','飾':'#e0a8ec','団':'#6fbf6f','旧':'#2f7a4a','南':'#f2e48a','回':'#9edbef'};
+const WLK=w=>Array.from(String(w).split('×')[0].replace(/(IF|EX|SP|A)$/,''))[0]||'';
+function wlLabel(w){return String(w).split('×').map(p=>{const m=p.match(/^(.+?)(IF|EX|SP|A)?$/),b=m[1],sf=m[2]||'';return(Array.from(b).length===1?(WLM[b]||b+'界'):b)+sf}).join('×')}
+const WLCC={};
+function wlColor(w){const k=WLK(w);if(WLCC[k])return WLCC[k];let col=WLP[k];
+ if(!col){const m={};DATA.forEach(c=>{if([c['世界線1'],c['世界線2'],c['世界線3']].some(x=>x&&WLK(x)===k)){const n=c['カラー1'];if(n&&CM[n]&&!['白','黒','灰','虹'].includes(n))m[n]=(m[n]||0)+1}});
+  const t=Object.entries(m).sort((a,b)=>b[1]-a[1])[0];col=t?CM[t[0]]:`hsl(${[...k].reduce((a,c)=>a+c.codePointAt(0)*37,0)%360} 60% 66%)`}
+ return WLCC[k]=col}
+const rankOf=c=>{const v=c['データ']==='S2'?(c['ランク']||'').replace('★',''):c['最大ランク(並び替え用)'];return v||'-'};
+function typeIcon(c){const t=tys(c);if(!t.length)return '';const a=t[0],b=t[1],lg=Array.from(a).length>1||(b&&Array.from(b).length>1)?' long':'';
+ return b?`<div class="pt${lg}" style="--a:${tc(a)};--b:${tc(b)}"><i class="t1"></i><i class="t2"></i><b class="ta">${esc(a)}</b><b class="tb">${esc(b)}</b></div>`
+  :`<div class="pt one${lg}" style="--a:${tc(a)}"><i class="t1"></i><b>${esc(a)}</b></div>`}
+function pageHtml(c){
+ const s2=c['データ']==='S2',b=num(c['合計種族値']),f5=num(c['5ステ合計']),nm=c['キャラ名'],len=Math.max(4,Array.from(nm).length);
+ const wl=[c['世界線1'],c['世界線2'],c['世界線3']].filter(Boolean),ty=tys(c),has=s2?!!f5:!!b;
+ const K=s2?S2K:SK,LB=s2?S2L:SK;
+ const kv=has?`<div class="pg-kv${s2?' k1':''}">${K.map((k,i)=>{const v=num(c[k]);return s2?`<span><em style="font-style:normal">${LB[i]}</em><b>${v==null?'-':v}</b></span>`:`<span>${LB[i]}${v==null?'-':v}</span>`}).join('')}</div>`:'';
+ const abl=s2?'':[['',c['通常特性1']],['',c['通常特性2']],['夢',c['夢特性']]].filter(x=>x[1]).map(([t,x])=>{const m=x.match(/^「(.+?)」([\s\S]*)$/);return `<div class="ab2">${t?`<i>${t}</i>`:''}${m?`<b>${esc(m[1])}</b><p>${esc(m[2])}</p>`:`<p>${esc(x)}</p>`}</div>`}).join('');
+ const rows=s2?[['世界団',c['世界団']],['族',c['族']],['ランク',c['ランク']],['IQ',c['IQ']],['モチーフ駅',c['モチーフ駅']]]
+  :[['受賞',c['受賞']],['汎異記号',c['汎異記号']],['世界団',c['世界団']],['族',c['族']],['勢力',c['勢力']],['誕生日',c['誕生日']],['初登場',c['初登場']],['作品',c['初登場作品']],['初登場日',c['初登場日']],['専用技',[c['専用技1'],c['専用技2'],c['専用技3']].filter(Boolean).join(' / ')],['モチーフ曲',c['モチーフ曲']],['タイプ',ty.length>2?ty.join('／'):''],['コスト',c['コスト']],['戦闘力',c['戦闘力']],['CP',c['CP']]];
+ const dl=rows.map(([k,v])=>row(k,v)).join('');
+ const bg=s2&&S2RC[c['ランク']]?` style="--pgbg:${S2RC[c['ランク']]}"`:'';
+ return `<div class="pg"${bg}>
+ <div class="pg-bar"><div class="pg-rk"><small>ランク</small><b>${esc(rankOf(c))}</b></div><div class="pg-nm" style="--len:${len}">${esc(nm)}</div><div class="pg-no"><small>全界番号</small><b>${esc(c['全界番号'])}</b></div></div>
+ ${ty.length?`<div class="pg-tp"><div class="pg-tl">タイプ</div>${typeIcon(c)}</div>`:'<div class="pg-tp"></div>'}
+ <div class="pg-wl" style="--n:${Math.max(2,wl.length)}">${wl.map(w=>{const l=wlLabel(w),n=Array.from(l).length;return `<div class="wl" style="--wc:${wlColor(w)};font-size:min(4.8cqw,${(19/Math.max(n,1)).toFixed(2)}cqw)">${esc(l)}</div>`}).join('')}</div>
+ <div class="pg-img">No<br>Image</div>
+ <div class="pg-acts">${s2?'':`<button class="cmp" data-c="${c._i}" aria-pressed="${CMP.includes(c._i)}">比較に追加</button>`}<button class="ptd" data-c="${c._i}">パーティに追加</button><button class="mre" data-i="${c._i}">グラフ・詳細</button></div>
+ <div class="pg-box pg-l"><h4>${s2?'ステータス':'種族値'} <small${s2?' class="bl"':''}>${has?(s2?'5ステ合計 '+f5:'合計'+b):'未設定'}</small></h4>${kv}${abl?`<h4 class="h2">特性</h4>${abl}`:''}</div>
+ <div class="pg-box pg-r"><h4>詳細情報</h4><dl class="pg-dl">${dl||'<dt></dt><dd>—</dd>'}</dl></div></div>`}
+function renderPage(dir){const g=$('#grid');
+ if(!LIST.length){g.innerHTML='<div class="empty">該当するキャラがいません</div>';$('#pc').textContent='0 / 0';return}
+ const c=DATA[LIST[POS]];CURNO=c['全界番号'];g.innerHTML=pageHtml(c);
+ if(dir&&!matchMedia('(prefers-reduced-motion:reduce)').matches)g.firstElementChild.classList.add(dir>0?'inr':'inl');
+ $('#pc').textContent=`${POS+1} / ${LIST.length}`;
+ const im=g.querySelector('.pg-img');illust(c).then(u=>{if(u&&CURNO===c['全界番号']&&im.isConnected)im.innerHTML=`<img src="${u}" alt="${esc(c['キャラ名'])}">`})}
+function go(d){if(!LIST.length)return;POS=(POS+d+LIST.length)%LIST.length;renderPage(d)}
+function ctlSync(){Object.entries(st.f).forEach(([k,v])=>{const e=document.querySelector(`select[data-f="${k}"]`);if(e)e.value=v||''});$('#sort').value=st.sort;$('#cc').checked=st.cc;$('#nost').checked=st.nost;$('#il').checked=st.il;$('#dir').textContent=st.desc?'降順':'昇順'}
+function gotoChar(i){if(st.tab!=='grid')tab('grid');const c=DATA[i];if(!c)return;CURNO=c['全界番号'];const k=LIST.indexOf(i);
+ if(k>=0){POS=k;renderPage();return}
+ st.q='';st.f={};st.nost=false;st.il=false;if(c._isCC)st.cc=true;$('#q').value='';buildCtl();ctlSync();view()}
+function qList(){const el=$('#ql'),n=LIST.length;if(!el)return;
+ el.innerHTML=(n?LIST.slice(0,300).map((i,k)=>{const c=DATA[i];return `<button class="qi" data-pos="${k}"><b>${esc(c['キャラ名'])}</b><span class="no">No.${esc(c['全界番号'])}${c['族']&&c['族']!=='-'?' ・ '+esc(c['族']):''}</span></button>`}).join(''):'<div class="empty">該当するキャラがいません</div>')+(n>300?`<p class="no">先頭300件を表示中（全${n}件）</p>`:'');
+ const fd=$('#fdn');if(fd)fd.textContent=`${n}体が該当`}
+function pbadge(){const n=Object.values(st.f).filter(Boolean).length+(st.sort!=='シート順'?1:0)+(st.desc?1:0)+(st.cc?1:0)+(st.nost?1:0)+(st.il?1:0);
+ $('#fbn').textContent=n;$('#fbn').hidden=!n;$('#sbn').hidden=!st.q.trim()}
+$('#sbtn').onclick=()=>{$('#sd').showModal();setTimeout(()=>$('#q').focus(),50)};
+$('#fbtn').onclick=()=>$('#fd').showModal();
+$('#sdx').onclick=()=>$('#sd').close();$('#fdx').onclick=()=>$('#fd').close();
+['sd','fd'].forEach(id=>$('#'+id).addEventListener('click',e=>{if(e.target.id===id)$('#'+id).close()}));
+$('#pv').onclick=()=>go(-1);$('#nx').onclick=()=>go(1);
+$('#ql').addEventListener('click',e=>{const b=e.target.closest('.qi');if(b){POS=+b.dataset.pos;renderPage();$('#sd').close()}});
+$('#grid').addEventListener('click',e=>{const t=e.target,im=t.closest('.pg-img img');if(im){$('#lb img').src=im.src;$('#lb').showModal();return}
+ const p=t.closest('.ptd');if(p){addP(DATA[+p.dataset.c]['全界番号']);return}const m=t.closest('.mre');if(m)detailFull(+m.dataset.i)});
+addEventListener('keydown',e=>{if(st.tab!=='grid'||document.querySelector('dialog[open]')||/INPUT|SELECT|TEXTAREA/.test(e.target.tagName))return;if(e.key==='ArrowLeft')go(-1);else if(e.key==='ArrowRight')go(1)});
+let TX=null;$('#grid').addEventListener('touchstart',e=>{TX=[e.touches[0].clientX,e.touches[0].clientY]},{passive:true});
+$('#grid').addEventListener('touchend',e=>{if(!TX)return;const t=e.changedTouches[0],dx=t.clientX-TX[0],dy=t.clientY-TX[1];TX=null;if(Math.abs(dx)>60&&Math.abs(dx)>Math.abs(dy)*1.5)go(dx<0?1:-1)},{passive:true});
 function row(k,v){return v==null||v===''||v==='-'?'':`<dt>${k}</dt><dd>${esc(v)}</dd>`}
 const SK=['H','A','B','C','D','S'];
 const S2RC={'★5':'#f3e2a4','★4':'#d9c6ee','★3':'#a9c8f2','★2':'#d6e8a0','★1':'#9a9ea5'};
@@ -197,7 +350,7 @@ function radar(V,LB){const R=100,mx=Math.max(200,...V),ext=Math.max(R,mx/2)+40,P
  return `<svg viewBox="${-ext} ${-ext} ${2*ext} ${2*ext}" role="img" aria-label="種族値レーダーチャート"><defs><mask id="om" maskUnits="userSpaceOnUse" x="${-ext}" y="${-ext}" width="${2*ext}" height="${2*ext}"><rect x="${-ext}" y="${-ext}" width="${2*ext}" height="${2*ext}" fill="#fff"/><polygon points="${hex}" fill="#000"/></mask></defs>${rings}${axes}<polygon class="rf" points="${vp}"/><polygon class="ro" points="${vp}" mask="url(#om)"/><polygon class="rs" points="${vp}"/>${dots}${lab}</svg>`}
 function ccBlock(c){const x=c._cc,d=(k,l)=>c[k]===x[k]||!x[k]?'':`<dt>${l}</dt><dd>${esc(c[k]||'-')} → ${esc(x[k])}</dd>`;
  return `<div class="sec"><h3>色違い [CC]</h3><div class="cc">${x['通常特性1']?`<p class="ab"><b>特性</b><br>${esc(x['通常特性1'])}</p>`:''}<dl>${d('コスト','コスト')}${d('戦闘力','戦闘力')}${d('CP','CP')}</dl><button class="ln" data-open="${x._i}">色違いの詳細を開く</button></div></div>`}
-function detail(i){const c=DATA[i],b=num(c['合計種族値']),f5=num(c['5ステ合計']);
+function detailFull(i){const c=DATA[i],b=num(c['合計種族値']),f5=num(c['5ステ合計']);
  const stats=statsHtml(c);
  const sw=cols(c).map(x=>`<span class="sw" style="background:${x==='虹'?RB:CM[x]||'#ccc'}"></span>${esc(x)}`).join('　');
  const ab=[['通常特性1',c['通常特性1']],['通常特性2',c['通常特性2']],['夢特性',c['夢特性']]].filter(x=>x[1]).map(x=>`<p class="ab"><b>${x[0]}</b><br>${esc(x[1])}</p>`).join('')+(c['夢特性解禁方法']?`<p class="ab"><b>夢特性解禁</b><br>${esc(c['夢特性解禁方法'])}</p>`:'');
@@ -213,8 +366,8 @@ $('#q').addEventListener('input',e=>{st.q=e.target.value;view()});
 $('#ctl').addEventListener('change',e=>{const t=e.target;if(t.dataset.f!==undefined)st.f[t.dataset.f]=t.value;else if(t.id==='sort')st.sort=t.value;else if(t.id==='cc')st.cc=t.checked;else if(t.id==='nost')st.nost=t.checked;else if(t.id==='il'){st.il=t.checked;if(t.checked){probeAll().then(view);return}}view()});
 $('#ctl').addEventListener('click',e=>{if(e.target.id==='dir'){st.desc=!st.desc;e.target.textContent=st.desc?'降順':'昇順';view()}
  if(e.target.id==='rs'){st.q='';st.f={};st.sort='シート順';st.desc=false;st.cc=false;st.nost=false;st.il=false;$('#q').value='';buildCtl();view()}});
-$('main').addEventListener('click',e=>{const m=e.target.closest('.cmp');if(m){tog(+m.dataset.c);return}const b=e.target.closest('.card,.rr,.sb');if(b)detail(+b.dataset.i)});
-$('#dlg').addEventListener('click',e=>{const pb=e.target.closest('.ptd');if(pb){addP(DATA[+pb.dataset.c]['全界番号']);return}const cb=e.target.closest('.cmpd');if(cb){const i=+cb.dataset.c;tog(i);cb.textContent=CMP.includes(i)?'比較から外す':'比較に追加';return}const z=e.target.closest('.tile[data-zoom]');if(z){$('#lb img').src=z.dataset.zoom;$('#lb').showModal();return}const o=e.target.closest('[data-open]');if(o){detail(+o.dataset.open);return}if(e.target.id==='cl'||e.target===$('#dlg'))$('#dlg').close()});
+$('main').addEventListener('click',e=>{const m=e.target.closest('.cmp');if(m){tog(+m.dataset.c);return}const b=e.target.closest('.card,.rr,.sb');if(b)gotoChar(+b.dataset.i)});
+$('#dlg').addEventListener('click',e=>{const pb=e.target.closest('.ptd');if(pb){addP(DATA[+pb.dataset.c]['全界番号']);return}const cb=e.target.closest('.cmpd');if(cb){const i=+cb.dataset.c;tog(i);cb.textContent=CMP.includes(i)?'比較から外す':'比較に追加';return}const z=e.target.closest('.tile[data-zoom]');if(z){$('#lb img').src=z.dataset.zoom;$('#lb').showModal();return}const o=e.target.closest('[data-open]');if(o){detailFull(+o.dataset.open);return}if(e.target.id==='cl'||e.target===$('#dlg'))$('#dlg').close()});
 $('#dlg').addEventListener('close',()=>{try{history.replaceState(null,'',location.pathname+location.search)}catch(e){}});
 
 
@@ -261,7 +414,7 @@ function renderBday(){const{L,t0}=bdays(),by=L.slice().sort((a,b)=>a.days-b.days
  $('#bday').innerHTML=`<div class="pn"><h3>${t0.getMonth()+1}月${t0.getDate()}日（今日）</h3>${td.length?rows(td,x=>`${x.mo}月${x.d}日`):`<p class="no" style="margin:0 0 6px">今日が誕生日のキャラはいません。</p>${nextL.length?`<p class="no" style="margin:0">次は${nextL[0].mo}月${nextL[0].d}日（あと${nextD}日）：</p>${rows(nextL,x=>`${x.mo}月${x.d}日`)}`:''}`}</div>
  <div class="pn"><h3>もうすぐ（30日以内）</h3>${near.length?rows(near,x=>`${x.mo}月${x.d}日<br><span class="no">あと${x.days}日</span>`):'<p class="no" style="margin:0">30日以内の誕生日はありません。</p>'}</div>
  <div class="pn"><h3>誕生日カレンダー</h3><div class="mo">${cal}</div><p class="nt">誕生日が分かっているのは ${L.length} / ${total}体です。</p></div>`;hydrate()}
-function tab(t){st.tab=t;['grid','rank','party','bday'].forEach(k=>$('#'+k).hidden=k!==t);$('#ctl').hidden=t!=='grid';document.querySelectorAll('nav button').forEach(b=>b.setAttribute('aria-selected',b.dataset.t===t));if(t==='rank')renderRank();if(t==='bday')renderBday();if(t==='party')renderParty();if(t==='grid')hydrate();scrollTo(0,0)}
+function tab(t){st.tab=t;['grid','rank','party','bday'].forEach(k=>$('#'+k).hidden=k!==t);$('#pbar').hidden=t!=='grid';document.body.dataset.tab=t;document.querySelectorAll('nav button').forEach(b=>b.setAttribute('aria-selected',b.dataset.t===t));if(t==='rank')renderRank();if(t==='bday')renderBday();if(t==='party')renderParty();if(t==='grid')hydrate();scrollTo(0,0)}
 document.querySelector('nav').addEventListener('click',e=>{const b=e.target.closest('button');if(b)tab(b.dataset.t)});
 $('#bn').addEventListener('click',()=>tab('bday'));$('#bn').style.cursor='pointer';
 $('#tray').addEventListener('click',e=>{const r=e.target.closest('[data-rm]');if(r){tog(+r.dataset.rm);return}if(e.target.id==='cgo')cmpShow();if(e.target.id==='ccl'){CMP.length=0;tray()}});
@@ -326,7 +479,7 @@ apply(cache&&ct>BUILT?cache:CSV);
 if(cache&&ct>BUILT)$('#sst').textContent='保存データ '+hm(new Date(ct));else $('#sst').textContent='埋め込みデータ '+hm(new Date(BUILT));
 if(Date.now()-(+LS.g('oc_auto')||0)>216e5){LS.s('oc_auto',Date.now());sync(LS.g('oc_url')||SHEET,false);fetchS2(LS.g('oc_url3')||S2SHEET,false)}
 const pm=location.hash.match(/^#p=(.*)$/);if(pm){PTID=decodeURIComponent(pm[1]).split('~').filter(Boolean).slice(0,6);savePt();tab('party')}
-const m=location.hash.match(/^#c(\d+)$/);if(m&&DATA[+m[1]])detail(+m[1]);
+const m=location.hash.match(/^#c(\d+)$/);if(m&&DATA[+m[1]])gotoChar(+m[1]);
 </script>
 </body>
 </html>
