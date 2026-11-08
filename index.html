@@ -206,6 +206,9 @@ body[data-tab=grid] main{padding-bottom:92px}
 
 /* Catalogue surfaces and controls */
 header{background:var(--sf);box-shadow:0 3px 14px rgb(9 28 39 / .06)}
+#num-nav[aria-pressed=true]{background:var(--ac2);border-color:var(--ac);font-weight:700}
+#num-nav:disabled{opacity:.55;cursor:default}
+.pg.pg-missing{min-height:220px}
 header h1{font-family:"Shippori Mincho B1",serif;font-weight:800}
 nav{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:4px;padding:4px;background:var(--bg);border:1px solid var(--ln);border-radius:12px}
 nav button{padding-inline:4px;border-color:transparent;background:transparent;font-weight:700;white-space:nowrap}
@@ -255,7 +258,7 @@ dialog::backdrop{backdrop-filter:blur(3px)}
 <body>
 <header>
  <div class="row"><h1>オリキャラ図鑑<small id="cnt"></small></h1>
- <button id="syb">データ更新</button><span class="sy" id="sst"></span></div>
+ <button id="num-nav" aria-pressed="false">全界番号順</button><button id="syb">データ更新</button><span class="sy" id="sst"></span></div>
  <nav><button data-t="grid" aria-selected="true">図鑑</button><button data-t="rank" aria-selected="false">ランキング</button><button data-t="party" aria-selected="false">パーティ</button><button data-t="bday" aria-selected="false">誕生日</button></nav><div id="bn"></div>
 </header>
 <main><div id="grid"></div><div id="rank" hidden></div><div id="party" hidden></div><div id="bday" hidden></div></main>
@@ -359,10 +362,50 @@ function view(){const P=parseQ(st.q);
  if(kf){a=a.slice().sort((x,y)=>{const p=kf(x),r=kf(y);if(p==null&&r==null)return 0;if(p==null)return 1;if(r==null)return -1;const d=typeof p=='string'?p.localeCompare(r,'ja'):p-r;return st.desc?-d:d})}
  else if(st.desc)a=a.slice().reverse();
  $('#cnt').textContent=`${a.length} / ${st.cc?DATA.length:DATA.filter(c=>!c._isCC||!c._base).length}体`;
- LIST=a.map(c=>c._i);{const k=LIST.findIndex(i=>DATA[i]['全界番号']===CURNO);POS=k>=0?k:0}renderPage();qList();pbadge();hydrate();tray()}
+ LIST=a.map(c=>c._i);
+ updateNumberPages(a);
+ const i=LIST.find(i=>DATA[i]['全界番号']===CURNO);
+ const n=plainNumber(CURNO);
+ POS=i!==undefined?pagePosition(i):numberPages&&n>=numberPages.first&&n<=numberPages.last?n-numberPages.first:0;
+ renderPage();qList();pbadge();hydrate();tray()}
 
 /* ===== 図鑑ページUI ===== */
-let LIST=[],POS=0,CURNO='';
+let LIST=[],POS=0,CURNO='',numberNav=false,numberPages=null;
+function plainNumber(id){
+ const n=Number(id);
+ return /^\d+$/.test(id)&&Number.isSafeInteger(n)?n:NaN;
+}
+function buildNumberPages(chars){
+ const byNumber=new Map(),extras=[],positions=new Map();
+ let first=Infinity,last=-Infinity,width=4;
+ for(const c of chars){
+  const id=c['全界番号'],n=plainNumber(id);
+  if(!Number.isFinite(n)||byNumber.has(n)){extras.push(c._i);continue}
+  byNumber.set(n,c._i);
+  first=Math.min(first,n);last=Math.max(last,n);
+  if(id.startsWith('0'))width=Math.max(width,id.length);
+ }
+ const span=last-first+1;
+ if(!Number.isSafeInteger(span+extras.length)||span<1)return null;
+ for(const [n,i] of byNumber)positions.set(i,n-first);
+ extras.forEach((i,k)=>positions.set(i,span+k));
+ return {first,last,width,span,byNumber,extras,positions,length:span+extras.length};
+}
+function updateNumberPages(chars){
+ const available=!st.q.trim()&&!Object.values(st.f).some(Boolean)&&st.sort==='シート順'&&!st.desc&&!st.cc&&!st.nost&&!st.il;
+ const button=$('#num-nav');
+ button.disabled=!available;
+ button.title=available?'欠番も含めて全界番号を順に表示':'検索・絞り込み・並び替えを解除すると利用できます';
+ button.setAttribute('aria-pressed',String(numberNav));
+ numberPages=available&&numberNav?buildNumberPages(chars):null;
+}
+function pagePosition(i){return numberPages?numberPages.positions.get(i)??-1:LIST.indexOf(i)}
+function pageCount(){return numberPages?.length??LIST.length}
+function pageIndex(pos){
+ if(!numberPages)return LIST[pos];
+ const {span,first,byNumber,extras}=numberPages;
+ return pos<span?byNumber.get(first+pos):extras[pos-span];
+}
 const WLM={'現':'現代','古':'古代','零':'零界','未':'未来','妖':'妖星'};
 const WLP={'現':'#f2a34a','零':'#4f8de8','古':'#4fb467','未':'#6fd0e8','妖':'#ee86b2','魔':'#9468cf','天':'#f2dc6a','海':'#6fc0ee','冥':'#b49ade','炎':'#ee8a80','異':'#e0584f','然':'#a6d03c','賢':'#86c6e8','憶':'#5aaae8','聖':'#f2dc6a','彩':'#f2dc6a','幼':'#9edbef','飴':'#9edbef','数':'#9edbef','初':'#9edbef','冬':'#a9def2','恋':'#f4a0c0','桃':'#f4a0c0','孕':'#f0b4cc','飾':'#e0a8ec','団':'#6fbf6f','旧':'#2f7a4a','南':'#f2e48a','回':'#9edbef'};
 const WLK=w=>Array.from(String(w).split('×')[0].replace(/(IF|EX|SP|A)$/,''))[0]||'';
@@ -398,21 +441,26 @@ function pageHtml(c){
  <div class="pg-box pg-l"><h4>${s2?'ステータス':'種族値'} <small${s2?' class="bl"':''}>${has?(s2?'5ステ合計 '+f5:'合計'+b):'未設定'}</small></h4>${kv}${abl?`<h4 class="h2">特性</h4>${abl}`:''}</div>
  <div class="pg-box pg-r"><h4>詳細情報</h4><dl class="pg-dl">${dl||'<dt></dt><dd>—</dd>'}</dl></div></div>`}
 function renderPage(dir){const g=$('#grid');
- if(!LIST.length){g.innerHTML='<div class="empty">該当するキャラがいません</div>';$('#pc').textContent='0 / 0';return}
- const c=DATA[LIST[POS]];CURNO=c['全界番号'];g.innerHTML=pageHtml(c);
+ const count=pageCount();
+ if(!count){g.innerHTML='<div class="empty">該当するキャラがいません</div>';$('#pc').textContent='0 / 0';return}
+ const c=DATA[pageIndex(POS)];
+ CURNO=c?c['全界番号']:String(numberPages.first+POS).padStart(numberPages.width,'0');
+ g.innerHTML=c?pageHtml(c):`<div class="pg pg-missing"><div class="pg-bar"><div class="pg-rk"></div><div class="pg-nm">欠番</div><div class="pg-no">${noHtml({'全界番号':CURNO})}</div></div></div>`;
  if(dir&&!matchMedia('(prefers-reduced-motion:reduce)').matches)g.firstElementChild.classList.add(dir>0?'inr':'inl');
- $('#pc').textContent=`${POS+1} / ${LIST.length}`;
+ $('#pc').textContent=`${POS+1} / ${count}`;
+ if(!c)return;
  const im=g.querySelector('.pg-img');illust(c).then(u=>{if(u&&CURNO===c['全界番号']&&im.isConnected)im.innerHTML=`<img src="${u}" alt="${esc(c['キャラ名'])}">`})}
 function go(d){
- if(!LIST.length)return;
+ const count=pageCount();
+ if(!count)return;
  const next=POS+d;
- const pos=Math.abs(d)===1?(next+LIST.length)%LIST.length:Math.max(0,Math.min(next,LIST.length-1));
+ const pos=Math.abs(d)===1?(next+count)%count:Math.max(0,Math.min(next,count-1));
  if(pos===POS)return;
  POS=pos;
  renderPage(d);
 }
 function ctlSync(){Object.entries(st.f).forEach(([k,v])=>{const e=document.querySelector(`select[data-f="${k}"]`);if(e)e.value=v||''});$('#sort').value=st.sort;$('#cc').checked=st.cc;$('#nost').checked=st.nost;$('#il').checked=st.il;$('#dir').textContent=st.desc?'降順':'昇順'}
-function gotoChar(i){if(st.tab!=='grid')tab('grid');const c=DATA[i];if(!c)return;CURNO=c['全界番号'];const k=LIST.indexOf(i);
+function gotoChar(i){if(st.tab!=='grid')tab('grid');const c=DATA[i];if(!c)return;CURNO=c['全界番号'];const k=pagePosition(i);
  if(k>=0){POS=k;renderPage();return}
  st.q='';st.f={};st.nost=false;st.il=false;if(c._isCC)st.cc=true;$('#q').value='';buildCtl();ctlSync();view()}
 function qList(){const el=$('#ql'),n=LIST.length;if(!el)return;
@@ -420,6 +468,11 @@ function qList(){const el=$('#ql'),n=LIST.length;if(!el)return;
  const fd=$('#fdn');if(fd)fd.textContent=`${n}体が該当`}
 function pbadge(){const n=Object.values(st.f).filter(Boolean).length+(st.sort!=='シート順'?1:0)+(st.desc?1:0)+(st.cc?1:0)+(st.nost?1:0)+(st.il?1:0);
  $('#fbn').textContent=n;$('#fbn').hidden=!n;$('#sbn').hidden=!st.q.trim()}
+$('#num-nav').onclick=()=>{
+ numberNav=!numberNav;
+ LS.s('oc_num_nav',numberNav?'1':'0');
+ view();
+};
 $('#sbtn').onclick=()=>{$('#sd').showModal();setTimeout(()=>$('#q').focus(),50)};
 $('#fbtn').onclick=()=>$('#fd').showModal();
 $('#sdx').onclick=()=>$('#sd').close();$('#fdx').onclick=()=>$('#fd').close();
@@ -428,7 +481,7 @@ $('#pbar .nv').addEventListener('click',e=>{
  const b=e.target.closest('button[data-step]');
  if(b)go(Number(b.dataset.step));
 });
-$('#ql').addEventListener('click',e=>{const b=e.target.closest('.qi');if(b){POS=+b.dataset.pos;renderPage();$('#sd').close()}});
+$('#ql').addEventListener('click',e=>{const b=e.target.closest('.qi');if(b){POS=pagePosition(LIST[+b.dataset.pos]);renderPage();$('#sd').close()}});
 $('#grid').addEventListener('click',e=>{const t=e.target,im=t.closest('.pg-img img');if(im){$('#lb img').src=im.src;$('#lb').showModal();return}
  const p=t.closest('.ptd');if(p){addP(DATA[+p.dataset.c]['全界番号']);return}const m=t.closest('.mre');if(m)detailFull(+m.dataset.i)});
 addEventListener('keydown',e=>{if(st.tab!=='grid'||document.querySelector('dialog[open]')||/INPUT|SELECT|TEXTAREA/.test(e.target.tagName))return;if(e.key==='ArrowLeft')go(-1);else if(e.key==='ArrowRight')go(1)});
@@ -608,6 +661,7 @@ $('#xc').onclick=()=>$('#sync').close();
 $('#go').onclick=()=>{LS.s('oc_url2',$('#url2').value.trim());fetchS2($('#url3').value.trim(),true).then(()=>sync($('#url').value.trim(),true))};
 $('#fb').onclick=()=>$('#fi').click();
 $('#fi').onchange=async e=>{const f=e.target.files[0];if(!f)return;const t=await f.text();if(t.includes('キャラクター名')){setS2(t,'S2をCSVから読込');$('#sm').textContent='S2を反映しました（'+S2DATA.length+'件）';$('#sync').close();return}if(!t.includes('キャラ名')){if(t.includes('攻撃')){TCH=parseChart(t);LS.s('oc_chart',t);LS.s('oc_ctime',Date.now());$('#sm').textContent='タイプ相性を読み込みました';if(st.tab==='party')renderParty();return}$('#sm').textContent='キャラ名の列が見つかりません';return}got(t,'CSVを読み込み');$('#sm').textContent='反映しました（'+DATA.length+'件）';$('#sync').close()};
+numberNav=LS.g('oc_num_nav')==='1';
 const cache=LS.g('oc_csv'),ct=+LS.g('oc_time')||0;
 const cch=LS.g('oc_chart');if(cch&&(+LS.g('oc_ctime')||0)>BUILT)TCH=parseChart(cch);
 S2DATA=parseS2(LS.g('oc_s2')||S2CSV);
