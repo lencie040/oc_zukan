@@ -197,7 +197,11 @@ body[data-tab=grid] main{padding-bottom:92px}
  #pbar .lg{display:none}#pbar .sm2{display:inline}
  #pbar button{padding:0 12px;font-size:14px}
  #pbar .pc{min-width:4.6em;font-size:13px}
- #pbar .nv{gap:4px}
+ #pbar{display:grid;grid-template-columns:1fr 1fr;padding-inline:8px;gap:4px}
+ #pbar .nv{grid-column:1/-1;grid-row:1;justify-content:center;gap:3px}
+ #pbar .nv button{width:clamp(31px,11vw,46px);font-size:13px}
+ body[data-tab=grid] #tray{bottom:calc(112px + env(safe-area-inset-bottom,0px))}
+ body[data-tab=grid] main{padding-bottom:calc(142px + env(safe-area-inset-bottom,0px))}
 }
 
 /* Catalogue surfaces and controls */
@@ -255,7 +259,15 @@ dialog::backdrop{backdrop-filter:blur(3px)}
  <nav><button data-t="grid" aria-selected="true">図鑑</button><button data-t="rank" aria-selected="false">ランキング</button><button data-t="party" aria-selected="false">パーティ</button><button data-t="bday" aria-selected="false">誕生日</button></nav><div id="bn"></div>
 </header>
 <main><div id="grid"></div><div id="rank" hidden></div><div id="party" hidden></div><div id="bday" hidden></div></main>
-<div id="pbar"><button id="sbtn" aria-label="検索を開く">🔍 検索<i class="bdg" id="sbn" hidden>●</i></button><div class="nv"><button id="pv" aria-label="前のキャラ">◀</button><span class="pc" id="pc"></span><button id="nx" aria-label="次のキャラ">▶</button></div><button id="fbtn" aria-label="並び替え・絞り込みを開く">⚙ <span class="lg">並び替え・絞り込み</span><span class="sm2">絞り込み</span><i class="bdg" id="fbn" hidden></i></button></div>
+<div id="pbar"><button id="sbtn" aria-label="検索を開く">🔍 検索<i class="bdg" id="sbn" hidden>●</i></button><div class="nv" role="group" aria-label="ページ移動">
+  <button data-step="-100" aria-label="100ページ前へ">−100</button>
+  <button data-step="-10" aria-label="10ページ前へ">−10</button>
+  <button data-step="-1" aria-label="1ページ前へ">◀</button>
+  <span class="pc" id="pc"></span>
+  <button data-step="1" aria-label="1ページ次へ">▶</button>
+  <button data-step="10" aria-label="10ページ次へ">+10</button>
+  <button data-step="100" aria-label="100ページ次へ">+100</button>
+</div><button id="fbtn" aria-label="並び替え・絞り込みを開く">⚙ <span class="lg">並び替え・絞り込み</span><span class="sm2">絞り込み</span><i class="bdg" id="fbn" hidden></i></button></div>
 <dialog id="sd"><div class="sec" style="padding-top:16px"><div class="row" style="margin-bottom:8px"><input id="q" type="search" placeholder="例: Rank:SS,H:70,B:55-90" aria-label="検索" style="flex:1 1 200px"><button id="sdx">閉じる</button></div><p class="sy" style="margin:0 0 8px;line-height:1.7">使い方：<b>Rank:SS</b> <b>H:70</b> <b>B:55-90</b> <b>H:&gt;80</b> <b>タイプ:水</b> <b>世界線:零</b> <b>世界団:䥚</b> <b>族:クマノミ</b> <b>シーズン:S2</b><br>区切りはスペースかカンマ。ランクは E〜ZZZ（S2は星の数）。範囲は 55-90、以上・以下は &gt;80 &lt;80。キーなしの語は名前・読み・特性などの部分一致です。</p><div id="ql"></div></div></dialog>
 <dialog id="fd"><div class="sec" style="padding-top:16px"><h3>並び替え・絞り込み</h3><div class="row" id="ctl"></div><div class="bt"><button id="fdx">閉じる</button><span class="sy" id="fdn"></span></div></div></dialog>
 <dialog id="pk"><div class="sec" style="padding-top:16px"><div class="row" style="margin-bottom:8px"><input id="pks" type="search" placeholder="名前・タイプ・族で検索" style="flex:1 1 200px"><button id="pkx">閉じる</button></div><div id="pkl"></div></div></dialog>
@@ -391,7 +403,14 @@ function renderPage(dir){const g=$('#grid');
  if(dir&&!matchMedia('(prefers-reduced-motion:reduce)').matches)g.firstElementChild.classList.add(dir>0?'inr':'inl');
  $('#pc').textContent=`${POS+1} / ${LIST.length}`;
  const im=g.querySelector('.pg-img');illust(c).then(u=>{if(u&&CURNO===c['全界番号']&&im.isConnected)im.innerHTML=`<img src="${u}" alt="${esc(c['キャラ名'])}">`})}
-function go(d){if(!LIST.length)return;POS=(POS+d+LIST.length)%LIST.length;renderPage(d)}
+function go(d){
+ if(!LIST.length)return;
+ const next=POS+d;
+ const pos=Math.abs(d)===1?(next+LIST.length)%LIST.length:Math.max(0,Math.min(next,LIST.length-1));
+ if(pos===POS)return;
+ POS=pos;
+ renderPage(d);
+}
 function ctlSync(){Object.entries(st.f).forEach(([k,v])=>{const e=document.querySelector(`select[data-f="${k}"]`);if(e)e.value=v||''});$('#sort').value=st.sort;$('#cc').checked=st.cc;$('#nost').checked=st.nost;$('#il').checked=st.il;$('#dir').textContent=st.desc?'降順':'昇順'}
 function gotoChar(i){if(st.tab!=='grid')tab('grid');const c=DATA[i];if(!c)return;CURNO=c['全界番号'];const k=LIST.indexOf(i);
  if(k>=0){POS=k;renderPage();return}
@@ -405,7 +424,10 @@ $('#sbtn').onclick=()=>{$('#sd').showModal();setTimeout(()=>$('#q').focus(),50)}
 $('#fbtn').onclick=()=>$('#fd').showModal();
 $('#sdx').onclick=()=>$('#sd').close();$('#fdx').onclick=()=>$('#fd').close();
 ['sd','fd'].forEach(id=>$('#'+id).addEventListener('click',e=>{if(e.target.id===id)$('#'+id).close()}));
-$('#pv').onclick=()=>go(-1);$('#nx').onclick=()=>go(1);
+$('#pbar .nv').addEventListener('click',e=>{
+ const b=e.target.closest('button[data-step]');
+ if(b)go(Number(b.dataset.step));
+});
 $('#ql').addEventListener('click',e=>{const b=e.target.closest('.qi');if(b){POS=+b.dataset.pos;renderPage();$('#sd').close()}});
 $('#grid').addEventListener('click',e=>{const t=e.target,im=t.closest('.pg-img img');if(im){$('#lb img').src=im.src;$('#lb').showModal();return}
  const p=t.closest('.ptd');if(p){addP(DATA[+p.dataset.c]['全界番号']);return}const m=t.closest('.mre');if(m)detailFull(+m.dataset.i)});
