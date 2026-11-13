@@ -95,7 +95,10 @@ main{padding-top:12px}
 .pg-rk b,.pg-no b{display:block;margin-top:.1cqw;font-size:7.6cqw;font-weight:800;color:#bdd21c;text-shadow:.35cqw .35cqw 0 #000;white-space:nowrap}
 .pg-no b{font-size:min(5.6cqw,calc(34cqw / var(--nl,5)));margin-top:.9cqw}
 .pg-nm{position:absolute;left:19cqw;right:21cqw;top:0;height:100%;display:flex;align-items:center;justify-content:center;text-align:center;color:#fff;font-size:min(5.6cqw,calc(52cqw / var(--len,6)));font-weight:500;line-height:1.15;overflow-wrap:anywhere}
-.pg-tp{position:absolute;left:1.4%;top:15.8cqw}
+.pg-tp{position:absolute;left:1.4%;top:15.8cqw;display:flex;align-items:flex-start;gap:1.5cqw;max-width:25.6%}
+.pg-period{display:grid;gap:6px;min-width:0;overflow-wrap:anywhere}
+.pg-period small{font-weight:700;color:#4c5d73}
+.pg-period b{font-size:clamp(13px,2.1cqw,20px);color:#233650}
 .pg-tl{font-size:4.2cqw;font-weight:700;line-height:1}
 .pt{position:relative;width:10.6cqw;aspect-ratio:1;margin:.9cqw 0 0;border:max(2px,.36cqw) solid #000;background:#fff}
 .pt i{position:absolute;inset:0}
@@ -183,7 +186,7 @@ body[data-tab=grid] main{padding-bottom:92px}
  .pg-rk small,.pg-no small{font-size:13px}
  .pg{--sh:1.6px}.pg-rk b{font-size:34px;margin-top:2px}.pt.three b{font-size:17px}.pt.three.long b{font-size:11px}.pg-no b{font-size:min(20px,calc(104px / var(--nl,5)));margin-top:6px}
  .pg-nm{font-size:min(24px,calc(78vw / var(--len,6)));height:auto}
- .pg-tp{grid-area:tp;position:static;padding:0 0 0 12px}
+ .pg-tp{grid-area:tp;position:static;padding:0 0 0 12px;max-width:none;gap:10px}
  .pg-tl{font-size:15px}
  .pt{width:76px;margin:6px 0 0}.pt b{font-size:28px}.pt.one b{font-size:34px}.pt.long b{font-size:15px}
  .pg-wl{grid-area:wl;position:static;width:auto;gap:6px}
@@ -484,7 +487,7 @@ nav button[data-t="world-map"]{white-space:normal;line-height:1.2}
   <button data-step="100" aria-label="100ページ次へ">+100</button>
   <button data-step="1000" data-number-jump hidden aria-label="1000番号分進む">+1000</button>
 </div><div class="pbar-actions"><button id="num-nav" aria-pressed="false">全界番号順</button><button id="fbtn" aria-label="並び替え・絞り込みを開く">⚙ <span class="lg">並び替え・絞り込み</span><span class="sm2">絞り込み</span><i class="bdg" id="fbn" hidden></i></button></div></div>
-<dialog id="sd"><div class="sec" style="padding-top:16px"><div class="row" style="margin-bottom:8px"><input id="q" type="search" placeholder="例: Rank:SS,H:70,B:55-90" aria-label="検索" style="flex:1 1 200px"><button id="sdx">閉じる</button></div><p class="sy" style="margin:0 0 8px;line-height:1.7">使い方：<b>Rank:SS</b> <b>H:70</b> <b>B:55-90</b> <b>H:&gt;80</b> <b>タイプ:水</b> <b>世界線:零</b> <b>世界団:䥚</b> <b>族:クマノミ</b> <b>シーズン:S2</b><br>区切りはスペースかカンマ。ランクは E〜ZZZ（S2は星の数）。範囲は 55-90、以上・以下は &gt;80 &lt;80。キーなしの語は名前・読み・特性などの部分一致です。</p><div id="ql"></div></div></dialog>
+<dialog id="sd"><div class="sec" style="padding-top:16px"><div class="row" style="margin-bottom:8px"><input id="q" type="search" placeholder="例: Rank:SS,H:70,B:55-90" aria-label="検索" style="flex:1 1 200px"><button id="sdx">閉じる</button></div><form id="number-jump" class="row"><input id="jump-number" type="search" placeholder="全界番号（例 3333）" aria-label="全界番号" required><button>番号へ移動</button></form><p id="jump-status" class="sy" role="status"></p><p class="sy" style="margin:0 0 8px;line-height:1.7">使い方：<b>Rank:SS</b> <b>H:70</b> <b>B:55-90</b> <b>H:&gt;80</b> <b>タイプ:水</b> <b>世界線:零</b> <b>世界団:䥚</b> <b>族:クマノミ</b> <b>シーズン:S2</b><br>区切りはスペースかカンマ。ランクは E〜ZZZ（S2は星の数）。範囲は 55-90、以上・以下は &gt;80 &lt;80。キーなしの語は名前・読み・特性などの部分一致です。</p><div id="ql"></div></div></dialog>
 <dialog id="fd"><div class="sec" style="padding-top:16px"><h3>並び替え・絞り込み</h3><div class="row" id="ctl"></div><div class="bt"><button id="fdx">閉じる</button><span class="sy" id="fdn"></span></div></div></dialog>
 <dialog id="pk"><div class="sec" style="padding-top:16px"><div class="row" style="margin-bottom:8px"><input id="pks" type="search" placeholder="名前・タイプ・族で検索" style="flex:1 1 200px"><button id="pkx">閉じる</button></div><div id="pkl"></div></div></dialog>
 <div id="tray"></div><dialog id="cd"></dialog>
@@ -498,7 +501,7 @@ function parseS2(s){if(!s)return[];const R=csvRows(s).filter(r=>r.length>2);cons
 return R.map((row,i)=>{const o={};h.forEach((k,j)=>o[k]=(row[j]||'').trim());const nm=o['キャラクター名'];if(!nm)return null;
 const id=o['ID']||'',no='S2-'+(/^\d+$/.test(id)?id.padStart(3,'0'):'x'+(i+1));
 const st=k=>{const v=num(o[k]);return v?String(v):''};const sum=num(o['5ステ合計']);const w=(o['世界線']||'').split('／');
-return{'キャラ名':nm,'漢字':Array.from(nm)[0],'キャラ名読み':o['読み方'],'全界番号':no,'族':o['族'],'世界団':o['世界団'],'世界線1':w[0]||'','世界線2':w[1]||'','世界線3':w[2]||'','ランク':o['ランク'],'モチーフ駅':o['モチーフ駅代表'],'H':st('体力'),'A':st('攻撃力'),'B':st('防御力'),'C':st('魔力'),'D':st('精神力'),'5ステ合計':sum?String(sum):'','IQ':o['IQ'],'データ':'S2'}}).filter(Boolean)}
+return{'キャラ名':nm,'漢字':Array.from(nm)[0],'キャラ名読み':o['読み方'],'全界番号':no,'期':o['期'],'族':o['族'],'世界団':o['世界団'],'世界線1':w[0]||'','世界線2':w[1]||'','世界線3':w[2]||'','ランク':o['ランク'],'モチーフ駅':o['モチーフ駅代表'],'H':st('体力'),'A':st('攻撃力'),'B':st('防御力'),'C':st('魔力'),'D':st('精神力'),'5ステ合計':sum?String(sum):'','IQ':o['IQ'],'データ':'S2'}}).filter(Boolean)}
 const S2SHEET='https://docs.google.com/spreadsheets/d/1v2nMhZftw4EIEVcpOMluSK8nlz62roy7OMkh23AyvE4/edit?gid=85396954#gid=85396954';
 const S2CSV=`族,ID,キャラクター名,ランク,読み方,モチーフ駅代表,世界線,世界団,体力,攻撃力,防御力,魔力,精神力,5ステ合計,IQ
 アクア,1,多元軌跡 フルリーア,★5,たげんきせきふるりーあ,古莉亜城,幼界IF,䥚／𡻦,150,210,130,250,105,845,98
@@ -648,7 +651,7 @@ function pageHtml(c){
  const bg=s2&&S2RC[c['ランク']]?` style="--pgbg:${S2RC[c['ランク']]}"`:'';
  return `<div class="pg"${bg}>
  <div class="pg-bar"><div class="pg-rk"><small>ランク</small>${rankHtml(c)}</div><div class="pg-nm" style="--len:${len}">${esc(nm)}</div><div class="pg-no">${noHtml(c)}</div></div>
- ${ty.length?`<div class="pg-tp"><div class="pg-tl">タイプ</div>${typeIcon(c)}</div>`:'<div class="pg-tp"></div>'}
+ <div class="pg-tp">${ty.length?`<div><div class="pg-tl">タイプ</div>${typeIcon(c)}</div>`:''}${c['期']?`<div class="pg-period"><small>期</small><b>${esc(c['期'])}</b></div>`:''}</div>
  <div class="pg-wl" style="--n:${Math.max(2,wl.length)}">${wl.map(w=>{const l=wlLabel(w),n=Array.from(l).length;return `<div class="wl" style="--wc:${wlColor(w)};font-size:min(3.3cqw,${(13/Math.max(n,1)).toFixed(2)}cqw)">${esc(l)}</div>`}).join('')}</div>
  <div class="pg-img"><span class="pg-placeholder">イラスト未登録</span></div>
  <div class="pg-acts">${s2?'':`<button class="cmp" data-c="${c._i}" aria-pressed="${CMP.includes(c._i)}">比較に追加</button>`}<button class="ptd" data-c="${c._i}">パーティに追加</button><button class="mre" data-i="${c._i}">グラフ・詳細</button></div>
@@ -767,6 +770,35 @@ function detailFull(i){const c=DATA[i],b=num(c['合計種族値']),f5=num(c['5�
  ${mv?`<div class="sec"><h3>専用技</h3><p class="ab">${mv}</p></div>`:''}
  <div class="sec"><h3>プロフィール</h3><dl>${row('汎異記号',c['汎異記号'])}${row('世界団',c['世界団'])}${row('族',c['族'])}${row('勢力',c['勢力'])}${row('誕生日',c['誕生日'])}${row('世界線',[c['世界線1'],c['世界線2'],c['世界線3']].filter(Boolean).join(' / '))}${row('初登場',c['初登場'])}${row('初登場作品',c['初登場作品'])}${row('初登場日',c['初登場日'])}${row('ランク',c['ランク'])}${row('IQ',c['IQ'])}${row('モチーフ駅',c['モチーフ駅'])}${row('モチーフ曲',c['モチーフ曲'])}${sw?`<dt>カラー</dt><dd>${sw}</dd>`:''}</dl></div>`;
  const d=$('#dlg');d.showModal();d.scrollTop=0;const ht=d.querySelector('.dh .tile');illust(c).then(u=>{if(u){setImg(ht,u);ht.dataset.zoom=u}});try{history.replaceState(null,'','#c'+i)}catch(e){}}
+$('#number-jump').addEventListener('submit',e=>{
+ e.preventDefault();
+ const input=$('#jump-number');
+ const id=displayNumber(input.value.trim().normalize('NFKC')).toLowerCase();
+ const status=$('#jump-status');
+ const c=DATA.find(c=>displayNumber(c['全界番号']).toLowerCase()===id);
+ if(c){
+  gotoChar(c._i);
+ }else{
+  const n=plainNumber(id);
+  const pages=buildNumberPages(DATA);
+  if(!pages||!Number.isFinite(n)||n<pages.first||n>pages.last){
+   status.textContent='指定の全界番号が見つかりません';
+   return;
+  }
+  Object.assign(st,{q:'',f:{},sort:'シート順',desc:false,cc:false,nost:false,il:false});
+  numberNav=true;
+  LS.s('oc_num_nav','1');
+  CURNO=id.padStart(pages.width,'0');
+  $('#q').value='';
+  buildCtl();
+  ctlSync();
+  view();
+ }
+ status.textContent='';
+ input.value='';
+ $('#sd').close();
+ scrollTo(0,0);
+});
 $('#q').addEventListener('input',e=>{st.q=e.target.value;view()});
 $('#ctl').addEventListener('change',e=>{const t=e.target;if(t.dataset.f!==undefined)st.f[t.dataset.f]=t.value;else if(t.id==='sort')st.sort=t.value;else if(t.id==='cc')st.cc=t.checked;else if(t.id==='nost')st.nost=t.checked;else if(t.id==='il'){st.il=t.checked;if(t.checked){probeAll().then(view);return}}view()});
 $('#ctl').addEventListener('click',e=>{if(e.target.id==='dir'){st.desc=!st.desc;e.target.textContent=st.desc?'降順':'昇順';view()}
