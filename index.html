@@ -99,7 +99,7 @@ main{padding-top:12px}
 .pg-period{display:grid;gap:.6cqw;min-width:0;max-width:100%;overflow-wrap:anywhere}
 .pg-period small{font-weight:700;color:#4c5d73;font-size:clamp(11px,1.6cqw,15px);line-height:1}
 .pg-period b{font-size:clamp(13px,2.1cqw,20px);line-height:1.2;color:#233650;white-space:nowrap}
-.pg-period.ps{position:relative;isolation:isolate;display:grid;gap:.5cqw;padding:1.2cqw 3.2cqw 1.2cqw 3.8cqw;background:var(--pe,#4c5d73);clip-path:polygon(18% 0,100% 0,82% 100%,0 100%);max-width:100%}
+.pg-period.ps{position:relative;isolation:isolate;display:grid;gap:.5cqw;margin:.9cqw 0 0;padding:1.2cqw 3.2cqw 1.2cqw 3.8cqw;background:var(--pe,#4c5d73);clip-path:polygon(18% 0,100% 0,82% 100%,0 100%);max-width:100%}
 .pg-period.ps::before{content:'';position:absolute;inset:.45cqw;z-index:-1;background:var(--pf,#fff);clip-path:polygon(18% 0,100% 0,82% 100%,0 100%)}
 .pg-period.ps small,.pg-period.ps b{color:var(--pt,#233650)}
 .pg-tl{font-size:4.2cqw;font-weight:700;line-height:1}
@@ -664,7 +664,7 @@ function pageHtml(c){
  const bg=s2&&S2RC[c['ランク']]?` style="--pgbg:${S2RC[c['ランク']]}"`:'';
  return `<div class="pg"${bg}>
  <div class="pg-bar"><div class="pg-rk"><small>ランク</small>${rankHtml(c)}</div><div class="pg-nm" style="--len:${len}">${esc(nm)}</div><div class="pg-no">${noHtml(c)}</div></div>
- <div class="pg-tp">${ty.length?`<div><div class="pg-tl">タイプ</div>${typeIcon(c)}</div>`:''}${c['期']?`<div class="pg-period ps" style="${periodStyle(c['期'])}"><small>期</small><b>${esc(c['期'])}</b></div>`:''}</div>
+ <div class="pg-tp">${ty.length?typeIcon(c):''}${c['期']?`<div class="pg-period ps" style="${periodStyle(c['期'])}"><small>期</small><b>${esc(c['期'])}</b></div>`:''}</div>
  <div class="pg-wl" style="--n:${Math.max(2,wl.length)}">${wl.map(w=>{const l=wlLabel(w),n=Array.from(l).length;return `<div class="wl" style="--wc:${wlColor(w)};font-size:min(3.3cqw,${(13/Math.max(n,1)).toFixed(2)}cqw)">${esc(l)}</div>`}).join('')}</div>
  <div class="pg-img"><span class="pg-placeholder">イラスト未登録</span></div>
  <div class="pg-acts">${s2?'':`<button class="cmp" data-c="${c._i}" aria-pressed="${CMP.includes(c._i)}">比較に追加</button>`}<button class="ptd" data-c="${c._i}">パーティに追加</button><button class="mre" data-i="${c._i}">グラフ・詳細</button></div>
