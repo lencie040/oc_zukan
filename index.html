@@ -95,10 +95,13 @@ main{padding-top:12px}
 .pg-rk b,.pg-no b{display:block;margin-top:.1cqw;font-size:7.6cqw;font-weight:800;color:#bdd21c;text-shadow:.35cqw .35cqw 0 #000;white-space:nowrap}
 .pg-no b{font-size:min(5.6cqw,calc(34cqw / var(--nl,5)));margin-top:.9cqw}
 .pg-nm{position:absolute;left:19cqw;right:21cqw;top:0;height:100%;display:flex;align-items:center;justify-content:center;text-align:center;color:#fff;font-size:min(5.6cqw,calc(52cqw / var(--len,6)));font-weight:500;line-height:1.15;overflow-wrap:anywhere}
-.pg-tp{position:absolute;left:1.4%;top:15.8cqw;display:flex;align-items:flex-start;gap:1.5cqw;max-width:25.6%}
-.pg-period{display:grid;gap:6px;min-width:0;overflow-wrap:anywhere}
-.pg-period small{font-weight:700;color:#4c5d73}
-.pg-period b{font-size:clamp(13px,2.1cqw,20px);color:#233650}
+.pg-tp{position:absolute;left:1.4%;top:15.8cqw;display:flex;align-items:flex-start;gap:1.5cqw;max-width:60%}
+.pg-period{display:grid;gap:.6cqw;min-width:0;max-width:100%;overflow-wrap:anywhere}
+.pg-period small{font-weight:700;color:#4c5d73;font-size:clamp(11px,1.6cqw,15px);line-height:1}
+.pg-period b{font-size:clamp(13px,2.1cqw,20px);line-height:1.2;color:#233650;white-space:nowrap}
+.pg-period.ps{position:relative;isolation:isolate;display:grid;gap:.5cqw;padding:1.2cqw 3.2cqw 1.2cqw 3.8cqw;background:var(--pe,#4c5d73);clip-path:polygon(18% 0,100% 0,82% 100%,0 100%);max-width:100%}
+.pg-period.ps::before{content:'';position:absolute;inset:.45cqw;z-index:-1;background:var(--pf,#fff);clip-path:polygon(18% 0,100% 0,82% 100%,0 100%)}
+.pg-period.ps small,.pg-period.ps b{color:var(--pt,#233650)}
 .pg-tl{font-size:4.2cqw;font-weight:700;line-height:1}
 .pt{position:relative;width:10.6cqw;aspect-ratio:1;margin:.9cqw 0 0;border:max(2px,.36cqw) solid #000;background:#fff}
 .pt i{position:absolute;inset:0}
@@ -187,6 +190,7 @@ body[data-tab=grid] main{padding-bottom:92px}
  .pg{--sh:1.6px}.pg-rk b{font-size:34px;margin-top:2px}.pt.three b{font-size:17px}.pt.three.long b{font-size:11px}.pg-no b{font-size:min(20px,calc(104px / var(--nl,5)));margin-top:6px}
  .pg-nm{font-size:min(24px,calc(78vw / var(--len,6)));height:auto}
  .pg-tp{grid-area:tp;position:static;padding:0 0 0 12px;max-width:none;gap:10px}
+.pg-period small{font-size:12px}.pg-period b{font-size:15px;white-space:normal}
  .pg-tl{font-size:15px}
  .pt{width:76px;margin:6px 0 0}.pt b{font-size:28px}.pt.one b{font-size:34px}.pt.long b{font-size:15px}
  .pg-wl{grid-area:wl;position:static;width:auto;gap:6px}
@@ -639,6 +643,15 @@ function typeIcon(c){const t=tys(c);if(!t.length)return '';const a=t[0],b=t[1],l
  const d=t[2];if(d)return `<div class="pt three${lg||(Array.from(d).length>1?' long':'')}" style="--a:${tc(a)};--b:${tc(b)};--c:${tc(d)}"><b class="ta">${esc(a)}</b><b class="tb">${esc(b)}</b><b class="tc">${esc(d)}</b></div>`;
  return b?`<div class="pt${lg}" style="--a:${tc(a)};--b:${tc(b)}"><i class="t1"></i><i class="t2"></i><b class="ta">${esc(a)}</b><b class="tb">${esc(b)}</b></div>`
   :`<div class="pt one${lg}" style="--a:${tc(a)}"><i class="t1"></i><b>${esc(a)}</b></div>`}
+const PERIOD_COLORS={1:['#d9d9d9','#4a4a4a'],2:['#5c5c5c','#e6e6e6'],3:['#3f9e4d','#b8e04a'],4:['#8fd8f2','#e02424'],5:['#f7b3cf','#d1287a'],6:['#f7d82a','#111111'],7:['#93a5b6','#a46a6a'],8:['#7e3f9e','#ff7ab8'],9:['#d4bff0','#f2d200'],10:['#e23b36','#7a0d0d'],11:['#ffe357','#c9a000'],12:['#ffffff','#c9b8e8'],13:['#4b1f6f','#c8ec4e'],14:['#fcd6e5','#444444'],15:['#cde86a','#fac9dc'],16:['#c2ecf8','#f5a6a6']};
+function periodStyle(p){
+ const k=+(String(p).match(/(\d+)\s*期/)||[])[1],c=PERIOD_COLORS[k];
+ if(!c)return '--pf:#fff;--pe:#4c5d73;--pt:#233650';
+ const [f,e]=c,lin=h=>{const v=[1,3,5].map(i=>parseInt(h.substr(i,2),16)/255).map(x=>x<=.03928?x/12.92:Math.pow((x+.055)/1.055,2.4));return .2126*v[0]+.7152*v[1]+.0722*v[2]},L=lin(f);
+ const txt=(1.05/(L+.05))>((L+.05)/.05)?'#ffffff':'#000000';
+ const g=h=>`linear-gradient(135deg,color-mix(in srgb,${h} 70%,#fff),${h})`;
+ return `--pf:${g(f)};--pe:${g(e)};--pt:${txt}`;
+}
 function pageHtml(c){
  const s2=c['データ']==='S2',b=num(c['合計種族値']),f5=num(c['5ステ合計']),nm=c['キャラ名'],len=Math.max(4,Array.from(nm).length);
  const wl=[c['世界線1'],c['世界線2'],c['世界線3']].filter(Boolean),ty=tys(c),has=s2?!!f5:!!b;
@@ -651,7 +664,7 @@ function pageHtml(c){
  const bg=s2&&S2RC[c['ランク']]?` style="--pgbg:${S2RC[c['ランク']]}"`:'';
  return `<div class="pg"${bg}>
  <div class="pg-bar"><div class="pg-rk"><small>ランク</small>${rankHtml(c)}</div><div class="pg-nm" style="--len:${len}">${esc(nm)}</div><div class="pg-no">${noHtml(c)}</div></div>
- <div class="pg-tp">${ty.length?`<div><div class="pg-tl">タイプ</div>${typeIcon(c)}</div>`:''}${c['期']?`<div class="pg-period"><small>期</small><b>${esc(c['期'])}</b></div>`:''}</div>
+ <div class="pg-tp">${ty.length?`<div><div class="pg-tl">タイプ</div>${typeIcon(c)}</div>`:''}${c['期']?`<div class="pg-period ps" style="${periodStyle(c['期'])}"><small>期</small><b>${esc(c['期'])}</b></div>`:''}</div>
  <div class="pg-wl" style="--n:${Math.max(2,wl.length)}">${wl.map(w=>{const l=wlLabel(w),n=Array.from(l).length;return `<div class="wl" style="--wc:${wlColor(w)};font-size:min(3.3cqw,${(13/Math.max(n,1)).toFixed(2)}cqw)">${esc(l)}</div>`}).join('')}</div>
  <div class="pg-img"><span class="pg-placeholder">イラスト未登録</span></div>
  <div class="pg-acts">${s2?'':`<button class="cmp" data-c="${c._i}" aria-pressed="${CMP.includes(c._i)}">比較に追加</button>`}<button class="ptd" data-c="${c._i}">パーティに追加</button><button class="mre" data-i="${c._i}">グラフ・詳細</button></div>
