@@ -414,11 +414,11 @@ dialog::backdrop{backdrop-filter:blur(3px)}
 #wm-root .tile-foot .ex{font-weight:700}
 #wm-root .panel{position:fixed;inset:0 0 0 auto;margin:0;width:min(440px,100%);height:100dvh;max-height:100dvh;background:var(--surface);display:none;grid-template-rows:auto minmax(0,1fr)}
 #wm-root .panel[open]{display:grid}
-#wm-root .panel-head{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;align-items:start;padding:18px 18px 12px;border-bottom:1px solid var(--line)}
+#wm-root .panel-head{position:relative;padding:18px 62px 12px 18px;border-bottom:1px solid var(--line)}
 #wm-root .panel-head h3{font-family:var(--f-display);font-size:1.6rem;line-height:1.15;overflow-wrap:anywhere}
 #wm-root .panel-head .sub{font-size:.78rem;color:var(--muted);margin-top:4px}
 #wm-root .panel-head .pill{display:inline-block;margin-top:8px}
-#wm-root .close{font:inherit;font-size:1.3rem;line-height:1;border:1px solid var(--line);background:var(--bg);color:var(--ink);width:36px;height:36px;border-radius:50%;cursor:pointer}
+#wm-root .close{position:absolute;top:14px;right:14px;display:grid;place-items:center;margin:0;padding:0;font:inherit;font-size:1.3rem;line-height:1;border:1px solid var(--line);background:var(--bg);color:var(--ink);width:36px;height:36px;border-radius:50%;cursor:pointer}
 #wm-root .close:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
 #wm-root .panel-body{overflow-y:auto;padding:14px 18px calc(24px + env(safe-area-inset-bottom,0px));display:grid;gap:14px;align-content:start}
 #wm-root .panel-body .clist{grid-template-columns:1fr}
@@ -953,7 +953,7 @@ function setAllocations(csv,label){
 }
 
 /* 読みと季節は世界団名（文字）で引く。世界団IDは番号枠の位置にだけ使う。読みが不明な世界団は空欄のまま */
-const GROUPS={"䥚":{yomi:"しょ",season:"S1"},"壞":{yomi:"かい",season:"S2"},"𢜤":{yomi:"あい",season:"S2"},"𡻦":{yomi:"もし",season:"S2"}};
+const GROUPS={"䥚":{yomi:"しょ",season:"S1"},"壞":{yomi:"かい",season:"S2"},"𢜤":{yomi:"あい",season:"S2"},"𡻦":{yomi:"もし",season:"S2"},"𩜓":{yomi:"しょく",season:""}};
 function refresh(chars){
 const D=chars.map(c=>({n:c['キャラ名'],no:c['全界番号'],y:c['キャラ名読み'],team:c['世界団'],w1:c['世界線1'],w2:c['世界線2'],w3:c['世界線3'],ty:c['タイプ']}));
 byNum=new Map();
@@ -1061,7 +1061,8 @@ $("kpis").innerHTML=[["",REAL.length,"世界線"],["done",cnt("done"),"完成"],
   if(!any)$("map").innerHTML=`<p class="none">条件に合う世界線がありません。「すべて」に戻すか検索語を消してください。</p>`;
 }
 $("map").addEventListener("click",e=>{const b=e.target.closest("button.wm-tile[data-i]");if(b)openPanel(WL[+b.dataset.i])});
-$("panel").addEventListener("click",e=>{if(e.target.closest("#wm-close"))$("panel").close()});
+/* ×ボタン、またはダイアログの外側（背景）のクリックで閉じる。パネル内のクリックは e.target がダイアログ自身にならない */
+$("panel").addEventListener("click",e=>{if(e.target.closest("#wm-close")||e.target===$("panel"))$("panel").close()});
 $("seg").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;state.f=b.dataset.f;$("seg").querySelectorAll("button").forEach(x=>x.setAttribute("aria-pressed",x===b));render()});
 $("dens").addEventListener("click",e=>{const b=e.target.closest("button");if(b)setDensity(b.dataset.d)});
 function setDensity(d){
