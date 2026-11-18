@@ -952,13 +952,15 @@ function setAllocations(csv,label){
  $("source").textContent=label;
 }
 
-const GROUPS={6:{yomi:"追加",season:""},1:{yomi:"しょ",season:"S1"},2:{yomi:"かい",season:"S2"},3:{yomi:"あい",season:"S2"},4:{yomi:"もし",season:"S2"},5:{yomi:"きゅう",season:""}};
+/* 読みと季節は世界団名（文字）で引く。世界団IDは番号枠の位置にだけ使う。読みが不明な世界団は空欄のまま */
+const GROUPS={"䥚":{yomi:"しょ",season:"S1"},"壞":{yomi:"かい",season:"S2"},"𢜤":{yomi:"あい",season:"S2"},"𡻦":{yomi:"もし",season:"S2"}};
 function refresh(chars){
 const D=chars.map(c=>({n:c['キャラ名'],no:c['全界番号'],y:c['キャラ名読み'],team:c['世界団'],w1:c['世界線1'],w2:c['世界線2'],w3:c['世界線3'],ty:c['タイプ']}));
 byNum=new Map();
 D.forEach(r=>{const n=plainNumber(r.no);if(Number.isFinite(n)&&!byNum.has(n))byNum.set(n,r)});
 WL=allocations.map(w=>({...w}));
-if(!WL.some(w=>w.n==="無界"))WL.push({g:"𮯰",gid:5,id:"―",n:"無界",y:"むかい",lo:null,hi:null,ids:[],sym:"α0.-0",dev:"―",lv:"―",extra:true});
+/* 無界は番号枠を持たない枠外の世界線。世界団ID（1〜5）と衝突しないよう追加グループ6に置く */
+if(!WL.some(w=>w.n==="無界"))WL.push({g:"𮯰",gid:6,id:"―",n:"無界",y:"むかい",lo:null,hi:null,ids:[],sym:"α0.-0",dev:"―",lv:"―",extra:true});
 const unallocated=new Map();
 for(const r of D){
  const team=Array.from(r.team||"")[0]||"";
@@ -1051,10 +1053,10 @@ $("kpis").innerHTML=[["",REAL.length,"世界線"],["done",cnt("done"),"完成"],
 
   const gids=[...new Set(WL.map(w=>w.gid))];let any=false;
   $("map").innerHTML=gids.map(g=>{
-    const first=w=>w.ids.length?Math.min(...w.ids):Infinity;const all=WL.filter(w=>w.gid===g),group=GROUPS[g]||{yomi:all[0].g,season:""},ws=all.filter(matches).sort((a,b)=>first(a)-first(b));if(!ws.length)return"";any=true;
+    const first=w=>w.ids.length?Math.min(...w.ids):Infinity;const all=WL.filter(w=>w.gid===g),group=!all[0].extra?(GROUPS[all[0].g]||{yomi:"",season:""}):{yomi:"",season:""},ws=all.filter(matches).sort((a,b)=>first(a)-first(b));if(!ws.length)return"";any=true;
     const real=!all[0].extra;const [lo,hi]=real?SPAN(g):[0,0];const t=real?1000:0,u=real?usedIn(lo,hi):0;
     const showUndef=real&&state.f==="all"&&!state.q.trim();const items=showUndef?[...ws,...undefRuns(g)].sort((a,b)=>first(a)-first(b)):ws;
-    return `<section class="group" style="margin-bottom:28px"><div class="group-head"><h2>${g===6?"追加の世界線":esc(all[0].g)}${group.season?`<span class="season">${group.season}</span>`:""}<span class="gname">${g===6?"":group.yomi+"世界団・"}${t?`${pad(lo)}〜${pad(hi)}`:"番号枠なし"}</span></h2><span class="gbar"><i style="width:${t?u/t*100:0}%"></i></span><span class="gstat">${t?`<span class="num">${u}/${t}</span>枠・${all.filter(w=>w.st==="done").length}/${all.length}世界線完成`:"集計外"}</span></div><div class="wm-tiles">${items.map(x=>x.undef?undefTile(x):row(x)).join("")}</div></section>`;
+    return `<section class="group" style="margin-bottom:28px"><div class="group-head"><h2>${g===6?"追加の世界線":esc(all[0].g)}${group.season?`<span class="season">${group.season}</span>`:""}<span class="gname">${g===6?"":(group.yomi?group.yomi+"世界団・":"世界団・")}${t?`${pad(lo)}〜${pad(hi)}`:"番号枠なし"}</span></h2><span class="gbar"><i style="width:${t?u/t*100:0}%"></i></span><span class="gstat">${t?`<span class="num">${u}/${t}</span>枠・${all.filter(w=>w.st==="done").length}/${all.length}世界線完成`:"集計外"}</span></div><div class="wm-tiles">${items.map(x=>x.undef?undefTile(x):row(x)).join("")}</div></section>`;
   }).join("")||"";
   if(!any)$("map").innerHTML=`<p class="none">条件に合う世界線がありません。「すべて」に戻すか検索語を消してください。</p>`;
 }
