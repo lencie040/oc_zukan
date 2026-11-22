@@ -118,10 +118,11 @@ main{padding-top:12px}
 .pt .ta{left:29%;top:29%}.pt .tb{left:71%;top:71%}
 .pt.one b{left:50%;top:50%;font-size:6.4cqw}
 .pt.long b{font-size:3cqw}
-.pg-wl{position:absolute;right:1.2cqw;top:15.8cqw;width:21.5cqw;display:flex;flex-direction:column;gap:.5cqw}
-.wl{height:4.8cqw;display:flex;align-items:center;justify-content:center;white-space:nowrap;font-weight:800;line-height:1;
- background:linear-gradient(90deg,transparent,color-mix(in srgb,var(--wc) 38%,#fff) 24%,color-mix(in srgb,var(--wc) 38%,#fff) 76%,transparent);
- color:var(--wc);-webkit-text-stroke:.1cqw color-mix(in srgb,var(--wc) 30%,#000);paint-order:stroke fill}
+.pg-wl{position:absolute;right:1.2cqw;top:15.8cqw;width:21.5cqw;display:flex;flex-direction:column;gap:.65cqw}
+.wl{min-height:4.8cqw;display:flex;align-items:center;justify-content:center;text-align:center;padding:.25em .4em;
+ font-weight:800;line-height:1.25;overflow-wrap:anywhere;color:#14232e;
+ background:color-mix(in srgb,var(--wc) 20%,#fff);border:1px solid color-mix(in srgb,var(--wc) 42%,#fff);
+ border-inline-start:.3em solid var(--wc);border-radius:6px}
 .pg-img{position:absolute;left:28%;right:28%;top:21%;bottom:1.5%;display:flex;align-items:center;justify-content:center;text-align:center;font-size:6.3cqw;line-height:1.5;font-weight:500}
 .pg-img img{max-width:100%;max-height:100%;object-fit:contain;cursor:zoom-in}
 .pg-box{position:absolute;top:47.1%;bottom:.45%;width:25.6%;border:max(2px,.42cqw) solid #000;background:rgba(255,255,255,.9);padding:1cqw 1.1cqw;overflow:auto;scrollbar-width:thin}
@@ -197,8 +198,8 @@ body[data-tab=grid] main{padding-bottom:92px}
 .pg-period small{font-size:12px}.pg-period b{font-size:15px;white-space:normal}
  .pg-tl{font-size:15px}
  .pt{width:76px;margin:6px 0 0}.pt b{font-size:28px}.pt.one b{font-size:34px}.pt.long b{font-size:15px}
- .pg-wl{grid-area:wl;position:static;width:auto;gap:6px}
- .wl{height:28px;font-size:15px!important;-webkit-text-stroke-width:.6px}
+ .pg-wl{grid-area:wl;position:static;width:auto;gap:6px;padding-right:12px}
+ .wl{min-height:28px;font-size:15px!important}
  .pg-img{grid-area:img;position:static;min-height:260px;font-size:32px;padding:0 12px}
  .pg-img img{max-height:340px}
  .pg-acts{grid-area:ac;position:static;padding:0 12px}.pg-acts button{font-size:13px;padding:6px 14px}
@@ -271,7 +272,8 @@ dialog::backdrop{backdrop-filter:blur(3px)}
 .pg-kv span{
   padding:.42cqw .55cqw;
   border-radius:4px;
-  background:#edf2fa;
+  background:var(--stat-bg,#edf2fa);
+  color:var(--stat-ink,inherit);
   font-variant-numeric:tabular-nums;
 }
 .pg-kv.k1 span{max-width:none}
@@ -679,7 +681,7 @@ function pageIndex(pos){
 const WLM={'現':'現代','古':'古代','零':'零界','未':'未来','妖':'妖星'};
 const WLP={'現':'#f2a34a','零':'#4f8de8','古':'#4fb467','未':'#6fd0e8','妖':'#ee86b2','魔':'#9468cf','天':'#f2dc6a','海':'#6fc0ee','冥':'#b49ade','炎':'#ee8a80','異':'#e0584f','然':'#a6d03c','賢':'#86c6e8','憶':'#5aaae8','聖':'#f2dc6a','彩':'#f2dc6a','幼':'#9edbef','飴':'#9edbef','数':'#9edbef','初':'#9edbef','冬':'#a9def2','恋':'#f4a0c0','桃':'#f4a0c0','孕':'#f0b4cc','飾':'#e0a8ec','団':'#6fbf6f','旧':'#2f7a4a','南':'#f2e48a','回':'#9edbef'};
 const WLK=w=>Array.from(String(w).split('×')[0].replace(/(IF|EX|SP|A)$/,''))[0]||'';
-function wlLabel(w){return String(w).split('×').map(p=>{const m=p.match(/^(.+?)(IF|EX|SP|A)?$/),b=m[1],sf=m[2]||'';return(Array.from(b).length===1?(WLM[b]||b+'界'):b)+sf}).join('×')}
+function wlLabel(w){return String(w).split('×').map(p=>{const m=p.match(/^(.+?)(IF|EX|SP|FR|A|i)?$/);if(!m)return p;const b=m[1],sf=m[2]||'';return(Array.from(b).length===1?(WLM[b]||b+'界'):b)+sf}).join('×')}
 const WLCC={};
 function wlColor(w){const k=WLK(w);if(WLCC[k])return WLCC[k];let col=WLP[k];
  if(!col){const m={};DATA.forEach(c=>{if([c['世界線1'],c['世界線2'],c['世界線3']].some(x=>x&&WLK(x)===k)){const n=c['カラー1'];if(n&&CM[n]&&!['白','黒','灰','虹'].includes(n))m[n]=(m[n]||0)+1}});
@@ -701,11 +703,112 @@ function periodStyle(p){
  const g=h=>`linear-gradient(135deg,color-mix(in srgb,${h} 70%,#fff),${h})`;
  return `--pf:${g(f)};--pe:${g(e)};--pt:${txt}`;
 }
+const STAT_NAMES={
+ H:'H',HP:'H',体力:'H',A:'A',攻撃:'A',攻撃力:'A',こうげき:'A',
+ B:'B',防御:'B',防御力:'B',ぼうぎょ:'B',C:'C',特攻:'C',特攻力:'C',とくこう:'C',魔力:'C',
+ D:'D',特防:'D',特防力:'D',とくぼう:'D',精神力:'D',S:'S',素早さ:'S',すばやさ:'S',
+};
+const STAT_NAME=Object.keys(STAT_NAMES).sort((a,b)=>b.length-a.length).join('|');
+const STAT_TARGET=`(?:${STAT_NAME})(?:の?実数値)?`;
+const STAT_SUBJECT=`(?:(?:自身|自分)の)?(${STAT_TARGET}(?:(?:と|・|、|,|\\s+)?${STAT_TARGET})*)\\s*[がを]?\\s*`;
+const STAT_MULTIPLIER=new RegExp(`^(?:常時[、,\\s]*)?${STAT_SUBJECT}(-?\\d+(?:\\.\\d+)?)\\s*倍(?:の小数点以下切り捨て)?(?:に)?(?:なる|なり|する|し|上がる|上がり|上げる)?[。.]?$`);
+const STAT_STAGE=new RegExp(`^${STAT_SUBJECT}(?:(\\d+)段階(?:ずつ)?)?((?:上昇|下降|アップ|ダウン)(?:させる|させ)?|上げる?|下げる?|上が[るり]|下が[るり])?$`);
+const ENTRY_EFFECT=/^(?:登場時|(?:(?:自身|自分)が)?場に出た時)[、,\s]*/;
+const CONDITIONAL_CLAUSE=/(?:まで|場合(?:は)?|とき(?:は)?|時(?:は)?|ターン(?:の)?間)(?:だけ|のみ)?$/;
+function applyStatMultiplier(options,names,multiplier){
+ for(const name of names.match(new RegExp(STAT_NAME,'g'))){
+  const key=STAT_NAMES[name];
+  options[key]=(options[key]??1)*multiplier;
+ }
+}
+function abilityStatModifiers(ability){
+ const effect=ability.normalize('NFKC').replace(/^「[^」]*」\s*/,'').replace(/−/g,'-').trim();
+ const options={};
+ const passive=effect.match(STAT_MULTIPLIER);
+ if(passive){
+  applyStatMultiplier(options,passive[1],Number(passive[2]));
+  return options;
+ }
+ // 番号で並ぶ効果は別々に判定し、登場時の自己補正だけを採用する。
+ for(const section of effect.split(/(?:^|(?<=。)\s*)\d+\s*:\s*/)){
+  if(!ENTRY_EFFECT.test(section)||/(?:試合中\s*)?(?:1|一)[回度]だけ/.test(section))continue;
+  for(const sentence of section.replace(ENTRY_EFFECT,'').split('。')){
+   const clauses=sentence.split(/[、,]/).map(clause=>clause.trim());
+   if(clauses.some(clause=>CONDITIONAL_CLAUSE.test(clause)))continue;
+   let unfinishedStages=[];
+   for(const clause of clauses){
+    const text=clause.replace(/^さらに\s*/,'').replace(/\(マイナスの[^()]*\)$/,'');
+    if(!text)continue;
+    const stage=text.match(STAT_STAGE);
+    if(stage&&(stage[2]||stage[3])){
+     unfinishedStages.push([stage[1],Number(stage[2]||1)]);
+     if(!stage[3])continue;
+     const decreases=/^(?:下|ダウン)/.test(stage[3]);
+     for(const [names,count] of unfinishedStages){
+      const factor=(2+count)/2;
+      applyStatMultiplier(options,names,decreases?1/factor:factor);
+     }
+    }else{
+     const direct=text.match(STAT_MULTIPLIER);
+     if(direct)applyStatMultiplier(options,direct[1],Number(direct[2]));
+    }
+    unfinishedStages=[];
+   }
+  }
+ }
+ return options;
+}
+function abilityStatOptions(c){
+ return ['通常特性1','通常特性2','夢特性'].map(key=>c[key]).filter(Boolean).map(abilityStatModifiers);
+}
+function effectiveBaseStat(key,base,options){
+ if(base===null||!options.length)return base;
+ const multipliers=options.map(option=>option[key]??1);
+ const multiplier=Math.max(...(key==='S'?multipliers.map(Math.abs):multipliers));
+ if(multiplier===1)return base;
+ // Lv.50・個体値31・努力値252の実数値に倍率を掛け、同条件の種族値へ戻す。
+ const offset=key==='H'?107:52;
+ return Math.floor((base+offset)*multiplier+1e-9)-offset;
+}
+const STAT_COLORS=[
+ [150,'#fff2b2','#fff2b2'],
+ [200,'#ffd29f','#ffd29f'],
+ [300,'#ed8a31','#ed8a31'],
+ [400,'#c82f40','#c82f40'],
+ [500,'#6e3ba8','#6e3ba8'],
+ [600,'#08090c','#363943'],
+];
+function mixStatColor(a,b,t){
+ return '#'+[1,3,5].map(start=>{
+  const x=parseInt(a.slice(start,start+2),16),y=parseInt(b.slice(start,start+2),16);
+  return Math.round(x+(y-x)*t).toString(16).padStart(2,'0');
+ }).join('');
+}
+function statColorStyle(value){
+ if(value===null||value<150)return '';
+ const capped=Math.min(value,600);
+ const upper=STAT_COLORS.findIndex(([threshold])=>capped<=threshold);
+ const [low,firstStart,firstEnd]=STAT_COLORS[Math.max(0,upper-1)];
+ const [high,lastStart,lastEnd]=STAT_COLORS[upper];
+ const t=high===low?0:(capped-low)/(high-low);
+ const start=mixStatColor(firstStart,lastStart,t),end=mixStatColor(firstEnd,lastEnd,t);
+ const lights=[lum(start),lum(end)];
+ const darkContrast=(Math.min(...lights)+.05)/.05;
+ const lightContrast=1.05/(Math.max(...lights)+.05);
+ const background=start===end?start:`linear-gradient(135deg,${start},${end})`;
+ return ` style="--stat-bg:${background};--stat-ink:${lightContrast>darkContrast?'#fff':'#000'}"`;
+}
 function pageHtml(c){
  const s2=c['データ']==='S2',b=num(c['合計種族値']),f5=num(c['5ステ合計']),nm=c['キャラ名'],len=Math.max(4,Array.from(nm).length);
  const wl=[c['世界線1'],c['世界線2'],c['世界線3']].filter(Boolean),ty=tys(c),has=s2?!!f5:!!b;
  const K=s2?S2K:SK,LB=s2?S2L:SK;
- const kv=has?`<div class="pg-kv${s2?' k1':''}">${K.map((k,i)=>{const v=num(c[k]);return s2?`<span><em style="font-style:normal">${LB[i]}</em><b>${v==null?'-':v}</b></span>`:`<span>${LB[i]}${v==null?'-':v}</span>`}).join('')}</div>`:'';
+ const options=abilityStatOptions(c);
+ const kv=has?`<div class="pg-kv${s2?' k1':''}">${K.map((k,i)=>{
+  const base=num(c[k]),value=effectiveBaseStat(k,base,options);
+  const attrs=statColorStyle(value)+(value!==base?` title="実質種族値 ${value}"`:'');
+  return s2?`<span${attrs}><em style="font-style:normal">${LB[i]}</em><b>${base??'-'}</b></span>`
+   :`<span${attrs}>${LB[i]}${base??'-'}</span>`;
+ }).join('')}</div>`:'';
  const abl=s2?'':[['',c['通常特性1']],['',c['通常特性2']],['夢',c['夢特性']]].filter(x=>x[1]).map(([t,x])=>{const m=x.match(/^「(.+?)」([\s\S]*)$/);return `<div class="ab2">${t?`<i>${t}</i>`:''}${m?`<b>${esc(m[1])}</b><p>${esc(m[2])}</p>`:`<p>${esc(x)}</p>`}</div>`}).join('');
  const rows=s2?[['世界団',c['世界団']],['族',c['族']],['ランク',c['ランク']],['IQ',c['IQ']],['モチーフ駅',c['モチーフ駅']]]
   :[['受賞',c['受賞']],['汎異記号',c['汎異記号']],['世界団',c['世界団']],['族',c['族']],['勢力',c['勢力']],['誕生日',c['誕生日']],['初登場',c['初登場']],['作品',c['初登場作品']],['初登場日',c['初登場日']],['専用技',[c['専用技1'],c['専用技2'],c['専用技3']].filter(Boolean).join(' / ')],['モチーフ曲',c['モチーフ曲']],['コスト',c['コスト']],['戦闘力',c['戦闘力']],['CP',c['CP']]];
@@ -714,7 +817,7 @@ function pageHtml(c){
  return `<div class="pg"${bg}>
  <div class="pg-bar"><div class="pg-rk"><small>ランク</small>${rankHtml(c)}</div><div class="pg-nm" style="--len:${len}">${esc(nm)}</div><div class="pg-no">${noHtml(c)}</div></div>
  <div class="pg-tp">${ty.length?typeIcon(c):''}${c['期']?`<div class="pg-period ps" style="${periodStyle(c['期'])}"><small>期</small><b>${esc(c['期'])}</b></div>`:''}</div>
- <div class="pg-wl" style="--n:${Math.max(2,wl.length)}">${wl.map(w=>{const l=wlLabel(w),n=Array.from(l).length;return `<div class="wl" style="--wc:${wlColor(w)};font-size:min(3.3cqw,${(13/Math.max(n,1)).toFixed(2)}cqw)">${esc(l)}</div>`}).join('')}</div>
+ <div class="pg-wl">${wl.map(w=>{const l=wlLabel(w),n=Array.from(l).length;return `<div class="wl" style="--wc:${wlColor(w)};font-size:min(3.3cqw,${(16/Math.max(n,1)).toFixed(2)}cqw)">${esc(l)}</div>`}).join('')}</div>
  <div class="pg-img"><span class="pg-placeholder">画像を確認中…</span></div>
  <div class="pg-acts">${s2?'':`<button class="cmp" data-c="${c._i}" aria-pressed="${CMP.includes(c._i)}">比較に追加</button>`}<button class="ptd" data-c="${c._i}">パーティに追加</button><button class="mre" data-i="${c._i}">グラフ・詳細</button></div>
  <div class="pg-box pg-l"><h4>${s2?'ステータス':'種族値'} <small${s2?' class="bl"':''}>${has?(s2?'5ステ合計 '+f5:'合計'+b):'未設定'}</small></h4>${kv}${abl?`<h4 class="h2">特性</h4>${abl}`:''}</div>
@@ -1010,6 +1113,10 @@ const worldMap=(()=>{
 
 // Number allocations from the supplied world-line map. Occupancy is rebuilt from DATA.
 const bundledAllocations=[{"g":"䥚","gid":1,"id":"1","n":"現代","y":"げんだい","lo":1,"hi":149,"sym":"A0","dev":0,"lv":"50"},{"g":"䥚","gid":1,"id":"2","n":"古代","y":"こだい","lo":150,"hi":174,"sym":"A1","dev":1,"lv":"70"},{"g":"䥚","gid":1,"id":"3","n":"零界","y":"れいかい","lo":175,"hi":200,"sym":"A5","dev":5,"lv":"85"},{"g":"䥚","gid":1,"id":"4","n":"未来","y":"みらい","lo":201,"hi":210,"sym":"A3","dev":3,"lv":"100"},{"g":"䥚","gid":1,"id":"5","n":"魔界","y":"まかい","lo":211,"hi":220,"sym":"D5","dev":5,"lv":"112"},{"g":"䥚","gid":1,"id":"6","n":"異界","y":"いかい","lo":221,"hi":225,"sym":"S7","dev":7,"lv":"122"},{"g":"䥚","gid":1,"id":"7","n":"冥界","y":"めいかい","lo":226,"hi":230,"sym":"S5","dev":5,"lv":"130"},{"g":"䥚","gid":1,"id":"8","n":"天界","y":"てんかい","lo":231,"hi":240,"sym":"C12","dev":12,"lv":"137"},{"g":"䥚","gid":1,"id":"9","n":"賢界","y":"けんかい","lo":241,"hi":245,"sym":"B5","dev":5,"lv":"143"},{"g":"䥚","gid":1,"id":"10","n":"妖星","y":"ようせい","lo":246,"hi":255,"sym":"C3","dev":3,"lv":"148"},{"g":"䥚","gid":1,"id":"11","n":"然界","y":"ぜんかい","lo":256,"hi":260,"sym":"W3","dev":3,"lv":"152"},{"g":"䥚","gid":1,"id":"12","n":"憶界","y":"おくかい","lo":261,"hi":265,"sym":"A80","dev":80,"lv":"155"},{"g":"䥚","gid":1,"id":"13","n":"飴界","y":"あめかい","lo":266,"hi":270,"sym":"C5","dev":5,"lv":"158"},{"g":"䥚","gid":1,"id":"14","n":"幼界","y":"おさなかい","lo":271,"hi":275,"sym":"C8","dev":8,"lv":"161"},{"g":"䥚","gid":1,"id":"15","n":"海界","y":"うみかい","lo":276,"hi":285,"sym":"E3","dev":3,"lv":"164"},{"g":"䥚","gid":1,"id":"16","n":"炎界","y":"えんかい","lo":286,"hi":290,"sym":"F5","dev":5,"lv":"167"},{"g":"䥚","gid":1,"id":"17","n":"旧界","y":"きゅうかい","lo":291,"hi":295,"sym":"A2","dev":2,"lv":"170"},{"g":"䥚","gid":1,"id":"18","n":"初界","y":"ういかい","lo":296,"hi":300,"sym":"C7","dev":7,"lv":"172"},{"g":"䥚","gid":1,"id":"19","n":"幽界","y":"ゆうかい","lo":301,"hi":305,"sym":"S3","dev":3,"lv":"174"},{"g":"䥚","gid":1,"id":"20","n":"回界","y":"かいかい","lo":306,"hi":310,"sym":"R3","dev":3,"lv":"176"},{"g":"䥚","gid":1,"id":"21","n":"還界","y":"かんかい","lo":311,"hi":315,"sym":"R5","dev":5,"lv":"178"},{"g":"䥚","gid":1,"id":"22","n":"数界","y":"かずかい","lo":316,"hi":320,"sym":"B1","dev":1,"lv":"180"},{"g":"䥚","gid":1,"id":"23","n":"脱界","y":"だつかい","lo":321,"hi":329,"sym":"P3","dev":3,"lv":"182","ids":[321,322,324,326,327,328,329]},{"g":"䥚","gid":1,"id":"24","n":"黒界","y":"こくかい","lo":330,"hi":332,"sym":"D7","dev":7,"lv":"184"},{"g":"䥚","gid":1,"id":"25","n":"闇界","y":"やみかい","lo":333,"hi":333,"sym":"D7;9","dev":9,"lv":"185"},{"g":"䥚","gid":1,"id":"26","n":"孕界","y":"ようかい","lo":334,"hi":340,"sym":"C9","dev":9,"lv":"186"},{"g":"䥚","gid":1,"id":"27","n":"菓界","y":"かかい","lo":341,"hi":345,"sym":"C6","dev":6,"lv":"187"},{"g":"䥚","gid":1,"id":"28","n":"風界","y":"ふうかい","lo":346,"hi":350,"sym":"W5","dev":5,"lv":"188"},{"g":"䥚","gid":1,"id":"29","n":"紀界","y":"きかい","lo":351,"hi":355,"sym":"W7","dev":7,"lv":"189"},{"g":"䥚","gid":1,"id":"30","n":"団界","y":"だんかい","lo":356,"hi":365,"sym":"T1","dev":1,"lv":"190"},{"g":"䥚","gid":1,"id":"31","n":"書界","y":"しょかい","lo":366,"hi":370,"sym":"K1","dev":1,"lv":"192"},{"g":"䥚","gid":1,"id":"32","n":"音界","y":"おんかい","lo":371,"hi":380,"sym":"O1","dev":1,"lv":"194"},{"g":"䥚","gid":1,"id":"33","n":"写界","y":"しゃかい","lo":381,"hi":385,"sym":"R7","dev":7,"lv":"196"},{"g":"䥚","gid":1,"id":"34","n":"耗界","y":"こうかい","lo":386,"hi":390,"sym":"E0n","dev":0,"lv":"198"},{"g":"䥚","gid":1,"id":"35","n":"虚界","y":"とみてかい","lo":391,"hi":400,"sym":"S0g","dev":0,"lv":"200"},{"g":"䥚","gid":1,"id":"36","n":"夢界","y":"ゆめかい","lo":401,"hi":405,"sym":"D8","dev":8,"lv":"202"},{"g":"䥚","gid":1,"id":"37","n":"姫界","y":"ひめかい","lo":406,"hi":410,"sym":"C10","dev":10,"lv":"204"},{"g":"䥚","gid":1,"id":"38","n":"枢界","y":"すうかい","lo":411,"hi":415,"sym":"T0","dev":0,"lv":"206"},{"g":"䥚","gid":1,"id":"39","n":"護界","y":"ごかい","lo":416,"hi":420,"sym":"P5","dev":5,"lv":"208"},{"g":"䥚","gid":1,"id":"40","n":"箱界","y":"はこかい","lo":421,"hi":425,"sym":"B2","dev":2,"lv":"210"},{"g":"䥚","gid":1,"id":"41","n":"轟界","y":"ごうかい","lo":426,"hi":430,"sym":"O5","dev":5,"lv":"212"},{"g":"䥚","gid":1,"id":"42","n":"銅界","y":"どうかい","lo":431,"hi":435,"sym":"I5","dev":5,"lv":"214"},{"g":"䥚","gid":1,"id":"43","n":"鉄界","y":"てつかい","lo":436,"hi":440,"sym":"I3","dev":3,"lv":"216"},{"g":"䥚","gid":1,"id":"44","n":"埃界","y":"ほこりかい","lo":441,"hi":445,"sym":"ε2","dev":2,"lv":"218"},{"g":"䥚","gid":1,"id":"45","n":"桃界","y":"ももかい","lo":446,"hi":460,"sym":"γ8","dev":8,"lv":"220"},{"g":"䥚","gid":1,"id":"46","n":"式界","y":"しきかい","lo":461,"hi":470,"sym":"B9","dev":9,"lv":"222"},{"g":"䥚","gid":1,"id":"47","n":"恋界","y":"れんかい","lo":471,"hi":480,"sym":"C11","dev":11,"lv":"224"},{"g":"䥚","gid":1,"id":"48","n":"金界","y":"きんかい","lo":481,"hi":490,"sym":"I8","dev":8,"lv":"226"},{"g":"䥚","gid":1,"id":"49","n":"塔界","y":"とうかい","lo":491,"hi":499,"sym":"T5","dev":5,"lv":"228"},{"g":"䥚","gid":1,"id":"50","n":"曖界","y":"あいかい","lo":500,"hi":500,"sym":"D13;17","dev":17,"lv":"230"},{"g":"䥚","gid":1,"id":"51","n":"南界","y":"なんかい","lo":501,"hi":505,"sym":"H3","dev":3,"lv":"232"},{"g":"䥚","gid":1,"id":"52","n":"種界","y":"しゅかい","lo":506,"hi":530,"sym":"C1","dev":1,"lv":"234"},{"g":"䥚","gid":1,"id":"53","n":"脳界","y":"のうかい","lo":531,"hi":535,"sym":"B10","dev":10,"lv":"236"},{"g":"䥚","gid":1,"id":"54","n":"片界","y":"かたかい","lo":536,"hi":550,"sym":"A80.-5","dev":80,"lv":"238"},{"g":"䥚","gid":1,"id":"55","n":"球界","y":"たまかい","lo":551,"hi":600,"sym":"P12","dev":12,"lv":"240"},{"g":"䥚","gid":1,"id":"56","n":"心界","y":"しんかい","lo":601,"hi":605,"sym":"C4","dev":4,"lv":"242"},{"g":"䥚","gid":1,"id":"57","n":"銀界","y":"ぎんかい","lo":606,"hi":610,"sym":"I7","dev":7,"lv":"244"},{"g":"䥚","gid":1,"id":"58","n":"鴢界","y":"おうかい","lo":611,"hi":620,"sym":"C15","dev":15,"lv":"246"},{"g":"䥚","gid":1,"id":"59","n":"線界","y":"せんかい","lo":621,"hi":625,"sym":"B12","dev":12,"lv":"248"},{"g":"䥚","gid":1,"id":"60","n":"乖界","y":"そむかい","lo":626,"hi":635,"sym":"B15","dev":15,"lv":"250"},{"g":"䥚","gid":1,"id":"61","n":"脈界","y":"みゃくかい","lo":636,"hi":640,"sym":"C13","dev":13,"lv":"252"},{"g":"䥚","gid":1,"id":"62","n":"滴界","y":"てきかい","lo":641,"hi":650,"sym":"λ5","dev":5,"lv":"254"},{"g":"䥚","gid":1,"id":"63","n":"紙界","y":"かみかい","lo":651,"hi":655,"sym":"K3","dev":3,"lv":"256"},{"g":"䥚","gid":1,"id":"64","n":"鏡界","y":"かがみかい","lo":656,"hi":660,"sym":"R9","dev":9,"lv":"258"},{"g":"䥚","gid":1,"id":"65","n":"骨界","y":"ほねかい","lo":661,"hi":665,"sym":"C2","dev":2,"lv":"259"},{"g":"䥚","gid":1,"id":"66","n":"灼界","y":"しゃくかい","lo":666,"hi":666,"sym":"F24","dev":24,"lv":"260"},{"g":"䥚","gid":1,"id":"67","n":"毒界","y":"どくかい","lo":667,"hi":670,"sym":"C4.-5","dev":4,"lv":"261"},{"g":"䥚","gid":1,"id":"68","n":"翠界","y":"みどりかい","lo":671,"hi":675,"sym":"B11","dev":11,"lv":"262"},{"g":"䥚","gid":1,"id":"69","n":"蜜界","y":"みつかい","lo":676,"hi":680,"sym":"C5.-2","dev":5,"lv":"263"},{"g":"䥚","gid":1,"id":"70","n":"画界","y":"がかい","lo":681,"hi":685,"sym":"K5","dev":5,"lv":"264"},{"g":"䥚","gid":1,"id":"71","n":"戯界","y":"ぎかい","lo":686,"hi":699,"sym":"D14c","dev":14,"lv":"265"},{"g":"䥚","gid":1,"id":"72","n":"劇界","y":"げきかい","lo":700,"hi":700,"sym":"D14c.-6","dev":14,"lv":"266"},{"g":"䥚","gid":1,"id":"73","n":"橙界","y":"だいだいかい","lo":701,"hi":710,"sym":"D15","dev":15,"lv":"267"},{"g":"䥚","gid":1,"id":"74","n":"夏界","y":"なつかい","lo":711,"hi":715,"sym":"H5","dev":5,"lv":"268"},{"g":"䥚","gid":1,"id":"75","n":"夜界","y":"よるかい","lo":716,"hi":720,"sym":"D16","dev":16,"lv":"269"},{"g":"䥚","gid":1,"id":"76","n":"宵界","y":"よいかい","lo":721,"hi":725,"sym":"D6","dev":6,"lv":"270"},{"g":"䥚","gid":1,"id":"77","n":"綿界","y":"わたかい","lo":726,"hi":730,"sym":"C14","dev":14,"lv":"271"},{"g":"䥚","gid":1,"id":"78","n":"鳥界","y":"とりかい","lo":731,"hi":740,"sym":"C15b","dev":15,"lv":"272"},{"g":"䥚","gid":1,"id":"79","n":"飛界","y":"とべかい","lo":741,"hi":749,"sym":"C15b.-5","dev":15,"lv":"273"},{"g":"䥚","gid":1,"id":"80","n":"愴界","y":"かなしかい","lo":750,"hi":750,"sym":"D9","dev":9,"lv":"274"},{"g":"䥚","gid":1,"id":"81","n":"七界","y":"しちかい","lo":751,"hi":755,"sym":"C16","dev":16,"lv":"275"},{"g":"䥚","gid":1,"id":"82","n":"䟖界","y":"ねもかい","lo":756,"hi":760,"sym":"D18","dev":18,"lv":"276"},{"g":"䥚","gid":1,"id":"83","n":"機界","y":"からくりかい","lo":761,"hi":770,"sym":"D17","dev":17,"lv":"277"},{"g":"䥚","gid":1,"id":"84","n":"隔界","y":"かくかい","lo":771,"hi":776,"sym":"D19","dev":19,"lv":"278"},{"g":"䥚","gid":1,"id":"85","n":"聖界","y":"せいかい","lo":777,"hi":777,"sym":"C22","dev":22,"lv":"279"},{"g":"䥚","gid":1,"id":"86","n":"鍵界","y":"かぎかい","lo":778,"hi":780,"sym":"B7","dev":7,"lv":"280"},{"g":"䥚","gid":1,"id":"87","n":"晶界","y":"しょうかい","lo":781,"hi":785,"sym":"I9","dev":9,"lv":"281"},{"g":"䥚","gid":1,"id":"88","n":"字界","y":"じかい","lo":786,"hi":799,"sym":"B30","dev":30,"lv":"282"},{"g":"䥚","gid":1,"id":"89","n":"儡界","y":"らいかい","lo":800,"hi":800,"sym":"D39","dev":39,"lv":"283"},{"g":"䥚","gid":1,"id":"90","n":"月界","y":"げっかい","lo":801,"hi":810,"sym":"D20a","dev":20,"lv":"284"},{"g":"䥚","gid":1,"id":"91","n":"彩界","y":"あやかい","lo":811,"hi":815,"sym":"C17","dev":17,"lv":"285"},{"g":"䥚","gid":1,"id":"92","n":"布界","y":"ぬのかい","lo":816,"hi":820,"sym":"T3","dev":3,"lv":"286"},{"g":"䥚","gid":1,"id":"93","n":"虎界","y":"とらかい","lo":821,"hi":825,"sym":"C29","dev":29,"lv":"287"},{"g":"䥚","gid":1,"id":"A","n":"暗界","y":"あんかい","lo":333,"hi":333,"sym":"D13","dev":13,"lv":"185"},{"g":"䥚","gid":1,"id":"B","n":"火界","y":"ひかい","lo":323,"hi":325,"sym":"J1","dev":1,"lv":"181","ids":[323,325]},{"g":"䥚","gid":1,"id":"未定","n":"暴界","y":"ぼうかい","lo":909,"hi":909,"sym":"J79","dev":79,"lv":"未定"},{"g":"䥚","gid":1,"id":"未定","n":"菓界×夢界(汽界)","y":"きかい","lo":888,"hi":888,"sym":"C48","dev":48,"lv":"未定"},{"g":"䥚","gid":1,"id":"未定","n":"天界×月界(薥界)","y":"しょくかい","lo":999,"hi":999,"sym":"C99","dev":99,"lv":"未定"},{"g":"䥚","gid":1,"id":"未定","n":"反界×幼界(使界)","y":"しかい","lo":1000,"hi":1000,"sym":"C99n","dev":99,"lv":"未定"},{"g":"壞","gid":2,"id":"未定","n":"現代EX","y":"げんだいEX","lo":1001,"hi":1149,"sym":"A0ex","dev":0,"lv":"未定"},{"g":"壞","gid":2,"id":"未定","n":"妖星EX","y":"ようせいEX","lo":1150,"hi":1160,"sym":"C3ex","dev":3,"lv":"未定"},{"g":"壞","gid":2,"id":"未定","n":"古代EX","y":"こだいEX","lo":1161,"hi":1200,"sym":"A1ex","dev":1,"lv":"未定"},{"g":"壞","gid":2,"id":"未定","n":"宇宙A","y":"うちゅうA","lo":1201,"hi":1205,"sym":"D1a","dev":1,"lv":"未定"},{"g":"壞","gid":2,"id":"未定","n":"零界EX","y":"れいかいEX","lo":1206,"hi":1240,"sym":"A5ex","dev":5,"lv":"未定"},{"g":"壞","gid":2,"id":"未定","n":"未来EX","y":"みらいEX","lo":1241,"hi":1245,"sym":"A3ex","dev":3,"lv":"未定"},{"g":"壞","gid":2,"id":"未定","n":"球界EX","y":"たまかいEX","lo":1246,"hi":1255,"sym":"P12ex","dev":12,"lv":"未定"},{"g":"壞","gid":2,"id":"未定","n":"賢界EX","y":"けんかいEX","lo":1256,"hi":1275,"sym":"B5ex","dev":5,"lv":"未定"},{"g":"壞","gid":2,"id":"未定","n":"脱界EX","y":"だつかいEX","lo":1276,"hi":1285,"sym":"P3ex","dev":3,"lv":"未定"},{"g":"壞","gid":2,"id":"未定","n":"対界","y":"ついかい","lo":1286,"hi":1287,"sym":"D22","dev":22,"lv":"未定"},{"g":"壞","gid":2,"id":"未定","n":"古代×炎界(呪界)","y":"じゅかい","lo":1288,"hi":1299,"sym":"F6","dev":6,"lv":"未定"},{"g":"壞","gid":2,"id":"未定","n":"轟界×音界(筋界)","y":"きんかい","lo":1300,"hi":1300,"sym":"O6","dev":6,"lv":"未定"},{"g":"𢜤","gid":3,"id":"未定","n":"妖星SP","y":"ようせいSP","lo":2001,"hi":2010,"sym":"C3sp","dev":3,"lv":"未定"},{"g":"𢜤","gid":3,"id":"未定","n":"菓界SP","y":"かかいSP","lo":2011,"hi":2149,"sym":"C6sp","dev":6,"lv":"未定"},{"g":"𡻦","gid":4,"id":"未定","n":"現代IF","y":"げんだいIF","lo":3001,"hi":3149,"sym":"A0if","dev":0,"lv":"未定"},{"g":"𡻦","gid":4,"id":"未定","n":"幼界IF","y":"おさなかいIF","lo":3150,"hi":3250,"sym":"C8if","dev":8,"lv":"未定"},{"g":"𡻦","gid":4,"id":"未定","n":"孕界IF","y":"ようかいIF","lo":3251,"hi":3255,"sym":"C9if","dev":9,"lv":"未定"},{"g":"𡻦","gid":4,"id":"未定","n":"飾界IF","y":"かざりかいIF","lo":3256,"hi":3265,"sym":"C24if","dev":24,"lv":"未定"},{"g":"𡻦","gid":4,"id":"未定","n":"菓界IF","y":"かかいIF","lo":3266,"hi":3275,"sym":"C6if","dev":6,"lv":"未定"},{"g":"𡻦","gid":4,"id":"未定","n":"勉界","y":"べんかい","lo":3276,"hi":3280,"sym":"B32","dev":32,"lv":"未定"},{"g":"𡻦","gid":4,"id":"未定","n":"氷界","y":"ひょうかい","lo":3333,"hi":3333,"sym":"C33","dev":33,"lv":"未定"}];
+bundledAllocations.push(
+ {g:"𩜓",gid:5,id:"未定",n:"幼界FR",y:"おさなかいFR",lo:4001,hi:4149,sym:"C8fr",dev:"8",lv:"未定"},
+ {g:"𠀑",gid:6,id:"未定",n:"天界i",y:"てんかいi",lo:5001,hi:5149,sym:"C12i",dev:"12",lv:"未定"},
+);
 const $=id=>document.getElementById("wm-"+id);
 const esc=s=>String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 let byNum,WL,REAL,REALG,allocations=bundledAllocations;
@@ -1036,21 +1143,21 @@ function setAllocations(csv,label){
 }
 
 /* 読みと季節は世界団名（文字）で引く。世界団IDは番号枠の位置にだけ使う。読みが不明な世界団は空欄のまま */
-const GROUPS={"䥚":{yomi:"しょ",season:"S1"},"壞":{yomi:"かい",season:"S2"},"𢜤":{yomi:"あい",season:"S2"},"𡻦":{yomi:"もし",season:"S2"},"𩜓":{yomi:"しょく",season:""}};
+const GROUPS={"䥚":{yomi:"しょ",season:"S1"},"壞":{yomi:"かい",season:"S2"},"𢜤":{yomi:"あい",season:"S2"},"𡻦":{yomi:"もし",season:"S2"},"𩜓":{yomi:"しょく",season:""},"𠀑":{yomi:"てん",season:""}};
 function refresh(chars){
 const D=chars.map(c=>({n:c['キャラ名'],no:c['全界番号'],y:c['キャラ名読み'],team:c['世界団'],w1:c['世界線1'],w2:c['世界線2'],w3:c['世界線3'],ty:c['タイプ']}));
 byNum=new Map();
 D.forEach(r=>{const n=plainNumber(r.no);if(Number.isFinite(n)&&!byNum.has(n))byNum.set(n,r)});
 WL=allocations.map(w=>({...w}));
-/* 無界は番号枠を持たない枠外の世界線。世界団ID（1〜5）と衝突しないよう追加グループ6に置く */
-if(!WL.some(w=>w.n==="無界"))WL.push({g:"𮯰",gid:6,id:"―",n:"無界",y:"むかい",lo:null,hi:null,ids:[],sym:"α0.-0",dev:"―",lv:"―",extra:true});
+/* 番号枠を持たない世界線には世界団IDを割り当てない */
+if(!WL.some(w=>w.n==="無界"))WL.push({g:"𮯰",gid:null,id:"―",n:"無界",y:"むかい",lo:null,hi:null,ids:[],sym:"α0.-0",dev:"―",lv:"―",extra:true});
 const unallocated=new Map();
 for(const r of D){
  const team=Array.from(r.team||"")[0]||"";
  for(const code of new Set([r.w1,r.w2,r.w3].filter(Boolean).flatMap(v=>v.split("×")).filter(Boolean))){
   if(worldsForCode(code,team).length)continue;
   const key=JSON.stringify([team,code]);
-  if(!unallocated.has(key))unallocated.set(key,{g:team,gid:6,id:"―",n:wlLabel(code),y:"",sym:"―",dev:"―",lv:"―",lo:null,hi:null,ids:[],extra:true,members:[]});
+  if(!unallocated.has(key))unallocated.set(key,{g:team,gid:null,id:"―",n:wlLabel(code),y:"",sym:"―",dev:"―",lv:"―",lo:null,hi:null,ids:[],extra:true,members:[]});
   unallocated.get(key).members.push(r);
  }
 }
@@ -1083,7 +1190,7 @@ if(st.tab==="world-map")render();
 const ccOf=new Map();
 const LABEL={done:"完成",part:"途中",empty:"未着手",extra:"枠外"};
 const cnt=s=>REAL.filter(w=>w.st===s).length;
-/* 世界団ごとの番号枠は1000ずつ（䥚=1〜1000, 壞=1001〜2000, 𢜤=2001〜3000, 𡻦=3001〜4000） */
+/* 世界団ごとの番号枠は世界団ID順に1000ずつ */
 const SPAN=g=>[(g-1)*1000+1,g*1000];
 const usedIn=(lo,hi)=>{let u=0;for(let n=lo;n<=hi;n++)if(byNum.has(n))u++;return u};
 function undefRuns(g){const [lo,hi]=SPAN(g);const cov=new Set();WL.filter(w=>w.gid===g).forEach(w=>w.ids.forEach(n=>cov.add(n)));const out=[];let s=null;
@@ -1136,10 +1243,15 @@ $("kpis").innerHTML=[["",REAL.length,"世界線"],["done",cnt("done"),"完成"],
 
   const gids=[...new Set(WL.map(w=>w.gid))];let any=false;
   $("map").innerHTML=gids.map(g=>{
-    const first=w=>w.ids.length?Math.min(...w.ids):Infinity;const all=WL.filter(w=>w.gid===g),group=!all[0].extra?(GROUPS[all[0].g]||{yomi:"",season:""}):{yomi:"",season:""},ws=all.filter(matches).sort((a,b)=>first(a)-first(b));if(!ws.length)return"";any=true;
-    const real=!all[0].extra;const [lo,hi]=real?SPAN(g):[0,0];const t=real?1000:0,u=real?usedIn(lo,hi):0;
+    const first=w=>w.ids.length?Math.min(...w.ids):Infinity;
+    const all=WL.filter(w=>w.gid===g),real=g!==null;
+    const group=real?GROUPS[all[0].g]:null;
+    const ws=all.filter(matches).sort((a,b)=>first(a)-first(b));if(!ws.length)return"";any=true;
+    const [lo,hi]=real?SPAN(g):[0,0];const t=real?1000:0,u=real?usedIn(lo,hi):0;
     const showUndef=real&&state.f==="all"&&!state.q.trim();const items=showUndef?[...ws,...undefRuns(g)].sort((a,b)=>first(a)-first(b)):ws;
-    return `<section class="group" style="margin-bottom:28px"><div class="group-head"><h2>${g===6?"追加の世界線":esc(all[0].g)}${group.season?`<span class="season">${group.season}</span>`:""}<span class="gname">${g===6?"":(group.yomi?group.yomi+"世界団・":"世界団・")}${t?`${pad(lo)}〜${pad(hi)}`:"番号枠なし"}</span></h2><span class="gbar"><i style="width:${t?u/t*100:0}%"></i></span><span class="gstat">${t?`<span class="num">${u}/${t}</span>枠・${all.filter(w=>w.st==="done").length}/${all.length}世界線完成`:"集計外"}</span></div><div class="wm-tiles">${items.map(x=>x.undef?undefTile(x):row(x)).join("")}</div></section>`;
+    const name=real?esc(all[0].g):"追加の世界線";
+    const subtitle=real?`${group?.yomi??""}世界団・${pad(lo)}〜${pad(hi)}`:"番号枠なし";
+    return `<section class="group" style="margin-bottom:28px"><div class="group-head"><h2>${name}${group?.season?`<span class="season">${group.season}</span>`:""}<span class="gname">${subtitle}</span></h2><span class="gbar"><i style="width:${t?u/t*100:0}%"></i></span><span class="gstat">${t?`<span class="num">${u}/${t}</span>枠・${all.filter(w=>w.st==="done").length}/${all.length}世界線完成`:"集計外"}</span></div><div class="wm-tiles">${items.map(x=>x.undef?undefTile(x):row(x)).join("")}</div></section>`;
   }).join("")||"";
   if(!any)$("map").innerHTML=`<p class="none">条件に合う世界線がありません。「すべて」に戻すか検索語を消してください。</p>`;
 }
