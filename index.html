@@ -118,8 +118,13 @@ main{padding-top:12px}
 .wl{height:4.8cqw;display:flex;align-items:center;justify-content:center;white-space:nowrap;font-weight:800;line-height:1;
  background:linear-gradient(90deg,transparent,color-mix(in srgb,var(--wc) 38%,#fff) 24%,color-mix(in srgb,var(--wc) 38%,#fff) 76%,transparent);
  color:var(--wc);-webkit-text-stroke:.1cqw color-mix(in srgb,var(--wc) 30%,#000);paint-order:stroke fill}
-.pg-img{position:absolute;left:28%;right:28%;top:21%;bottom:1.5%;display:flex;align-items:center;justify-content:center;text-align:center;font-size:6.3cqw;line-height:1.5;font-weight:500}
+.pg-img{position:absolute;left:28%;right:28%;top:21%;bottom:1.5%;display:grid;grid-template-rows:minmax(0,1fr) auto;gap:6px;text-align:center;font-size:6.3cqw;line-height:1.5;font-weight:500}
+.pg-art{min-height:0;display:flex;align-items:center;justify-content:center}
 .pg-img img{max-width:100%;max-height:100%;object-fit:contain;cursor:zoom-in}
+.pg-img-tools{font-size:13px}
+.pg-img-tools button{min-height:34px}
+.pg-img-tools [role=status]{color:#4c5d73}
+.pg-img-tools [role=status]:not(:empty){margin-top:4px}
 .pg-box{position:absolute;top:47.1%;bottom:.45%;width:25.6%;border:max(2px,.42cqw) solid #000;background:rgba(255,255,255,.9);padding:1cqw 1.1cqw;overflow:auto;scrollbar-width:thin}
 .pg-l{left:1.4%}.pg-r{right:1.4%}
 .pg-box h4{margin:0;font-size:3.7cqw;font-weight:500;line-height:1.15}
@@ -562,15 +567,59 @@ function buildCtl(){let h='';
  <label class="t"><input type="checkbox" id="cc">色違い[CC]も一覧に出す</label><label class="t"><input type="checkbox" id="il">イラストありのみ</label><label class="t"><input type="checkbox" id="nost">ステ未設定を隠す</label><button id="rs">リセット</button>`;
  $('#ctl').innerHTML=h}
 const IDIR='illust/',EXTS=['png','webp','jpg','jpeg'];
-const IL=new Map(),IP=new Map();let pref=0;
-const ilUrl=(no,e)=>IDIR+encodeURIComponent(no)+'.'+e;
+const IL=new Map(),IP=new Map(),imageRefreshes=new Map();let pref=0;
+const ilUrl=(no,ext,version)=>IDIR+encodeURIComponent(no)+'.'+ext+(version?'?v='+encodeURIComponent(version):'');
 const ILC=()=>{try{return JSON.parse(LS.g('oc_il')||'{}')}catch(e){return{}}};
-function saveIL(no,ext){try{const m=ILC();m[no]=[ext,Date.now()];const k=Object.keys(m);if(k.length>3000)k.slice(0,k.length-3000).forEach(x=>delete m[x]);LS.s('oc_il',JSON.stringify(m))}catch(e){}}
-function probe(no){if(IP.has(no))return IP.get(no);const cc=ILC()[no];
- if(cc&&(cc[0]||Date.now()-cc[1]<864e5)){const u=cc[0]?ilUrl(no,cc[0]):false;IL.set(no,u);const p=Promise.resolve(u);IP.set(no,p);return p}
+function saveIL(no,ext,version){try{const m=ILC();m[no]=[ext,Date.now(),version];const k=Object.keys(m);if(k.length>3000)k.slice(0,k.length-3000).forEach(x=>delete m[x]);LS.s('oc_il',JSON.stringify(m))}catch(e){}}
+function probe(no,refresh=false){
+ const inFlight=imageRefreshes.get(no);
+ if(inFlight)return refresh?inFlight:inFlight.then(url=>url||probe(no));
+ if(!refresh){
+  if(IP.has(no))return IP.get(no);
+  const cached=ILC()[no];
+  if(cached&&(cached[0]||Date.now()-cached[1]<864e5)){
+   const url=cached[0]?ilUrl(no,cached[0],cached[2]):false;
+   IL.set(no,url);
+   const result=Promise.resolve(url);
+   IP.set(no,result);
+   return result;
+  }
+ }
+ const version=refresh?Date.now().toString(36):undefined;
  const order=EXTS.slice(pref).concat(EXTS.slice(0,pref));
- const p=new Promise(res=>{let k=0;const next=()=>{if(k>=order.length){IL.set(no,false);saveIL(no,'');res(false);return}const e=order[k++],u=ilUrl(no,e),im=new Image();im.onload=()=>{pref=EXTS.indexOf(e);IL.set(no,u);saveIL(no,e);res(u)};im.onerror=next;im.src=u};next()});IP.set(no,p);return p}
-async function illust(c){let u=await probe(c['全界番号']);if(!u&&c._base)u=await probe(c._base['全界番号']);return u}
+ const result=new Promise(resolve=>{
+  let index=0;
+  function next(){
+   if(index>=order.length){resolve('');return}
+   const ext=order[index++];
+   const image=new Image();
+   image.onload=()=>resolve(ext);
+   image.onerror=next;
+   image.src=ilUrl(no,ext,version);
+  }
+  next();
+ }).then(ext=>{
+  if(refresh){
+   imageRefreshes.delete(no);
+   if(!ext)return false;
+   IP.set(no,result);
+  }else if(IP.get(no)!==result){
+   return IP.get(no);
+  }
+  if(ext)pref=EXTS.indexOf(ext);
+  const url=ext?ilUrl(no,ext,version):false;
+  IL.set(no,url);
+  saveIL(no,ext,version);
+  return url;
+ });
+ (refresh?imageRefreshes:IP).set(no,result);
+ return result;
+}
+async function illust(c,refresh=false){
+ let url=await probe(c['全界番号'],refresh);
+ if(!url&&c._base)url=await probe(c._base['全界番号'],refresh);
+ return url;
+}
 const hasIl=c=>IL.get(c['全界番号'])||(c._base&&IL.get(c._base['全界番号']))||false;
 function setImg(el,u){if(el.querySelector('img'))return;el.classList.add('has');el.insertAdjacentHTML('beforeend',`<img src="${u}" alt="" decoding="async">`)}
 let obs=null;
@@ -666,10 +715,47 @@ function pageHtml(c){
  <div class="pg-bar"><div class="pg-rk"><small>ランク</small>${rankHtml(c)}</div><div class="pg-nm" style="--len:${len}">${esc(nm)}</div><div class="pg-no">${noHtml(c)}</div></div>
  <div class="pg-tp">${ty.length?typeIcon(c):''}${c['期']?`<div class="pg-period ps" style="${periodStyle(c['期'])}"><small>期</small><b>${esc(c['期'])}</b></div>`:''}</div>
  <div class="pg-wl" style="--n:${Math.max(2,wl.length)}">${wl.map(w=>{const l=wlLabel(w),n=Array.from(l).length;return `<div class="wl" style="--wc:${wlColor(w)};font-size:min(3.3cqw,${(13/Math.max(n,1)).toFixed(2)}cqw)">${esc(l)}</div>`}).join('')}</div>
- <div class="pg-img"><span class="pg-placeholder">イラスト未登録</span></div>
+ <div class="pg-img">
+  <div class="pg-art"><span class="pg-placeholder">画像を確認中…</span></div>
+  <div class="pg-img-tools">
+   <button type="button" class="pg-img-refresh">画像を今すぐ取得</button>
+   <div role="status"></div>
+  </div>
+ </div>
  <div class="pg-acts">${s2?'':`<button class="cmp" data-c="${c._i}" aria-pressed="${CMP.includes(c._i)}">比較に追加</button>`}<button class="ptd" data-c="${c._i}">パーティに追加</button><button class="mre" data-i="${c._i}">グラフ・詳細</button></div>
  <div class="pg-box pg-l"><h4>${s2?'ステータス':'種族値'} <small${s2?' class="bl"':''}>${has?(s2?'5ステ合計 '+f5:'合計'+b):'未設定'}</small></h4>${kv}${abl?`<h4 class="h2">特性</h4>${abl}`:''}</div>
  <div class="pg-box pg-r"><h4>詳細情報</h4><dl class="pg-dl">${dl||'<dt></dt><dd>—</dd>'}</dl></div></div>`}
+function loadPageImage(page,c){
+ const artwork=page.querySelector('.pg-art');
+ const button=page.querySelector('.pg-img-refresh');
+ const status=page.querySelector('.pg-img-tools [role=status]');
+ let latest;
+ async function load(refresh){
+  if(refresh){
+   button.disabled=true;
+   status.textContent='画像を取得中…';
+  }
+  const request=illust(c,refresh);
+  latest=request;
+  const url=await request;
+  if(latest!==request||!artwork.isConnected)return;
+  if(url){
+   const image=new Image();
+   image.src=url;
+   image.alt=c['キャラ名'];
+   artwork.replaceChildren(image);
+  }else{
+   const placeholder=artwork.querySelector('.pg-placeholder');
+   if(placeholder)placeholder.textContent='イラスト未登録';
+  }
+  if(refresh){
+   status.textContent=url?'画像を取得しました':'画像を取得できませんでした';
+   button.disabled=false;
+  }
+ }
+ button.onclick=()=>load(true);
+ load(false);
+}
 function renderPage(dir){const g=$('#grid');
  const count=pageCount();
  if(!count){worldMap.showCharacter();g.innerHTML='<div class="empty">該当するキャラがいません</div>';$('#pc').textContent='0 / 0';return}
@@ -679,8 +765,8 @@ function renderPage(dir){const g=$('#grid');
  g.innerHTML=c?pageHtml(c):`<div class="pg pg-missing"><div class="pg-bar"><div class="pg-rk"></div><div class="pg-nm">欠番</div><div class="pg-no">${noHtml({'全界番号':CURNO})}</div></div></div>`;
  if(dir&&!matchMedia('(prefers-reduced-motion:reduce)').matches)g.firstElementChild.classList.add(dir>0?'inr':'inl');
  $('#pc').textContent=`${POS+1} / ${count}`;
- if(!c)return;
- const im=g.querySelector('.pg-img');illust(c).then(u=>{if(u&&CURNO===c['全界番号']&&im.isConnected)im.innerHTML=`<img src="${u}" alt="${esc(c['キャラ名'])}">`})}
+ if(c)loadPageImage(g,c);
+}
 function go(d){
  const count=pageCount();
  if(!count)return;
